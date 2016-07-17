@@ -13,6 +13,11 @@ class Dealer {
 	}
 
 	deal() {
+		let validationErrors = this.validateRequirements();
+		return !validationErrors ? '' : validationErrors;
+	}
+
+	validateRequirements(){
 		if (!this.totalAmountOfChips || this.totalAmountOfChips <= 0) {
 			return 'I require a number of chips before dealing.';
  		}
@@ -25,8 +30,6 @@ class Dealer {
  		if (!this.buyin || this.buyin <= 0) {
 			return 'I require a buy-in (total value) before dealing.';
  		}
-
-		return '';
 	}
 }
 
