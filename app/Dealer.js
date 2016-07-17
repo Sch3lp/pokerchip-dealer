@@ -4,7 +4,6 @@
 module.exports = (() => {
 
 class Dealer {
-
 	constructor(totalAmountOfChips, amountOfPossibleValues, amountOfPlayers, buyIn) {
 		this.totalAmountOfChips = totalAmountOfChips;
 		this.amountOfPossibleValues = amountOfPossibleValues;
@@ -15,6 +14,10 @@ class Dealer {
 	deal() {
 		let validationErrors = this.validateRequirements();
 		return !validationErrors ? '' : validationErrors;
+	}
+
+	distribute() {
+		return new DistributionValues(.5,.10,.25,.50,1);
 	}
 
 	validateRequirements(){
@@ -33,7 +36,13 @@ class Dealer {
 	}
 }
 
-return { Dealer };
+class DistributionValues {
+	constructor(...valueSet){
+		this.valueSet = valueSet;
+	}
+}
+
+return { Dealer, DistributionValues };
 
 })();
 
