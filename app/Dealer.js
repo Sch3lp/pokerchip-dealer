@@ -19,6 +19,12 @@ class Dealer {
  		if (!this.amountOfPossibleValues || this.amountOfPossibleValues <= 0) {
 			return 'I require a number of possible chip values before dealing.';
  		}
+ 		if (!this.amountOfPlayers || this.amountOfPlayers <= 0) {
+			return 'I require a number of players before dealing.';
+ 		}
+ 		if (!this.buyin || this.buyin <= 0) {
+			return 'I require a buy-in (total value) before dealing.';
+ 		}
 
 		return '';
 	}
