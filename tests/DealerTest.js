@@ -67,7 +67,7 @@ describe('Dealer', () => {
 			expect(stack.amounts).to.deep.equal([10]);
 			expect(stack.totalPerPlayer).to.equal(100);
 			expect(stack.totalPerPlayer * players).to.equal(chips);
-		}
+		});
 		// Full poker set small (4 different denoms); 200 chips
 		// {
 		// 	.25 : 100,
@@ -102,8 +102,17 @@ describe('Dealer', () => {
 			expect(stack.amounts).to.deep.equal([10,20,45]);
 		});
 		it('totalPerPlayer returns the sum of value-amount pairs', () => {
-			let stack = new Stack([1,10],[2,20],[3,45]);
-			expect(stack.totalPerPlayer).to.deep.equal(185);
+			let stack = new Stack(
+				[.25,75], //18.75
+				[.50,75], //37.5
+				[1,100],  //100
+				[5,100],  //500
+				[10,50],  //500
+				[25,50],  //1250
+				[100,25], //2500
+				[500,25]  //12500
+			);
+			expect(stack.totalPerPlayer).to.deep.equal(17406.25);
 		});
 	});
 
