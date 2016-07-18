@@ -6,16 +6,16 @@ class Helper {
 
 	static getMultipliers(amountOfDenoms) {
 		return {
-			2: [10,50],
-			3: [5,10,50],
-			4: [1,5,25,100],
-			5: [1,5,25,50,100],
-			6: [1,5,10,25,50,100],
-			7: [1,5,10,25,50,100,250]
+			2: [1,2],
+			3: [1,2,5],
+			4: [1,2,5,10],
+			5: [1,2,5,10,20],
+			6: [1,2,5,10,20,50],
+			7: [1,2,5,10,20,50,100]
 		}[amountOfDenoms];
 	}
 
-	static findIdealDenoms(amountOfDenoms, lowestDenom) {
+	static findIdealDenominations(amountOfDenoms, lowestDenom) {
 		let multipliers = Helper.getMultipliers(amountOfDenoms) || [];
 		return multipliers.map((multiplier) => lowestDenom * multiplier);
 	}
