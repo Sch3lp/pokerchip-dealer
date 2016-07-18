@@ -1,5 +1,5 @@
 let expect = require('chai').expect;
-let {Dealer, DistributionValues} = require('../app/dealer');
+let {Dealer, Stack} = require('../app/dealer');
 
 var myDealer = new Dealer();
 
@@ -31,13 +31,35 @@ describe('Dealer', () => {
 	
 	describe('distribute', () => {
 		let dealer;
-		it('distribution with 100 chips, 5 values, 9 players, 10 buy-in', () => {
-			dealer = new Dealer(100,5,9,10);
-			expect(dealer.distribute()).to.deep.equal(new DistributionValues(.5,.10,.25,.50,1));
+		it('1000 chips, 1 value, 10 players, 10 buy-in', () => {
+			let stack = new Dealer(1000, 1, 10, 10).distribute();
+			expect(stack).to.deep.equal(new Stack([10,10]));
+			expect(stack.values).to.deep.equal([10]);
+			expect(stack.amounts).to.deep.equal([10]);
+			expect(stack.totalValuePerPlayer).to.deep.equal(100);
 		});
-		it('distribution with 100 total chips, 5 values, 6 players, 10 buy-in', () => {
-			dealer = new Dealer(100,5,6,10);
-			expect(dealer.distribute()).to.deep.equal(new DistributionValues(.5,.10,.25,.50,1));
+		// it('distribution with 100 chips, 5 values, 9 players, 10 buy-in', () => {
+		// 	dealer = new Dealer(100,5,9,10);
+		// 	expect(dealer.distribute()).to.deep.equal(new Stack(.5,.10,.25,.50,1));
+		// });
+		// it('distribution with 100 total chips, 5 values, 6 players, 10 buy-in', () => {
+		// 	dealer = new Dealer(100,5,6,10);
+		// 	expect(dealer.distribute()).to.deep.equal(new Stack(.5,.10,.25,.50,1));
+		// });
+	});
+
+	describe('Stack', () => {
+		it('values returns all the different values', () => {
+			let stack = new Stack([1,10],[2,20],[3,45]);
+			expect(stack.values).to.deep.equal([1,2,3]);
+		});
+		it('amounts returns all the different amounts', () => {
+			let stack = new Stack([1,10],[2,20],[3,45]);
+			expect(stack.amounts).to.deep.equal([10,20,45]);
+		});
+		it('totalValuePerPlayer returns the sum of value-amount pairs', () => {
+			let stack = new Stack([1,10],[2,20],[3,45]);
+			expect(stack.totalValuePerPlayer).to.deep.equal(185);
 		});
 	});
 

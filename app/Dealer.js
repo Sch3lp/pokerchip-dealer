@@ -18,7 +18,7 @@ class Dealer {
 	}
 
 	distribute() {
-		return new DistributionValues(.5,.10,.25,.50,1);
+		return new Stack([10,10]);
 	}
 
 	validateRequirements(){
@@ -37,13 +37,26 @@ class Dealer {
 	}
 }
 
-class DistributionValues {
-	constructor(...valueSet){
-		this.valueSet = valueSet;
+class Stack {
+	constructor(...distribution){
+		this.distribution = distribution; //2D array, values first
+	}
+
+	get values() {
+		return this.distribution.map(([value,_]) => value);
+	}
+
+	get amounts() {
+		return this.distribution.map(([_,amount]) => amount);
+	}
+
+	get totalValuePerPlayer() {
+		return this.distribution.map(([value,amount]) => value * amount)
+								.reduce(((prev, cur) => prev + cur), 0);
 	}
 }
 
-return { Dealer, DistributionValues };
+return { Dealer, Stack };
 
 })();
 
