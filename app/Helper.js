@@ -5,6 +5,7 @@ module.exports = (() => {
 class Helper {
 
 	static getMultipliers(amountOfDenoms) {
+		if (!amountOfDenoms) return [];
 		let result = [1];
 		for (let n = 1; n < amountOfDenoms; n++) {
 			result.push( ( Math.pow((n % 3),2) + 1 ) * ( Math.pow(10,Math.floor(n/3)) ) );

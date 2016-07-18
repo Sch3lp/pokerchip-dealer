@@ -2,6 +2,9 @@ let expect = require('chai').expect;
 let Helper = require('../app/helper');
 
 describe('getMultipliers()', () => {
+	it('Multiplier 0', () =>{
+		expect(Helper.getMultipliers(0)).to.deep.equal([]);
+	});
 	it('Multiplier 1', () =>{
 		expect(Helper.getMultipliers(1)).to.deep.equal([1]);
 	});
