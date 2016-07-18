@@ -9,6 +9,7 @@ class Dealer {
 		this.amountOfPossibleValues = amountOfPossibleValues;
 		this.amountOfPlayers = amountOfPlayers;
 		this.buyIn = buyIn;
+		this.amountOfRebuys = 0;
 	}
 
 	deal() {
