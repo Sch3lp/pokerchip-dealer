@@ -34,9 +34,47 @@ describe('Dealer', () => {
 	
 	describe('Distribution', () => {
 		it('should provide a stack of at least 50 big blinds', () => {
+			let chips = 1000;
+			let players = 10;
 			let stack = new Dealer(chips, 1, players, 10).distribute();
 			expect(stack.totalPerPlayer >= (50 * stack.bigBlindDenomination)).to.be.true;
 		});
+		it('1000 chips, 1 denomination, 10 players, 10 buy-in', () => {
+			let chips = 1000;
+			let players = 10;
+			let stack = new Dealer(chips, 1, players, 10).distribute();
+			expect(stack.denominations).to.deep.equal([10]);
+			expect(stack.amounts).to.deep.equal([10]);
+			expect(stack.totalPerPlayer).to.equal(100);
+			expect(stack.totalPerPlayer * players).to.equal(chips);
+		});
+		// Full poker set big (8 different denoms); 500 chips
+		// {
+		// 	.25 :  75,
+		// 	.50 :  75,
+		// 	1   : 100,
+		// 	5   : 100,
+		// 	10  :  50,
+		// 	25  :  50,
+		// 	100 :  25,
+		// 	500 :  25
+		// }
+		it('1000 chips, 8 denomination, 1 players, 10 buy-in', () => {
+			let chips = 1000;
+			let players = 10;
+			let stack = new Dealer(chips, 1, players, 10).distribute();
+			expect(stack.denominations).to.deep.equal([10]);
+			expect(stack.amounts).to.deep.equal([10]);
+			expect(stack.totalPerPlayer).to.equal(100);
+			expect(stack.totalPerPlayer * players).to.equal(chips);
+		}
+		// Full poker set small (4 different denoms); 200 chips
+		// {
+		// 	.25 : 100,
+		// 	.50 : 100,
+		// 	1   :  50,
+		// 	5   :  50
+		// }
 		it('1000 chips, 1 denomination, 10 players, 10 buy-in', () => {
 			let chips = 1000;
 			let players = 10;
