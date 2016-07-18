@@ -4,9 +4,9 @@
 module.exports = (() => {
 
 class Dealer {
-	constructor(totalAmountOfChips, amountOfPossibleValues, amountOfPlayers, buyIn) {
+	constructor(totalAmountOfChips, amountOfPossibleDenominations, amountOfPlayers, buyIn) {
 		this.totalAmountOfChips = totalAmountOfChips;
-		this.amountOfPossibleValues = amountOfPossibleValues;
+		this.amountOfPossibleDenominations = amountOfPossibleDenominations;
 		this.amountOfPlayers = amountOfPlayers;
 		this.buyIn = buyIn;
 		this.amountOfRebuys = 0;
@@ -18,6 +18,9 @@ class Dealer {
 	}
 
 	distribute() {
+		// if (this.amountOfPossibleDenominations == 5) {
+
+		// }
 		return new Stack([10,10]);
 	}
 
@@ -25,8 +28,8 @@ class Dealer {
 		if (!this.totalAmountOfChips || this.totalAmountOfChips <= 0) {
 			return 'I require a number of chips before dealing.';
  		}
- 		if (!this.amountOfPossibleValues || this.amountOfPossibleValues <= 0) {
-			return 'I require a number of possible chip values before dealing.';
+ 		if (!this.amountOfPossibleDenominations || this.amountOfPossibleDenominations <= 0) {
+			return 'I require a number of possible chip denominations before dealing.';
  		}
  		if (!this.amountOfPlayers || this.amountOfPlayers <= 0) {
 			return 'I require a number of players before dealing.';
@@ -39,19 +42,19 @@ class Dealer {
 
 class Stack {
 	constructor(...distribution){
-		this.distribution = distribution; //2D array, values first
+		this.distribution = distribution; //2D array, denominations first
 	}
 
-	get values() {
-		return this.distribution.map(([value,_]) => value);
+	get denominations() {
+		return this.distribution.map(([denomination,_]) => denomination);
 	}
 
 	get amounts() {
 		return this.distribution.map(([_,amount]) => amount);
 	}
 
-	get totalValuePerPlayer() {
-		return this.distribution.map(([value,amount]) => value * amount)
+	get totalPerPlayer() {
+		return this.distribution.map(([denomination,amount]) => denomination * amount)
 								.reduce(((prev, cur) => prev + cur), 0);
 	}
 }

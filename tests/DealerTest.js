@@ -10,11 +10,11 @@ describe('Dealer', () => {
 		dealer = new Dealer(0);
 		expect(dealer.deal()).to.equal('I require a number of chips before dealing.');
 	});
-	it('requires an amount of possible values of chips', () => {
+	it('requires an amount of possible denominations of chips', () => {
 		let dealer = new Dealer(10,0,0,0);
-		expect(dealer.deal()).to.equal('I require a number of possible chip values before dealing.');
+		expect(dealer.deal()).to.equal('I require a number of possible chip denominations before dealing.');
 		dealer = new Dealer(10);
-		expect(dealer.deal()).to.equal('I require a number of possible chip values before dealing.');
+		expect(dealer.deal()).to.equal('I require a number of possible chip denominations before dealing.');
 	});
 	it('requires an amount of players', () => {
 		let dealer = new Dealer(10,10);
@@ -30,13 +30,23 @@ describe('Dealer', () => {
 	});
 	
 	describe('distribute', () => {
-		let dealer;
-		it('1000 chips, 1 value, 10 players, 10 buy-in', () => {
-			let stack = new Dealer(1000, 1, 10, 10).distribute();
-			expect(stack).to.deep.equal(new Stack([10,10]));
-			expect(stack.values).to.deep.equal([10]);
+		it('1000 chips, 1 denomination, 10 players, 10 buy-in', () => {
+			let chips = 1000;
+			let players = 10;
+			let stack = new Dealer(chips, 1, players, 10).distribute();
+			expect(stack.denominations).to.deep.equal([10]);
 			expect(stack.amounts).to.deep.equal([10]);
-			expect(stack.totalValuePerPlayer).to.deep.equal(100);
+			expect(stack.totalPerPlayer).to.equal(100);
+			expect(stack.totalPerPlayer * players).to.equal(chips);
+		});
+		it('1000 chips, 5 denominations, 1 player, 10 buy-in', () => {
+			let chips = 1000;
+			let players = 1;
+			let stack = new Dealer(chips, 5, players, 10).distribute();
+			expect(stack.denominations).to.deep.equal([10]);
+			expect(stack.amounts).to.deep.equal([10]);
+			expect(stack.totalPerPlayer).to.equal(chips);
+			expect(stack.totalPerPlayer * players).to.equal(chips);
 		});
 		// it('distribution with 100 chips, 5 values, 9 players, 10 buy-in', () => {
 		// 	dealer = new Dealer(100,5,9,10);
@@ -49,17 +59,17 @@ describe('Dealer', () => {
 	});
 
 	describe('Stack', () => {
-		it('values returns all the different values', () => {
+		it('denominations returns all the different denominations', () => {
 			let stack = new Stack([1,10],[2,20],[3,45]);
-			expect(stack.values).to.deep.equal([1,2,3]);
+			expect(stack.denominations).to.deep.equal([1,2,3]);
 		});
 		it('amounts returns all the different amounts', () => {
 			let stack = new Stack([1,10],[2,20],[3,45]);
 			expect(stack.amounts).to.deep.equal([10,20,45]);
 		});
-		it('totalValuePerPlayer returns the sum of value-amount pairs', () => {
+		it('totalPerPlayer returns the sum of value-amount pairs', () => {
 			let stack = new Stack([1,10],[2,20],[3,45]);
-			expect(stack.totalValuePerPlayer).to.deep.equal(185);
+			expect(stack.totalPerPlayer).to.deep.equal(185);
 		});
 	});
 
