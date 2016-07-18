@@ -5,17 +5,15 @@ module.exports = (() => {
 class Helper {
 
 	static getMultipliers(amountOfDenoms) {
-		return {
-			2: [1,2],
-			3: [1,2,5],
-			4: [1,2,5,10],
-			5: [1,2,5,10,20],
-			6: [1,2,5,10,20,50],
-			7: [1,2,5,10,20,50,100]
-		}[amountOfDenoms];
+		let result = [1];
+		for (let n = 1; n < amountOfDenoms; n++) {
+			result.push( ( Math.pow((n % 3),2) + 1 ) * ( Math.pow(10,Math.floor(n/3)) ) );
+		}
+		return result;
 	}
 
 	static findIdealDenominations(amountOfDenoms, lowestDenom) {
+		if (!amountOfDenoms || !lowestDenom) return [];
 		let multipliers = Helper.getMultipliers(amountOfDenoms) || [];
 		return multipliers.map((multiplier) => lowestDenom * multiplier);
 	}

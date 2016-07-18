@@ -1,10 +1,34 @@
 let expect = require('chai').expect;
 let Helper = require('../app/helper');
 
-describe('Helper.findIdealDenominations', () => {
-	it('non existing amount, returns empty array', () => {
-		expect(Helper.findIdealDenominations(164, 1)).to.deep.equal([]);
+describe('getMultipliers()', () => {
+	it('Multiplier 1', () =>{
+		expect(Helper.getMultipliers(1)).to.deep.equal([1]);
 	});
+	it('Multiplier 2', () =>{
+		expect(Helper.getMultipliers(2)).to.deep.equal([1,2]);
+	});
+	it('Multiplier 3', () =>{
+		expect(Helper.getMultipliers(3)).to.deep.equal([1,2,5]);
+	});
+	it('Multiplier 4', () =>{
+		expect(Helper.getMultipliers(4)).to.deep.equal([1,2,5,10]);
+	});
+	it('Multiplier 5', () =>{
+		expect(Helper.getMultipliers(5)).to.deep.equal([1,2,5,10,20]);
+	});
+	it('Multiplier 6', () =>{
+		expect(Helper.getMultipliers(6)).to.deep.equal([1,2,5,10,20,50]);
+	});
+	it('Multiplier 7', () =>{
+		expect(Helper.getMultipliers(7)).to.deep.equal([1,2,5,10,20,50,100]);
+	});
+	it('Multiplier 8', () =>{
+		expect(Helper.getMultipliers(8)).to.deep.equal([1,2,5,10,20,50,100,200]);
+	});
+});
+	
+describe('findIdealDenominations()', () => {
 	it('lowest denomination is 0, return empty array', () => {
 		expect(Helper.findIdealDenominations(1, 0)).to.deep.equal([]);
 	});
