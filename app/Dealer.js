@@ -47,6 +47,14 @@ class Stack {
 		return this.distribution.map(([denomination,_]) => denomination);
 	}
 
+	get smallBlindDenomination() {
+		return this.denominations[0];
+	}
+
+	get bigBlindDenomination() {
+		return this.denominations[1];
+	}
+
 	get amounts() {
 		return this.distribution.map(([_,amount]) => amount);
 	}
