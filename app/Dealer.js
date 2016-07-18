@@ -1,6 +1,6 @@
 /* jshint undef: true, unused: false, esnext: true, strict:false */
 /* globals module */
-
+let Helper = require('./helper');
 module.exports = (() => {
 
 class Dealer {
@@ -18,9 +18,7 @@ class Dealer {
 	}
 
 	distribute() {
-		// if (this.amountOfPossibleDenominations == 5) {
-
-		// }
+		
 		return new Stack([10,10]);
 	}
 

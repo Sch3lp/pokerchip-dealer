@@ -39,22 +39,11 @@ describe('Dealer', () => {
 			expect(stack.totalPerPlayer).to.equal(100);
 			expect(stack.totalPerPlayer * players).to.equal(chips);
 		});
-		it('1000 chips, 5 denominations, 1 player, 10 buy-in', () => {
-			let chips = 1000;
-			let players = 1;
-			let stack = new Dealer(chips, 5, players, 10).distribute();
-			expect(stack.denominations).to.deep.equal([10]);
-			expect(stack.amounts).to.deep.equal([10]);
-			expect(stack.totalPerPlayer).to.equal(chips);
-			expect(stack.totalPerPlayer * players).to.equal(chips);
-		});
+		// it('1000 chips, 5 denominations, 1 player, 10 buy-in', () => {
+		// });
 		// it('distribution with 100 chips, 5 values, 9 players, 10 buy-in', () => {
-		// 	dealer = new Dealer(100,5,9,10);
-		// 	expect(dealer.distribute()).to.deep.equal(new Stack(.5,.10,.25,.50,1));
 		// });
 		// it('distribution with 100 total chips, 5 values, 6 players, 10 buy-in', () => {
-		// 	dealer = new Dealer(100,5,6,10);
-		// 	expect(dealer.distribute()).to.deep.equal(new Stack(.5,.10,.25,.50,1));
 		// });
 	});
 
