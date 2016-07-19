@@ -5,27 +5,31 @@ module.exports = (() => {
 
 class Dealer {
 
-	constructor(totalAmountOfChips, amountOfPossibleDenominations, amountOfPlayers, buyIn) {
+	constructor(totalAmountOfChips,
+				amountOfDenoms,
+				amountOfPlayers,
+				buyIn,
+				lowestDenom) {
 		this.totalAmountOfChips = totalAmountOfChips;
-		this.amountOfPossibleDenominations = amountOfPossibleDenominations;
+		this.amountOfDenoms = amountOfDenoms;
 		this.amountOfPlayers = amountOfPlayers;
 		this.buyIn = buyIn;
+		this.lowestDenom = lowestDenom;
 		this.amountOfRebuys = 0;
 	}
 
 	deal() {
 		let validationErrors = this.validateRequirements();
-		return !validationErrors ? '' : validationErrors;
+		return validationErrors || '';
 	}
 
 	distribute() {
-		// aantal BB's in buy-in bepaalt snelheid
-		// 100 BB's als 2de denom = traag
-		// 50 BB's als 2de denom = semi
-		// 25 BB's als 2de denom = snel
-		let multipliers = Helper.getMultipliers(this.amountOfPossibleDenominations);
-		let amountOfBBs = this.buyin / multipliers[1];
-		new Stack()
+		// amount of BBs in buy-in determines speed
+		// 100 BBs as 2nd denom = slow
+		// 50 BBs as 2nd denom = semi
+		// 25 BBs as 2nd denom = fast
+		let denoms = Helper.findIdealDenominations(this.amountOfDenoms, this.lowestDenom);
+		denoms.map((denom) => [denom, ]);
 		return new Stack([10,10]);
 	}
 
@@ -33,7 +37,7 @@ class Dealer {
 		if (!this.totalAmountOfChips || this.totalAmountOfChips <= 0) {
 			return 'I require a number of chips before dealing.';
  		}
- 		if (!this.amountOfPossibleDenominations || this.amountOfPossibleDenominations <= 0) {
+ 		if (!this.amountOfDenoms || this.amountOfDenoms <= 0) {
 			return 'I require a number of possible chip denominations before dealing.';
  		}
  		if (!this.amountOfPlayers || this.amountOfPlayers <= 0) {
@@ -66,13 +70,35 @@ class Stack {
 		return this.distribution.map(([_,amount]) => amount);
 	}
 
-	get totalPerPlayer() {
+	get totalChips() {
+		return this.amounts.reduce((prev,cur) => prev + cur);
+	}
+
+	get totalValue() {
 		return this.distribution.map(([denomination,amount]) => denomination * amount)
 								.reduce(((prev, cur) => prev + cur), 0);
 	}
 }
 
-return { Dealer, Stack };
+class PokerSet {
+	constructor(...setDistribution) { //1D array, amounts per color
+		this.setDistribution = setDistribution;
+		this.colorNames = [];
+	}
+
+	get distributionPerColor() {
+		return this.setDistribution.map((cur,idx) => {
+			let name = this.colorNames[idx] || idx+1;
+			return [name, cur];
+		});
+	}
+
+	setColorNames(...names) {
+		this.colorNames = names;
+	}
+}
+
+return { Dealer, Stack, PokerSet };
 
 })();
 
