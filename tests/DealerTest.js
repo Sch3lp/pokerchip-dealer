@@ -156,6 +156,40 @@ describe('Dealer', () => {
 				[8,25]]
 			);
 		});
+		it('setting distributionPerColor destructures correctly', () => {
+			let set = new PokerSet(9000);
+			set.distributionPerColor = [
+				['white',75],
+				['pink',75],
+				['red',100],
+				['green',100],
+				['blue',50],
+				['black',50],
+				['silver',25],
+				['gold',25]
+			];
+			expect(set.distributionPerColor).to.deep.equal([
+				['white',75],
+				['pink',75],
+				['red',100],
+				['green',100],
+				['blue',50],
+				['black',50],
+				['silver',25],
+				['gold',25]]
+			);
+			set.setColorNames('brown','yellow','white','orange','purple');
+			expect(set.distributionPerColor).to.deep.equal([
+				['brown',75],
+				['yellow',75],
+				['white',100],
+				['orange',100],
+				['purple',50],
+				[6,50],
+				[7,25],
+				[8,25]]
+			);
+		});
 	});
 
 });
