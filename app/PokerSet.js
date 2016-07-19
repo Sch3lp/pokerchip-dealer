@@ -33,7 +33,6 @@ class PokerSet {
 	}
 
 	get totalAmountOfChips() {
-		// return this.pokerSetDistribution.reduce((prev,cur) => prev + cur, 0);
 		return this.distributionPerColor.reduce((prev,[_,amount]) => prev + amount, 0);
 		//because this is cooler than just reducing pokerSetDistribution :)
 		//and because it'll prolly come in handy once I'll only be constructing PokerSets with 2D arrays
