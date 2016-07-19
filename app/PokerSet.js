@@ -19,13 +19,31 @@ class PokerSet {
 		this.pokerSetDistribution = [];
 		this.colorNames = [];
 		amountsPerColor.forEach(([colorName, dist]) => {
-			this.colorNames.push(colorName);
-			this.pokerSetDistribution.push(dist);
+			if (colorName) {
+				this.colorNames.push(colorName);
+			}
+			if (dist) {
+				this.pokerSetDistribution.push(dist);
+			}
 		});
 	}
 
 	setColorNames(...names) {
 		this.colorNames = names;
+	}
+
+	get totalAmountOfChips() {
+		// return this.pokerSetDistribution.reduce((prev,cur) => prev + cur, 0);
+		return this.distributionPerColor.reduce((prev,[_,amount]) => prev + amount, 0);
+		//because this is cooler than just reducing pokerSetDistribution :)
+		//and because it'll prolly come in handy once I'll only be constructing PokerSets with 2D arrays
+	}
+
+	validate() {
+		if (!this.pokerSetDistribution || this.pokerSetDistribution <= 0) {
+			return 'Can\'t do anything with an empty pokerset.';
+ 		}
+ 		return '';
 	}
 }
 

@@ -1,18 +1,17 @@
 /* jshint undef: true, unused: false, esnext: true, strict:false */
 /* globals module */
 let Helper = require('./helper');
-let PokerSet = require('./pokerset');
+let Stack = require('./stack');
+
 module.exports = (() => {
 
 class Dealer {
 
-	constructor(totalAmountOfChips,
-				amountOfDenoms,
+	constructor(pokerSet,
 				amountOfPlayers,
 				buyIn,
 				lowestDenom) {
-		this.totalAmountOfChips = totalAmountOfChips;
-		this.amountOfDenoms = amountOfDenoms;
+		this.pokerSet = pokerSet;
 		this.amountOfPlayers = amountOfPlayers;
 		this.buyIn = buyIn;
 		this.lowestDenom = lowestDenom;
@@ -35,53 +34,26 @@ class Dealer {
 	}
 
 	validateRequirements() {
-		if (!this.totalAmountOfChips || this.totalAmountOfChips <= 0) {
-			return 'I require a number of chips before dealing.';
- 		}
- 		if (!this.amountOfDenoms || this.amountOfDenoms <= 0) {
-			return 'I require a number of possible chip denominations before dealing.';
- 		}
+		if (!this.pokerSet) {
+			return 'I require a PokerSet before dealing.';
+		}
+		if (this.pokerSet.validate()) {
+			return this.pokerSet.validate();
+		}
  		if (!this.amountOfPlayers || this.amountOfPlayers <= 0) {
 			return 'I require a number of players before dealing.';
  		}
- 		if (!this.buyin || this.buyin <= 0) {
+ 		if (!this.buyIn || this.buyIn <= 0) {
 			return 'I require a buy-in (total value) before dealing.';
  		}
+ 		if (!this.lowestDenom || this.lowestDenom <= 0) {
+			return 'I require a lowest denomination before dealing.';
+ 		}
+ 		return '';
 	}
 }
 
-class Stack {
-	constructor(...distribution) {
-		this.distribution = distribution; //2D array, denominations first
-	}
-
-	get denominations() {
-		return this.distribution.map(([denomination,_]) => denomination);
-	}
-
-	get smallBlindDenomination() {
-		return this.denominations[0];
-	}
-
-	get bigBlindDenomination() {
-		return this.denominations[1];
-	}
-
-	get amounts() {
-		return this.distribution.map(([_,amount]) => amount);
-	}
-
-	get totalChips() {
-		return this.amounts.reduce((prev,cur) => prev + cur);
-	}
-
-	get totalValue() {
-		return this.distribution.map(([denomination,amount]) => denomination * amount)
-								.reduce(((prev, cur) => prev + cur), 0);
-	}
-}
-
-return { Dealer, Stack };
+return Dealer;
 
 })();
 
