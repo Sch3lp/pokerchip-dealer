@@ -4,6 +4,7 @@ let Helper = require('./helper');
 module.exports = (() => {
 
 class Dealer {
+
 	constructor(totalAmountOfChips, amountOfPossibleDenominations, amountOfPlayers, buyIn) {
 		this.totalAmountOfChips = totalAmountOfChips;
 		this.amountOfPossibleDenominations = amountOfPossibleDenominations;
@@ -18,11 +19,17 @@ class Dealer {
 	}
 
 	distribute() {
-		
+		// aantal BB's in buy-in bepaalt snelheid
+		// 100 BB's als 2de denom = traag
+		// 50 BB's als 2de denom = semi
+		// 25 BB's als 2de denom = snel
+		let multipliers = Helper.getMultipliers(this.amountOfPossibleDenominations);
+		let amountOfBBs = this.buyin / multipliers[1];
+		new Stack()
 		return new Stack([10,10]);
 	}
 
-	validateRequirements(){
+	validateRequirements() {
 		if (!this.totalAmountOfChips || this.totalAmountOfChips <= 0) {
 			return 'I require a number of chips before dealing.';
  		}
@@ -39,7 +46,7 @@ class Dealer {
 }
 
 class Stack {
-	constructor(...distribution){
+	constructor(...distribution) {
 		this.distribution = distribution; //2D array, denominations first
 	}
 
