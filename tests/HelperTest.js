@@ -48,5 +48,11 @@ describe('Helper', () => {
 		it('5 denominations, lowest is .05', () => {
 			expect(Helper.findIdealDenominations(5, .05)).to.deep.equal([.05, .10, .25, .50, 1]);
 		});
+		it('8 denominations, lowest is .05', () => {
+			expect(Helper.findIdealDenominations(8, .05)).to.deep.equal([.05, .10, .25, .50, 1, 2.5, 5, 10]);
+		});
+		it('8 denominations, lowest is .25', () => {
+			expect(Helper.findIdealDenominations(8, .25)).to.deep.equal([0.25, 0.5, 1.25, 2.5, 5, 12.5, 25, 50]);
+		});
 	});
 });

@@ -8,6 +8,10 @@ class PokerSet {
 		this.colorNames = [];
 	}
 
+	get amountOfColors() {
+		return this.pokerSetDistribution.length;
+	}
+
 	get distributionPerColor() {
 		return this.pokerSetDistribution.map((cur,idx) => {
 			let name = this.colorNames[idx] || idx+1;
