@@ -3,11 +3,10 @@ let Dealer = require('../app/dealer');
 let Stack = require('../app/stack');
 let PokerSet = require('../app/pokerset');
 
-var myDealer = new Dealer();
-function ignore(){}
+let myDealer = new Dealer();
+let largePokerSet = new PokerSet();
 
 describe('Dealer', () => {
-
 	describe('Validation', () => {
 		let validPokerSet = new PokerSet(20,20);
 		let dummyPokerSet = new PokerSet(); 
@@ -45,7 +44,6 @@ describe('Dealer', () => {
 	});
 	
 	describe('Distribution', () => {
-		let largePokerSet = new PokerSet();
 		largePokerSet.distributionPerColor = [
 			['purple',75],
 			['orange',75],
@@ -65,8 +63,17 @@ describe('Dealer', () => {
 		});
 	});
 
-	ignore('Scenarios', () => {
-		it('with 1000 chips, 1 denomination, 10 players, 10 buy-in', () => {
+	describe('Scenarios', () => {
+		it('with large pokerset of 500/8 chips, 5 denominations, 6 players, 10 buy-in', () => {
+			let players = 6;
+			let buyin = 10;
+			let stack = new Dealer(largePokerSet, players, buyin, .05).distribute();
+			expect(stack.denominations).to.deep.equal([.05, .10, .25, .50, 1]);
+			expect(stack.amounts).to.deep.equal([10, 15, 12, 6, 2]);
+			expect(stack.totalChips).to.equal(55);
+			expect(stack.totalValue).to.equal(buyin);
+		});
+		it.skip('with 1000 chips, 1 denomination, 10 players, 10 buy-in', () => {
 			let chips = 1000;
 			let players = 10;
 			let stack = new Dealer(chips, 1, players, 10).distribute();
@@ -74,7 +81,7 @@ describe('Dealer', () => {
 			expect(stack.amounts).to.deep.equal([10]);
 			expect(stack.totalValue).to.equal(100);
 		});
-		it('with 500 chips, 8 denominations, 1 player, 17406.25 buy-in', () => {
+		it.skip('with 500 chips, 8 denominations, 1 player, 17406.25 buy-in', () => {
 			let chips = 500;
 			let players = 1;
 			let buyin = 17406.25;
@@ -84,7 +91,7 @@ describe('Dealer', () => {
 			expect(stack.totalChips).to.equal(chips);
 			expect(stack.totalValue).to.equal(buyin);
 		});
-		it('with 200 chips, 4 denominations, 1 player, 375 buy-in', () => {
+		it.skip('with 200 chips, 4 denominations, 1 player, 375 buy-in', () => {
 			let chips = 200;
 			let players = 1;
 			let buyin = 375;
@@ -94,22 +101,13 @@ describe('Dealer', () => {
 			expect(stack.totalChips).to.equal(chips);
 			expect(stack.totalValue).to.equal(buyin);
 		});
-		it('with 200 chips, 2 denominations, 10 players, 10 buy-in', () => {
+		it.skip('with 200 chips, 2 denominations, 10 players, 10 buy-in', () => {
 			let chips = 200;
 			let players = 10;
 			let stack = new Dealer(chips, 1, players, 10, 10).distribute();
 			expect(stack.denominations).to.deep.equal([10,20]);
 			expect(stack.amounts).to.deep.equal([10]);
 			expect(stack.totalValue).to.equal(100);
-		});
-		it('with large pokerset of 500/8 chips, 5 denominations, 6 players, 10 buy-in', () => {
-			let players = 6;
-			let buyin = 10;
-			let stack = new Dealer(largePokerSet, players, buyin, .05).distribute();
-			expect(stack.denominations).to.deep.equal([.05, .10, .25, .50, 1]);
-			expect(stack.amounts).to.deep.equal([10, 15, 12, 6, 2]);
-			expect(stack.totalChips).to.equal(55);
-			expect(stack.totalValue).to.equal(buyin);
 		});
 	});
 });

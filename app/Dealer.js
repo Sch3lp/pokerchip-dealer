@@ -3,6 +3,7 @@
 let Helper = require('./helper');
 let Stack = require('./stack');
 let PokerSet = require('./pokerset');
+let ColorPicker = require('./colorpicker');
 
 module.exports = (() => {
 
@@ -55,6 +56,13 @@ class Dealer {
 
 		let denoms = Helper.findIdealDenominations(this.pokerSet.amountOfColors, this.lowestDenom);
 		let slicedDenoms = denoms.slice(0,idealAmountOfDenoms);
+		
+		// find denoms in the pokerset that have the highest amounts and assign to BB and BB+1
+		// find next denom in pokerset and assign to SB
+		// find next denom in pokerset and assign to BB+x
+		// That way we should get which color is 
+
+		let assignedChips = ColorPicker.smartpickColors(slicedDenoms, this.pokerSet);
 
 		let chips = slicedDenoms.map((denom, idx) => [denom,
 												this.pokerSet.distributionPerColor[idx][0],
