@@ -4,6 +4,7 @@ let Stack = require('../app/stack');
 let PokerSet = require('../app/pokerset');
 
 var myDealer = new Dealer();
+function ignore(){}
 
 describe('Dealer', () => {
 
@@ -56,8 +57,16 @@ describe('Dealer', () => {
 			['black-salmon',25],
 			['purple-pink',25]
 		];
+		it('limits the amount of denoms to 5', () => {
+			let dealer = new Dealer(largePokerSet, 6, 10, .05);
+			let stack = dealer.distribute();
+			expect(stack.denominations).to.deep.equal([.05, .1, .25, .5, 1]);
+		});
 		it('should provide a stack of at least 50 big blinds', () => {
 		});
+	});
+
+	ignore('Scenarios', () => {
 		it('with 1000 chips, 1 denomination, 10 players, 10 buy-in', () => {
 			let chips = 1000;
 			let players = 10;
@@ -98,9 +107,9 @@ describe('Dealer', () => {
 			let players = 6;
 			let buyin = 10;
 			let stack = new Dealer(largePokerSet, players, buyin, .05).distribute();
-			expect(stack.denominations).to.deep.equal([.05, .10, .25, .50, 1, 2.5, 5, 10]);
-			expect(stack.amounts).to.deep.equal([12, 12, 16, 16, 8, 8, 4, 4]);
-			expect(stack.totalChips).to.equal(80);
+			expect(stack.denominations).to.deep.equal([.05, .10, .25, .50, 1]);
+			expect(stack.amounts).to.deep.equal([10, 15, 12, 6, 2]);
+			expect(stack.totalChips).to.equal(55);
 			expect(stack.totalValue).to.equal(buyin);
 		});
 	});

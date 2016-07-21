@@ -3,12 +3,12 @@
 module.exports = (() => {
 
 class Stack {
-	constructor(...distribution) {
-		this.distribution = distribution; //2D array, denominations first
+	constructor(distribution) {
+		this.distribution = distribution; //2D array of denominations and their amounts
 	}
 
 	get denominations() {
-		return this.distribution.map(([denomination,_]) => denomination);
+		return this.distribution.map(([d,_]) => d);
 	}
 
 	get smallBlindDenomination() {
@@ -20,7 +20,7 @@ class Stack {
 	}
 
 	get amounts() {
-		return this.distribution.map(([_,amount]) => amount);
+		return this.distribution.map(([_,a]) => a);
 	}
 
 	get totalChips() {
@@ -28,7 +28,7 @@ class Stack {
 	}
 
 	get totalValue() {
-		return this.distribution.map(([denomination,amount]) => denomination * amount)
+		return this.distribution.map(([d,a]) => d * a)
 								.reduce(((prev, cur) => prev + cur), 0);
 	}
 }

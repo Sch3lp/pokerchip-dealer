@@ -10,7 +10,7 @@ Then you can `git clone` this repo.
 
 Then you can run `npm install`.
 
-And finally `npm run pokerchip-dealer`.
+And eventually you'll be able to `npm run pokerchip-dealer`.
 
 ##Different approaches
 Either you know your small and big blind denominations and want to play with these, no matter what buy-in.

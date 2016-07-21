@@ -6,8 +6,9 @@ let PokerSet = require('./pokerset');
 
 module.exports = (() => {
 
-class Dealer {
+const idealAmountOfDenoms = 5;
 
+class Dealer {
 	constructor(pokerSet,
 				amountOfPlayers,
 				buyIn,
@@ -53,11 +54,13 @@ class Dealer {
 		//[[.05,'white',75],[.1,'pink',75],[.25,'green',100],[.5,'brown',100]]
 
 		let denoms = Helper.findIdealDenominations(this.pokerSet.amountOfColors, this.lowestDenom);
+		let slicedDenoms = denoms.slice(0,idealAmountOfDenoms);
+
 		let chips = denoms.map((denom, idx) => [denom,
 												this.pokerSet.distributionPerColor[idx][0],
 		 										this.pokerSet.distributionPerColor[idx][1]
 		 										]);
-		return new Stack([10,10]);
+		return new Stack(slicedDenoms.map((nom) => [nom]));
 	}
 
 	validateRequirements() {
