@@ -8,7 +8,7 @@ Big blind should have biggest _weight_ ~= proportion of stack
          6 * 0.5  = 3     0.13333
          2 * 1    = 2     0.04444
 
-I feel like I've been productive in creating the `ColorPicker`. I also was a little bit proud of a silly refactoring I did, it's way shorter to read now, yet still comprehensible enough.
+I feel like I've been productive in creating the `ColorPicker`. I also was a little bit proud of a silly [refactoring](https://github.com/Sch3lp/pokerchip-dealer/commit/90f6e3a8834ae1beeb29fab45f2d467fa3364767#diff-e7d239fcae0a96404762d00f1c47562c) I did, it's way shorter to read now, yet still comprehensible enough.
 
 But where my code was "more logical" before (first add small blind, then big blind, then the rest), and also readable (by extension), now it's more concise but you have to figure out why I first switch around the position of small and big blind denominations and re-order on ascending denominations after the `combine` happened. I don't think it's that hard to understand. Especially since it's concise enough.
 
