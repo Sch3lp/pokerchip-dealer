@@ -1,23 +1,23 @@
 let expect = require('chai').expect;
 let ColorPicker = require('../app/colorpicker');
 
-describe.only('ColorPicker', () => {
-	describe('smartpickColors' ,() => {
+describe('ColorPicker', function() {
+	describe('smartpickColors' ,function() {
 		let fiveDenoms = [.05,.1,.25,.5,1];
 		let white100 = [['white',100]];
-		it('with no denoms => empty array', () => {
+		it('with no denoms => empty array', function() {
 			let stack = ColorPicker.smartpickColors(undefined, white100);
 			expect(stack).to.deep.equal([]);
 			stack = ColorPicker.smartpickColors([], white100);
 			expect(stack).to.deep.equal([]);
 		});
-		it('with no available colors => empty array', () => {
+		it('with no available colors => empty array', function() {
 			let stack = ColorPicker.smartpickColors(fiveDenoms,undefined);
 			expect(stack).to.deep.equal([]);
 			stack = ColorPicker.smartpickColors([.05,.1,.25,.5,1],[]);
 			expect(stack).to.deep.equal([]);
 		});
-		it('with 1 available color => only big blinds', () => {
+		it('with 1 available color => only big blinds', function() {
 			let stack = ColorPicker.smartpickColors(fiveDenoms, white100);
 			expect(stack).to.deep.equal([
 				{ color: 'white', 

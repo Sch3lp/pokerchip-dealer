@@ -1,8 +1,8 @@
 let expect = require('chai').expect;
 let PokerSet = require('../app/pokerset');
 
-describe('PokerSet', () => {
-	it('distributionPerColor without names returns distribution per color as numbers', () => {
+describe('PokerSet', function() {
+	it('distributionPerColor without names returns distribution per color as numbers', function() {
 		let pokerSet = new PokerSet(75, 75, 100, 100, 50, 50, 25, 25);
 		expect(pokerSet.distributionPerColor).to.deep.equal([
 			[1,75],
@@ -15,7 +15,7 @@ describe('PokerSet', () => {
 			[8,25]]
 		);
 	});
-	it('distributionPerColor with names returns distribution per colors as names', () => {
+	it('distributionPerColor with names returns distribution per colors as names', function() {
 		let pokerSet = new PokerSet(75,75,100,100,50,50,25,25);
 		pokerSet.setColorNames('white','pink','red','green','blue','black','silver','gold');
 		expect(pokerSet.distributionPerColor).to.deep.equal([
@@ -29,7 +29,7 @@ describe('PokerSet', () => {
 			['gold',25]]
 		);
 	});
-	it('distributionPerColor with incomplete names returns distribution per colors with names and numbers', () => {
+	it('distributionPerColor with incomplete names returns distribution per colors with names and numbers', function() {
 		let pokerSet = new PokerSet(75,75,100,100,50,50,25,25);
 		pokerSet.setColorNames('white','pink','red','green','blue');
 		expect(pokerSet.distributionPerColor).to.deep.equal([
@@ -43,7 +43,7 @@ describe('PokerSet', () => {
 			[8,25]]
 		);
 	});
-	it('setting distributionPerColor destructures correctly', () => {
+	it('setting distributionPerColor destructures correctly', function() {
 		let pokerSet = new PokerSet(9001);
 		pokerSet.distributionPerColor = [
 			['white',75],
@@ -79,41 +79,41 @@ describe('PokerSet', () => {
 	});
 });
 
-describe('totalAmountOfChips', () => {
-	it('1 type 666 chips => 666', () => {
+describe('totalAmountOfChips', function() {
+	it('1 type 666 chips => 666', function() {
 		let pokerSet = new PokerSet(666);
 		expect(pokerSet.totalAmountOfChips).to.equal(666);
 	});
-	it('3 types with chips => total of those types', () => {
+	it('3 types with chips => total of those types', function() {
 		let pokerSet = new PokerSet(111,222,333);
 		expect(pokerSet.totalAmountOfChips).to.equal(666);
 	});
-	it('0 types, 0 chips => 0', () => {
+	it('0 types, 0 chips => 0', function() {
 		let pokerSet = new PokerSet();
 		expect(pokerSet.totalAmountOfChips).to.equal(0);
 	});
-	it('1 type, 0 chips => 0', () => {
+	it('1 type, 0 chips => 0', function() {
 		let pokerSet = new PokerSet();
 		pokerSet.distributionPerColor = [['white']];
 		expect(pokerSet.totalAmountOfChips).to.equal(0);
 	});
 });
 
-describe('validate', () => {
-	it('Empty PokerSet is unusable', () => {
+describe('validate', function() {
+	it('Empty PokerSet is unusable', function() {
 		let pokerSet = new PokerSet();
 		expect(pokerSet.validate()).to.equal('Can\'t do anything with an empty pokerset.');
 	});
-	it('PokerSet with just types but no amounts is also unusable', () => {
+	it('PokerSet with just types but no amounts is also unusable', function() {
 		let pokerSet = new PokerSet();
 		pokerSet.distributionPerColor = [['white'],['black']];
 		expect(pokerSet.validate()).to.equal('Can\'t do anything with an empty pokerset.');
 	});
-	it('PokerSet with 1 denomination is fine', () => {
+	it('PokerSet with 1 denomination is fine', function() {
 		let set = new PokerSet(20);
 		expect(set.validate()).to.equal('');
 	});
-	it('PokerSet with 2 denominations with same amount is fine', () => {
+	it('PokerSet with 2 denominations with same amount is fine', function() {
 		let set = new PokerSet(20,20);
 		expect(set.validate()).to.equal('');
 	});

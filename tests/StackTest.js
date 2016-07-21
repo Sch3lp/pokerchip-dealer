@@ -1,16 +1,16 @@
 let expect = require('chai').expect;
 let Stack = require('../app/stack');
 
-describe('Stack', () => {
-	it('denominations returns all the different denominations', () => {
+describe('Stack', function() {
+	it('denominations returns all the different denominations', function() {
 		let stack = new Stack([[1,10],[2,20],[3,45]]);
 		expect(stack.denominations).to.deep.equal([1,2,3]);
 	});
-	it('amounts returns all the different amounts', () => {
+	it('amounts returns all the different amounts', function() {
 		let stack = new Stack([[1,10],[2,20],[3,45]]);
 		expect(stack.amounts).to.deep.equal([10,20,45]);
 	});
-	it('totalValue returns the sum of value-amount pairs', () => {
+	it('totalValue returns the sum of value-amount pairs', function() {
 		let stack = new Stack([
 			[.25,75], //18.75
 			[.50,75], //37.5
