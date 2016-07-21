@@ -14,11 +14,10 @@ class ColorPicker {
 		denoms.unshift(bb, sb);
 		let sortedColors = Array.from(availableColors.sort(byMostAvailableColorDesc));
 		
-		// safe assumption that sortedColors and rest are equal in size
-		// since denoms were determined based on pokerset
-		// and colors come from pokerset as well
-		// on the other hand, colors is most constraining anyways
-		// TODO: refactor this later
+		// So far for safe assumptions (WHERE IS MY PAIR?!)
+		// Since we limit the denoms to 5, it's possible that denoms < colors.
+		// QuickFix: deal with both cases
+		// TODO: refactor this later, or limit to 5 denoms after returning
 		return combine(sortedColors, denoms).sort(byDenominationAsc);
 	}
 }
@@ -30,13 +29,23 @@ function byMostAvailableColorDesc([prevColor, prevAmount], [curColor, curAmount]
 }
 
 function combine(colors, denoms) {
-	return colors.map(([color, amount], idx) => {
-		return {
-			color: color,
-			amount: amount,
-			denomination: denoms[idx]
-		};
-	});
+	if (colors.length <= denoms.length){
+		return colors.map(([color, amount], idx) => {
+			return {
+				color: color,
+				amount: amount,
+				denomination: denoms[idx]
+			};
+		});
+	} else {
+		return denoms.map((denom, idx) => {
+			return {
+				color: colors[idx][0],
+				amount: colors[idx][1],
+				denomination: denom
+			};
+		});
+	}
 }
 
 function byDenominationAsc(stack1, stack2) {

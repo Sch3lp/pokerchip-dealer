@@ -55,20 +55,11 @@ class Dealer {
 		//[[.05,'white',75],[.1,'pink',75],[.25,'green',100],[.5,'brown',100]]
 
 		let denoms = Helper.findIdealDenominations(this.pokerSet.amountOfColors, this.lowestDenom);
-		let slicedDenoms = denoms.slice(0,idealAmountOfDenoms);
-		
-		// find denoms in the pokerset that have the highest amounts and assign to BB and BB+1
-		// find next denom in pokerset and assign to SB
-		// find next denom in pokerset and assign to BB+x
-		// That way we should get which color is 
+		let limitedDenoms = denoms.slice(0,idealAmountOfDenoms);
 
-		let assignedChips = ColorPicker.smartpickColors(slicedDenoms, this.pokerSet);
+		let assignedChips = ColorPicker.smartpickColors(limitedDenoms, this.pokerSet.distributionPerColor);
 
-		let chips = slicedDenoms.map((denom, idx) => [denom,
-												this.pokerSet.distributionPerColor[idx][0],
-		 										this.pokerSet.distributionPerColor[idx][1]
-		 										]);
-		return new Stack(slicedDenoms.map((nom) => [nom]));
+		return new Stack(limitedDenoms.map((nom) => [nom]));
 	}
 
 	validateRequirements() {

@@ -1,9 +1,10 @@
 let expect = require('chai').expect;
 let ColorPicker = require('../app/colorpicker');
 
-describe.only('ColorPicker', function() {
+describe('ColorPicker', function() {
 	describe('smartpickColors', function() {
 		let fiveDenoms = [.05,.1,.25,.5,1];
+		let threeDenoms = [.05,.1,.25];
 		let white100 = [['white',100]];
 		let red100white75 = [['red',100],['white',75]];
 		it('with no denoms => empty array', function() {
@@ -38,7 +39,7 @@ describe.only('ColorPicker', function() {
 				  denomination: .10
 				}]);
 		});
-		it('with 3 available colors, each more than the other => big blind = most available color, small blind = next to most available color', function() {
+		it('with 3 available colors, 5 denoms => 3 assignedChips', function() {
 			let colors = red100white75.concat([['blue',50]]);
 			let stack = ColorPicker.smartpickColors(fiveDenoms, colors);
 			expect(stack).to.deep.equal([
@@ -52,6 +53,23 @@ describe.only('ColorPicker', function() {
 				},
 				{ color: 'blue', 
 				  amount: 50,
+				  denomination: .25
+				}]);
+		});
+		it('with 5 available colors, 3 denoms => 3 assignedChips', function() {
+			let colors = [['white',75],['red',100],['black',25],['blue',50],['green',200]];
+			let stack = ColorPicker.smartpickColors(threeDenoms, colors);
+			expect(stack).to.deep.equal([
+				{ color: 'red', 
+				  amount: 100,
+				  denomination: .05
+				},
+				{ color: 'green', 
+				  amount: 200,
+				  denomination: .10
+				},
+				{ color: 'white', 
+				  amount: 75,
 				  denomination: .25
 				}]);
 		});
