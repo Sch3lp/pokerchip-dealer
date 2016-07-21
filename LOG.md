@@ -1,4 +1,18 @@
 # Captains Log
+## Day 4
+Big blind should have biggest _weight_ ~= proportion of stack
+
+        10 * 0.05 = 0.5   0.22222
+        15 * 0.10 = 1.5   0.33333
+        12 * 0.25 = 3     0.26666
+         6 * 0.5  = 3     0.13333
+         2 * 1    = 2     0.04444
+
+I feel like I've been productive in creating the `ColorPicker`. I also was a little bit proud of a silly refactoring I did, it's way shorter to read now, yet still comprehensible enough.
+
+But where my code was "more logical" before (first add small blind, then big blind, then the rest), and also readable (by extension), now it's more concise but you have to figure out why I first switch around the position of small and big blind denominations and re-order on ascending denominations after the `combine` happened. I don't think it's that hard to understand. Especially since it's concise enough.
+
+That's why I prefer the code the way it is now and why I felt proud afterwards.
 
 ## Day 3
 Since there seem to be so many "rules" that can all have an impact, 
