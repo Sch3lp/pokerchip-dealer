@@ -37,6 +37,7 @@ class ColorPicker {
 			// safe assumption that sortedColors and rest are equal in size
 			// since denoms were determined based on pokerset
 			// and colors come from pokerset as well
+			// on the other hand, colors is most constraining anyways
 			// TODO: refactor this later
 			result = result.concat(combine(sortedColors, rest));
 		}
@@ -52,11 +53,11 @@ function byMostAvailableColor([prevColor, prevAmount], [curColor, curAmount]) {
 }
 
 function combine(colors, denoms) {
-	return denoms.map((denom, idx) => {
+	return colors.map(([color, amount], idx) => {
 		return {
-			color: colors[idx][0],
-			amount: colors[idx][1],
-			denomination: denom
+			color: color,
+			amount: amount,
+			denomination: denoms[idx]
 		};
 	});
 }

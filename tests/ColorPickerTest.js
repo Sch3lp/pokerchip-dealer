@@ -38,6 +38,23 @@ describe.only('ColorPicker', function() {
 				  denomination: .10
 				}]);
 		});
+		it('with 3 available colors, each more than the other => big blind = most available color, small blind = next to most available color', function() {
+			let colors = red100white75.concat([['blue',50]]);
+			let stack = ColorPicker.smartpickColors(fiveDenoms, colors);
+			expect(stack).to.deep.equal([
+				{ color: 'white', 
+				  amount: 75,
+				  denomination: .05
+				},
+				{ color: 'red', 
+				  amount: 100,
+				  denomination: .10
+				},
+				{ color: 'blue', 
+				  amount: 50,
+				  denomination: .25
+				}]);
+		});
 		it('with 5 available colors => big blind is assigned to most available color', function() {
 			let colors = [['white',75],['red',100],['black',25],['blue',50],['green',200]];
 			let stack = ColorPicker.smartpickColors(fiveDenoms, colors);
