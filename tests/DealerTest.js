@@ -10,9 +10,8 @@ describe('Dealer', () => {
 
 	describe('Validation', () => {
 		let validPokerSet = new PokerSet(20,20);
-		let dummyPokerSet = { 
-			validate: function() { return 'pokerset validation'; }
-		};
+		let dummyPokerSet = new PokerSet(); 
+		dummyPokerSet.validate = () => 'pokerset validation';
 		it('requires a PokerSet', () => {
 			let dealer = new Dealer();
 			expect(dealer.deal()).to.equal('I require a PokerSet before dealing.');

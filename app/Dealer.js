@@ -56,7 +56,7 @@ class Dealer {
 		let denoms = Helper.findIdealDenominations(this.pokerSet.amountOfColors, this.lowestDenom);
 		let slicedDenoms = denoms.slice(0,idealAmountOfDenoms);
 
-		let chips = denoms.map((denom, idx) => [denom,
+		let chips = slicedDenoms.map((denom, idx) => [denom,
 												this.pokerSet.distributionPerColor[idx][0],
 		 										this.pokerSet.distributionPerColor[idx][1]
 		 										]);
@@ -64,7 +64,7 @@ class Dealer {
 	}
 
 	validateRequirements() {
-		if (!this.pokerSet) {
+		if (!this.pokerSet || !PokerSet.prototype.isPrototypeOf(this.pokerSet)) {
 			return 'I require a PokerSet before dealing.';
 		}
 		if (this.pokerSet.validate()) {
