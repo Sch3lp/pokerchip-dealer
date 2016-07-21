@@ -9,9 +9,6 @@ class ColorPicker {
 			return [];
 		}
 		let [sb, bb, ...rest] = denominations;
-		// console.log(`sb: ${sb}`);
-		// console.log(`bb: ${bb}`);
-		// console.log(`rest: ${rest}`);
 		if (availableColors.length == 1) {
 			return [{
 				color: availableColors[0][0],
@@ -19,13 +16,12 @@ class ColorPicker {
 				denomination: bb
 			}];
 		}
-		let mostAvailableColor = availableColors
-			.reduce(this.mostAvailableColorFunc,['',0]);
-		let nextToMostAvailableColor = availableColors
-			.filter(([color,amount]) => color != mostAvailableColor[0])
-			.reduce(this.mostAvailableColorFunc,['',0]);
+
+		let sortedColors = Array.from(availableColors.sort(byMostAvailableColor));
+		let mostAvailableColor = sortedColors.shift();
+		let nextToMostAvailableColor = sortedColors.shift();
 		
-		return [
+		let result = [
 			{
 				color: nextToMostAvailableColor[0],
 				amount: nextToMostAvailableColor[1],
@@ -35,17 +31,34 @@ class ColorPicker {
 				color: mostAvailableColor[0],
 				amount: mostAvailableColor[1],
 				denomination: bb
-			}
-		];
-		// return [{ color: 'white', amount: 15, denomination: 0.05 }];
+			}];
+
+		if (sortedColors && sortedColors.length > 0) {
+			// safe assumption that sortedColors and rest are equal in size
+			// since denoms were determined based on pokerset
+			// and colors come from pokerset as well
+			// TODO: refactor this later
+			result = result.concat(combine(sortedColors, rest));
+		}
+		return result;
 	}
 
-	static mostAvailableColorFunc([prevColor, prevAmount], [curColor, curAmount]) {
-		return curAmount > prevAmount 
-			? [curColor, curAmount] 
-			: [prevColor, prevAmount];
-	}
+}
 
+function byMostAvailableColor([prevColor, prevAmount], [curColor, curAmount]) {
+	return curAmount > prevAmount 
+		? curAmount == prevAmount ? 0 : 1
+		: -1;
+}
+
+function combine(colors, denoms) {
+	return denoms.map((denom, idx) => {
+		return {
+			color: colors[idx][0],
+			amount: colors[idx][1],
+			denomination: denom
+		};
+	});
 }
 
 return ColorPicker;

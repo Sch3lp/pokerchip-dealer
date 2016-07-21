@@ -17,6 +17,6 @@
     "mocha": "^2.5.3"
   },
   "scripts": {
-    "test": "mocha --watch --reporter=min ./tests/*Test.js"
+    "test": "mocha --watch --reporter=spec ./tests/*Test.js"
   }
 }
