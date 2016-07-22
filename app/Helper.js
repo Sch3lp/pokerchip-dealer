@@ -18,6 +18,20 @@ class Helper {
 		let multipliers = Helper.getMultipliers(amountOfDenoms) || [];
 		return multipliers.map((multiplier) => lowestDenom * multiplier);
 	}
+
+	static findIdealProportions(assignedChips) {
+		let colors = assignedChips.length;
+		switch(colors){
+			case 1: return [1];
+			case 2: return [.5,.5];
+			case 3: return [.5,.65,.15];
+			case 4: return [.24,.36,.26,.14];
+			case 5: return [.22,.34,.26,.14,.04];
+			case 6: return [.22,.34,.26,.14,.04,.02];
+			case 7: return [.22,.34,.26,.14,.04,.02,.02];
+			case 8: return [.22,.34,.26,.14,.04,.02,.02,.02];
+		}
+	}
 }
 
 return Helper;

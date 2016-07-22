@@ -2,7 +2,7 @@ let expect = require('chai').expect;
 let Helper = require('../app/helper');
 
 describe('Helper', function() {
-	describe('getMultipliers()', function() {
+	describe('getMultipliers', function() {
 		it('Multiplier 0', () =>{
 			expect(Helper.getMultipliers(0)).to.deep.equal([]);
 		});
@@ -32,7 +32,7 @@ describe('Helper', function() {
 		});
 	});
 		
-	describe('findIdealDenominations()', function() {
+	describe('findIdealDenominations', function() {
 		it('lowest denomination is 0, return empty array', function() {
 			expect(Helper.findIdealDenominations(1, 0)).to.deep.equal([]);
 		});
@@ -55,4 +55,30 @@ describe('Helper', function() {
 			expect(Helper.findIdealDenominations(8, .25)).to.deep.equal([0.25, 0.5, 1.25, 2.5, 5, 12.5, 25, 50]);
 		});
 	});
+
+	describe.only('findIdealProportions', function() {
+		it('with 2 colors => 50/50', function() {
+			let assignedChips = [
+				{color:'white',amount:100,denomination:.05},
+				{color:'red',amount:150,denomination:.1}
+			];
+			let proportions = Helper.findIdealProportions(assignedChips);
+			expect(proportions).to.deep.equal([.5,.5]);
+		});
+		it.skip('with 3 colors => 50/65/15', function() {
+			let assignedChips = [
+				{color:'white',amount:100,denomination:.05},
+				{color:'red',amount:150,denomination:.1},
+				{color:'red',amount:100,denomination:.25}
+			];
+			let proportions = Helper.findIdealProportions(assignedChips);
+			expect(proportions).to.deep.equal([.5,.65,.15]);
+		});
+		it.skip('with 4 colors => 24/36/26/14', function() {
+		});
+		it.skip('with 5 colors => 22/34/26/14/4', function() {
+		});
+	});
+
+
 });
