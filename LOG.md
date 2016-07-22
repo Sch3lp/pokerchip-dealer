@@ -1,4 +1,21 @@
 # Captains Log
+## Day 5
+Today I ventured into _Money Conversion Problems_ land.
+
+After I tried to figure out what the ideal proportions of a stack would be based on the number of different colors, I started thinking that there had to be algorithms out there that already have proven solutions to this problem.
+
+A couple of wikipedia links later, if anything, it confirms the hunch I had that these are not particularly easy problems to solve. Luckily there's a lot of documentation about it:
+
+[Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)
+
+[Change-making problem](https://en.wikipedia.org/wiki/Change-making_problem)
+
+[Coin problem](https://en.wikipedia.org/wiki/Coin_problem)
+
+Guess I'll have to do some reading first. :)
+
+I also discovered [Money.js](http://openexchangerates.github.io/money.js/). Maybe this library can help me in some way as well. :pray:
+
 ## Day 4
 Big blind should have biggest _weight_ ~= proportion of stack
 
