@@ -9,26 +9,24 @@ module.exports = (() => {
 class KnapsackSolver {
 
 	static applyValues(assignedChips) {
-		if (assignedChips.length == 1) {
-			return [ {value: 1, wrapped: assignedChips[0]} ];
-		}
-		if (assignedChips.length == 2) {
-			return [ {value: 1, wrapped: assignedChips[0]}, {value: 1, wrapped: assignedChips[1]}];
-		}
-		if (assignedChips.length == 3) {
-			return [ {value: 2, wrapped: assignedChips[0]}, {value: 3, wrapped: assignedChips[1]}, {value: 1, wrapped: assignedChips[2]}];
-		}
+		if (assignedChips.length == 1) return [1];
+		if (assignedChips.length == 2) return [1,1];
+		if (assignedChips.length == 3) return [2, 3, 1];
 		let copy = Array.from(assignedChips);
 		let sb = copy.shift();
 		let bb = copy.shift();
 		let bbplus1 = copy.shift();
 		copy.unshift(bb,bbplus1,sb);
-		return copy.reverse().map((el, idx) => {
+		return copy
+		.reverse()
+		.map((el, idx) => {
 			return {
 				value: idx+1,
-				wrapped: el
+				denomination: el.denomination
 			};
-		}).sort(byDenominationAsc);
+		})//retain denom so I can retain idx position by sorting (fragile I know)
+		.sort(byDenominationAsc)
+		.map(({value}) => value);//just retain value
 	}
 
 	static applyWeights(items, players) {
@@ -42,7 +40,7 @@ class KnapsackSolver {
 }
 
 function byDenominationAsc(values1, values2) {
-	return values1.wrapped.denomination - values2.wrapped.denomination;
+	return values1.denomination - values2.denomination;
 }
 
 /*

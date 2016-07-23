@@ -11,14 +11,14 @@ describe('KnapsackSolver', function() {
 	describe('applyValues', function() {
 		it('with 1 item => value is 1', function() {
 			let items = KnapsackSolver.applyValues(_1chips);
-			let itemValues = toValueColorPairs(items);
+			let itemValues = toValueColorPairs(items,_1chips);
 			expect(itemValues).to.deep.equal([
 				{color:'white',	value:1}
 			]);
 		});
 		it('with 2 items => values are equal', function() {
 			let items = KnapsackSolver.applyValues(_2chips);
-			let itemValues = toValueColorPairs(items);
+			let itemValues = toValueColorPairs(items,_2chips);
 			expect(itemValues).to.deep.equal([
 				{color:'white',	value:1},
 				{color:'red',	value:1}
@@ -26,7 +26,7 @@ describe('KnapsackSolver', function() {
 		});
 		it('with 3 items => second item has highest value, last item lowest', function() {
 			let items = KnapsackSolver.applyValues(_3chips);
-			let itemValues = toValueColorPairs(items);
+			let itemValues = toValueColorPairs(items,_3chips);
 			expect(itemValues).to.deep.equal([
 				{color:'white',	value:2},
 				{color:'red',	value:3},
@@ -35,7 +35,7 @@ describe('KnapsackSolver', function() {
 		});
 		it('with 4 items => second item has highest value, 3rd item second highest, rest descend in values along position in item list', function() {
 			let items = KnapsackSolver.applyValues(_4chips);
-			let itemValues = toValueColorPairs(items);
+			let itemValues = toValueColorPairs(items,_4chips);
 			expect(itemValues).to.deep.equal([
 				{color:'white',	value:2},
 				{color:'red',	value:4},
@@ -45,7 +45,7 @@ describe('KnapsackSolver', function() {
 		});
 		it('with 5 items => same as with 4', function() {
 			let items = KnapsackSolver.applyValues(_5chips);
-			let itemValues = toValueColorPairs(items);
+			let itemValues = toValueColorPairs(items,_5chips);
 			expect(itemValues).to.deep.equal([
 				{color:'white',	value:3},
 				{color:'red',	value:5},
@@ -111,8 +111,8 @@ describe('KnapsackSolver', function() {
 	});
 });
 
-function toValueColorPairs(items){
-	return items.map(({value,wrapped:{color}}) => {return {color,value};});
+function toValueColorPairs(values, chips){
+	return values.map((value, idx) => {return {color:chips[idx].color,value};});
 }
 
 function toWeightColorPairs(items){
