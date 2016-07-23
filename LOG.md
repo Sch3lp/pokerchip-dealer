@@ -1,4 +1,13 @@
 # Captains Log
+## Day 6
+Conversion of assigned chips to knapsack items is done.
+
+Still unsure how to encapsulate _private_ methods `applyValues` and `applyWeights`, but still be able to separately test them.
+
+Current solution is to separately export them, so at least you'd have to explicitly import them.
+
+Also still unsure if I'll require the original chip object literals, which is why I haven't extracted those into a `AssignedChip` class yet.
+
 ## Day 5
 Today I ventured into _Money Conversion Problems_ land.
 
