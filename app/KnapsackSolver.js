@@ -8,20 +8,18 @@ module.exports = (() => {
  */
 class KnapsackSolver {
 
-	// static convertToItems(assignedChips, players) {
-	// 	let values = applyValues(assignedChips);
-	// 	let weights = applyWeights(assignedChips, players);
-	// 	return assignedChips.map((chip, idx) => {
-	// 		return {
-	// 			value: values[idx],
-	// 			weight: weights[idx],
-	// 			chip: chip
-	// 		};
-	// 	});
-	// }
-
+	static convertToItems(assignedChips, players) {
+		let values = applyValues(assignedChips);
+		let weights = applyWeights(assignedChips, players);
+		return assignedChips.map((chip, idx) => {
+			return {
+				value: values[idx],
+				weight: weights[idx],
+				chip: chip
+			};
+		});
+	}
 }
-
 
 function applyValues(assignedChips) {
 	if (assignedChips.length == 1) return [1];

@@ -2,7 +2,7 @@ let expect = require('chai').expect;
 let {KnapsackSolver, applyValues, applyWeights} = require('../app/knapsacksolver');
 
 describe.only('KnapsackSolver', function() {
-	let _1chips = [{color:'white',amount:100,denomination:.05}];
+	let _1chips =                [{color:'white',amount:100,denomination:.05}];
 	let _2chips = _1chips.concat([{color:'red',amount:150,denomination:.1}]);
 	let _3chips = _2chips.concat([{color:'blue',amount:100,denomination:.25}]);
 	let _4chips = _3chips.concat([{color:'green',amount:75,denomination:.5}]);
@@ -106,6 +106,19 @@ describe.only('KnapsackSolver', function() {
 				{color:'blue',		weight: 10	},
 				{color:'green',		weight:  7.5},
 				{color:'black',		weight:  5	}
+			]);
+		});
+	});
+
+	describe('convertToItems', function() {
+		it('converts assigned chips to valued and weighted items for use in knapsack', function() {
+			let items = KnapsackSolver.convertToItems(_5chips, 6);
+			expect(items).to.deep.equal([
+		{value:3,	weight: 16.66,	chip: {color:'white',amount:100,denomination:.05}},
+		{value:5,	weight: 25, 	chip: {color:'red',amount:150,denomination:.1}},
+		{value:4,	weight: 16.66,	chip: {color:'blue',amount:100,denomination:.25}},
+		{value:2,	weight: 12.5,	chip: {color:'green',amount:75,denomination:.5}},
+		{value:1,	weight:  8.33,	chip: {color:'black',amount:50,denomination:1}}
 			]);
 		});
 	});
