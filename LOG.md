@@ -16,6 +16,20 @@ Guess I'll have to do some reading first. :)
 
 I also discovered [Money.js](http://openexchangerates.github.io/money.js/). Maybe this library can help me in some way as well. :pray:
 
+---
+
+Money.js can't help me.
+
+I think I figured out that the problem I'm trying to solve is in fact the [Bounded Knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem#Definition).
+
+The “knapsack” is the ideal Stack.
+
+The items I want to put in are the chips. 
+
+The item value is based on the "ideal proportion". For example an ideal proportion with 4 chip colors might look like 24/36/26/14.
+
+The item weight (constraint) is based on the total amount of chips per color in the pokerset, each divided by the amount of players.
+
 ## Day 4
 Big blind should have biggest _weight_ ~= proportion of stack
 
