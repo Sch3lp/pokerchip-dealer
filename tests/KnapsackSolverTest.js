@@ -56,17 +56,17 @@ describe('KnapsackSolver', function() {
 		});
 	});
 
-	describe('applyWeights', function() {
+	describe.only('applyWeights', function() {
 		it('2 player, 1 item => weights == total amount of chips', function() {
-			let items = KnapsackSolver.applyWeights(_1chips,2);
-			let itemWeights = toWeightColorPairs(items);
+			let weights = KnapsackSolver.applyWeights(_1chips,2);
+			let itemWeights = toWeightColorPairs(weights,_1chips);
 			expect(itemWeights).to.deep.equal([
 				{color:'white', 	weight: 50 }
 			]);
 		});
 		it('1 player => weights == total amount of chips', function() {
-			let items = KnapsackSolver.applyWeights(_5chips,1);
-			let itemWeights = toWeightColorPairs(items);
+			let weights = KnapsackSolver.applyWeights(_5chips,1);
+			let itemWeights = toWeightColorPairs(weights,_5chips);
 			expect(itemWeights).to.deep.equal([
 				{color:'white', 	weight: 100 },
 				{color:'red',		weight: 150	},
@@ -76,8 +76,8 @@ describe('KnapsackSolver', function() {
 			]);
 		});
 		it('3 players => weights == total amount of chips divided by 3', function() {
-			let items = KnapsackSolver.applyWeights(_5chips,3);
-			let itemWeights = toWeightColorPairs(items);
+			let weights = KnapsackSolver.applyWeights(_5chips,3);
+			let itemWeights = toWeightColorPairs(weights,_5chips);
 			expect(itemWeights).to.deep.equal([
 				{color:'white', 	weight:  33.33  },
 				{color:'red',		weight:  50.00	},
@@ -87,8 +87,8 @@ describe('KnapsackSolver', function() {
 			]);
 		});
 		it('6 players => weights == total amount of chips divided by 6', function() {
-			let items = KnapsackSolver.applyWeights(_5chips,6);
-			let itemWeights = toWeightColorPairs(items);
+			let weights = KnapsackSolver.applyWeights(_5chips,6);
+			let itemWeights = toWeightColorPairs(weights,_5chips);
 			expect(itemWeights).to.deep.equal([
 				{color:'white', 	weight: 16.66   },
 				{color:'red',		weight: 25	    },
@@ -98,8 +98,8 @@ describe('KnapsackSolver', function() {
 			]);
 		});
 		it('10 players => weights == total amount of chips divided by 10', function() {
-			let items = KnapsackSolver.applyWeights(_5chips,10);
-			let itemWeights = toWeightColorPairs(items);
+			let weights = KnapsackSolver.applyWeights(_5chips,10);
+			let itemWeights = toWeightColorPairs(weights,_5chips);
 			expect(itemWeights).to.deep.equal([
 				{color:'white', 	weight: 10  },
 				{color:'red',		weight: 15  },
@@ -115,6 +115,6 @@ function toValueColorPairs(values, chips){
 	return values.map((value, idx) => {return {color:chips[idx].color,value};});
 }
 
-function toWeightColorPairs(items){
-	return items.map(({weight,wrapped:{color}}) => {return {color,weight};});
+function toWeightColorPairs(weights, chips){
+	return weights.map((weight, idx) => {return {color:chips[idx].color,weight};});
 }

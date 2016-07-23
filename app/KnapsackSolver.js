@@ -30,12 +30,7 @@ class KnapsackSolver {
 	}
 
 	static applyWeights(items, players) {
-		return items.map((el) => {
-			return {
-				weight: floor(el.amount / players, 2),
-				wrapped: el
-			};
-		});
+		return items.map((el) => floor(el.amount / players, 2));
 	}
 }
 
