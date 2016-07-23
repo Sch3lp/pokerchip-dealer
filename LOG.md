@@ -30,6 +30,8 @@ The item value is based on the "ideal proportion". For example an ideal proporti
 
 The item weight (constraint) is based on the total amount of chips per color in the pokerset, each divided by the amount of players.
 
+The extra constraint is that the total value of chips in the stack can't exceed the buy-in. I hope using the knapsack solution and then rearranging a little bit to adhere to the last constraint will be achievable (and comprehensible in code).
+
 ## Day 4
 Big blind should have biggest _weight_ ~= proportion of stack
 
