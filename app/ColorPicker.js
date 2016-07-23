@@ -48,8 +48,8 @@ function combine(colors, denoms) {
 	}
 }
 
-function byDenominationAsc(stack1, stack2) {
-	return stack1.denomination - stack2.denomination;
+function byDenominationAsc(assignedChips1, assignedChips2) {
+	return assignedChips1.denomination - assignedChips2.denomination;
 }
 
 return ColorPicker;
