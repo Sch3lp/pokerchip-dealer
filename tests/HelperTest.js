@@ -56,29 +56,4 @@ describe('Helper', function() {
 		});
 	});
 
-	describe.only('findIdealProportions', function() {
-		it('with 2 colors => 50/50', function() {
-			let assignedChips = [
-				{color:'white',amount:100,denomination:.05},
-				{color:'red',amount:150,denomination:.1}
-			];
-			let proportions = Helper.findIdealProportions(assignedChips);
-			expect(proportions).to.deep.equal([.5,.5]);
-		});
-		it.skip('with 3 colors => 50/65/15', function() {
-			let assignedChips = [
-				{color:'white',amount:100,denomination:.05},
-				{color:'red',amount:150,denomination:.1},
-				{color:'red',amount:100,denomination:.25}
-			];
-			let proportions = Helper.findIdealProportions(assignedChips);
-			expect(proportions).to.deep.equal([.5,.65,.15]);
-		});
-		it.skip('with 4 colors => 24/36/26/14', function() {
-		});
-		it.skip('with 5 colors => 22/34/26/14/4', function() {
-		});
-	});
-
-
 });
