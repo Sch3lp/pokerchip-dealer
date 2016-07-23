@@ -31,14 +31,30 @@ class KnapsackSolver {
 		}).sort(byDenominationAsc);
 	}
 
-	static applyWeights(items) {
-		return [];
+	static applyWeights(items, players) {
+		return items.map((el) => {
+			return {
+				weight: floor(el.amount / players, 2),
+				wrapped: el
+			};
+		});
 	}
 }
 
 function byDenominationAsc(values1, values2) {
 	return values1.wrapped.denomination - values2.wrapped.denomination;
 }
+
+/*
+ * Thanks MDN ♥︎
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round#Example:_Decimal_rounding
+ */
+function floor(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.floor(tempNumber);
+    return roundedTempNumber / factor;
+};
 
 return KnapsackSolver;
 
