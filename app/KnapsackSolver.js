@@ -30,6 +30,10 @@ class KnapsackSolver {
 			};
 		}).sort(byDenominationAsc);
 	}
+
+	static applyWeights(items) {
+		return [];
+	}
 }
 
 function byDenominationAsc(values1, values2) {
