@@ -110,9 +110,9 @@ describe.only('KnapsackSolver', function() {
 		});
 	});
 
-	describe('convertToItems', function() {
+	describe('constructor', function() {
 		it('converts assigned chips to valued and weighted items for use in knapsack', function() {
-			let items = KnapsackSolver.convertToItems(_5chips, 6);
+			let items = new KnapsackSolver(_5chips, 6).items;
 			expect(items).to.deep.equal([
 		{value:3,	weight: 16.66,	chip: {color:'white',amount:100,denomination:.05}},
 		{value:5,	weight: 25, 	chip: {color:'red',amount:150,denomination:.1}},
