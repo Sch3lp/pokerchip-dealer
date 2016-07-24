@@ -58,7 +58,8 @@ function applyWeights(items, players) {
 	    var roundedTempNumber = Math.floor(tempNumber);
 	    return roundedTempNumber / factor;
 	};
-	return items.map((el) => floor(el.amount / players, 2));
+	let totalAmount = items.reduce((prev,{amount}) => prev + amount, 0);
+	return items.map((el) => totalAmount - floor(el.amount / players, 2));
 }
 
 return {KnapsackSolver, applyValues, applyWeights};
