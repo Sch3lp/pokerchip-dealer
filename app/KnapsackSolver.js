@@ -8,15 +8,19 @@ module.exports = (() => {
  */
 class KnapsackSolver {
 
-	constructor(assignedChips, players){
+	constructor(assignedChips, players) {
 		this.items = convertToItems(assignedChips, players);
 	}
 
+	solve(knapsackSize) {
+		//size == buyin
+
+	}
 }
 
 function convertToItems(assignedChips, players) {
-	let values = applyValues(assignedChips);
-	let weights = applyWeights(assignedChips, players);
+	let weights = applyWeights(assignedChips);
+	let values = applyValues(assignedChips, players);
 	return assignedChips.map((chip, idx) => {
 		return {
 			value: values[idx],
@@ -26,7 +30,7 @@ function convertToItems(assignedChips, players) {
 	});
 }
 
-function applyValues(assignedChips) {
+function applyWeights(assignedChips) {
 	if (assignedChips.length == 1) return [1];
 	if (assignedChips.length == 2) return [1,1];
 	if (assignedChips.length == 3) return [2, 3, 1];
@@ -36,18 +40,18 @@ function applyValues(assignedChips) {
 	let bbplus1 = copy.shift();
 	copy.unshift(bb,bbplus1,sb);
 	return copy
-	.reverse()
-	.map((el, idx) => {
-		return {
-			value: idx+1,
-			denomination: el.denomination
-		};
-	})//retain denom so I can retain idx position by sorting (fragile I know)
-	.sort((values1, values2) => values1.denomination - values2.denomination)
-	.map(({value}) => value);//just retain value
+		.reverse()
+		.map((el, idx) => {
+			return {
+				weight: idx+1,
+				denomination: el.denomination
+			};
+		})//retain denom so I can retain idx position by sorting (fragile I know)
+		.sort((weights1, weights2) => weights1.denomination - weights2.denomination)
+		.map(({weight}) => weight);//just retain weight
 }
 
-function applyWeights(items, players) {
+function applyValues(items, players) {
 	/*
 	 * Thanks MDN ♥︎
 	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round#Example:_Decimal_rounding
