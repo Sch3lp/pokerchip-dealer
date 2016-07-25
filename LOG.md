@@ -1,4 +1,11 @@
 # Captains Log
+## Day 8
+My idea that weight == amount of chips divided by players is incorrect.
+
+The reason is that it's not the weight of the entire stack that's constraining, but it's the weight of one chip stack (a stack of chips of 1 color). And this is indeed equal to the amount of chips divided by players.
+
+The thing that's constraining the total stack is the buyin. So if anything, it's the denomination that equals weight.
+
 ## Day 7
 Had to revisit the applyWeights function. It didn't make sense that the chip colors I had the most amounts of had the biggest weight. It should be the other way around.
 
