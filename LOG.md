@@ -1,4 +1,7 @@
 # Captains Log
+## Day 7
+Had to revisit the applyWeights function. It didn't make sense that the chip colors I had the most amounts of had the biggest weight. It should be the other way around.
+
 ## Day 6
 Conversion of assigned chips to knapsack items is done.
 
