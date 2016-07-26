@@ -23,7 +23,7 @@ class KnapsackSolver {
 		// TODO minimum of 1 in each denomination?
 		let greedyItems = greedy(copiedItems, this.players, buyin);
 		
-		let greedyStackWorth = getStackWorth(greedyItems);
+		let greedyStackWorth = itemsStackWorth(greedyItems);
 		
 		if (greedyStackWorth == buyin) {
 			resultItems = greedyItems;
@@ -57,20 +57,25 @@ function greedy(items, players, buyin) {
 	return items.sort(itemByDenomAsc);
 }
 
-function correctBySubtraction(items, buyin) {
-	let stackWorth = getStackWorth(items);
+function correctBySubtraction(items, buyin) { 
+	// I'd want to just pass in the difference instead of the buyin, 
+	// but I don't think I'd like the way my tests end up looking like
+	let toCorrect = itemsStackWorth(items) - buyin;
 	let sortedItems = items.sort(byValueAsc);
 
 	for (let item of sortedItems) {
 		let currentValue = item.chip.denomination;
-		
+		if (currentValue <= toCorrect) {
+			toCorrect -= currentValue;
+			item.chip.amount--;
+		}
 	}
 
 	return items.sort(itemByDenomAsc);
 }
 
 function correctByAddition(items, buyin){
-	return items;
+	return items.sort(itemByDenomAsc);
 }
 
 function convertToItems(assignedChips, players) {
@@ -112,8 +117,8 @@ function applyWeights(items, players) {
 	return items.map((el) => totalAmount - _.floor(el.amount / players, 2));
 }
 
-function getStackWorth(stack) {
-	return stack.reduce((prev, {color,amount,denomination}) => prev + (amount*denomination), 0);
+function itemsStackWorth(stack) {
+	return stack.reduce((prev, {v,w,chip:{color,amount,denomination}}) => prev + (amount*denomination), 0);
 }
 function itemByDenomAsc({v1,w1,chip:one}, {v2,w2,chip:two}){ return one.denomination - two.denomination; }
 function byDenomAsc(one, two){ return one.denomination - two.denomination; }
