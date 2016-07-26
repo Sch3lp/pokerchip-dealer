@@ -18,25 +18,30 @@ class KnapsackSolver {
 	solve(buyin) {
 		let copiedItems = _.cloneDeep(this.items);
 		let selectedItems = [];
-		let totalWorth = 0;
+		let stackWorth = 0;
 
 		// TODO check if sum of all amounts, divided by players, is already lower than the buyin
-		copiedItems
-			.sort(byValueDesc)
-			.forEach((item) => {
-				let maxChipCount = Math.floor(item.chip.amount / this.players);
-				let currentChipCount = 0;
-				while (item.chip.amount > 0 
-					&& maxChipCount > currentChipCount 
-					&& buyin > totalWorth) {
-					currentChipCount++;
-					item.chip.amount--;
-					totalWorth += item.chip.denomination;
-				};
-			});
-		return copiedItems
+		let sortedItems = copiedItems.sort(byValueDesc);
+		for (let item of sortedItems) {
+			let maxChipCount = _.floor(item.chip.amount / this.players);
+			let currentChipCount = 0;
+			while (item.chip.amount > 0 
+				&& currentChipCount < maxChipCount
+				&& stackWorth < buyin) {
+				currentChipCount++;
+				item.chip.amount--;
+				stackWorth += item.chip.denomination;
+			};
+			item.chip.amount = currentChipCount;
+		};
+		let result= copiedItems
 			.map(({value,weight,chip}) => chip)
 			.sort(byDenomAsc);
+		stackWorth = result.reduce((prev, {c,a,d}) => prev + (a*d));
+		if (stackWorth > buyin) { //apply correction
+
+		}
+		return result;
 	}
 }
 

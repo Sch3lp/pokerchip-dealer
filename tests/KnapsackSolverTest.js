@@ -2,11 +2,11 @@ let expect = require('chai').expect;
 let {KnapsackSolver, applyValues, applyWeights} = require('../app/knapsacksolver');
 
 describe('KnapsackSolver', function() {
-	let _1chips =                [{color:'white',amount:100,denomination:.05}];
-	let _2chips = _1chips.concat([{color:'red',amount:150,denomination:.1}]);
-	let _3chips = _2chips.concat([{color:'blue',amount:100,denomination:.25}]);
-	let _4chips = _3chips.concat([{color:'green',amount:75,denomination:.5}]);
-	let _5chips = _4chips.concat([{color:'black',amount:50,denomination:1}]);
+	let _1chips =                [{color:'white',	amount:100,	denomination:0.05}];
+	let _2chips = _1chips.concat([{color:'red',		amount:150,	denomination:0.1}]);
+	let _3chips = _2chips.concat([{color:'blue',	amount:100,	denomination:0.25}]);
+	let _4chips = _3chips.concat([{color:'green',	amount:75,	denomination:0.5}]);
+	let _5chips = _4chips.concat([{color:'black',	amount:50,	denomination:1}]);
 	
 	describe('applyValues', function() {
 		it('with 1 item => value is 1', function() {
@@ -136,11 +136,17 @@ describe('KnapsackSolver', function() {
 				{color:'black'	,amount:2	,denomination: 1	}
 			]);
 		});
+		it.skip('total worth of available chips is lower than buyin', function() {
+			let buyin = 10;
+			let solver = new KnapsackSolver(_3chips, 6);
+			let stack = solver.solve(buyin);
+			
+		});
 		it('Stackworth == buyin', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(_5chips, 6);
 			let stack = solver.solve(buyin);
-			let stackWorth = stack.reduce((prev, {color,amount,denomination}) => (amount * denomination) + prev,0);
+			let stackWorth = stack.reduce((prev, {color,amount,denomination}) => prev + (amount * denomination),0);
 			expect(stackWorth).to.equal(buyin);
 		});
 	});
