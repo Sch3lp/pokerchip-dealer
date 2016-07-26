@@ -1,6 +1,7 @@
 /* jshint undef: true, unused: false, esnext: true, strict:false */
 /* globals module */
 module.exports = (() => {
+let _ = require('lodash');
 
 class ColorPicker {
 
