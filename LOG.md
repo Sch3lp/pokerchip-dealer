@@ -1,4 +1,9 @@
 # Captains Log
+## Day 9
+Some derping around with `Array.from()` copying objects by reference where I expected them to be copied by value.
+
+(Re-)Discovered `lodash`'s `_.deepCopy()`.
+
 ## Day 8
 My idea that weight == amount of chips divided by players is incorrect.
 
