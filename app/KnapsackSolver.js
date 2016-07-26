@@ -16,18 +16,36 @@ class KnapsackSolver {
 	}
 
 	solve(buyin) {
+		let resultItems = [];
 		let copiedItems = _.cloneDeep(this.items);
 
 		// TODO check if sum of all amounts, divided by players, is already lower than the buyin
 		// TODO minimum of 1 in each denomination?
-		let result = greedy(copiedItems, this.players, buyin);
+		let greedyItems = greedy(copiedItems, this.players, buyin);
 		
-		let greedyStackWorth = result.reduce((prev, {color,amount,denomination}) => prev + (amount*denomination), 0);
-		if (greedyStackWorth > buyin) { //apply correction
-
+		let greedyStackWorth = greedyItems.reduce((prev, {color,amount,denomination}) => prev + (amount*denomination), 0);
+		
+		if (greedyStackWorth == buyin) {
+			resultItems = greedyItems;
 		}
-		return result;
+		if (greedyStackWorth > buyin) {
+			resultItems = correctBySubtraction(greedyItems, buyin);
+		}
+		if (greedyStackWorth < buyin) {
+			resultItems = correctByAddition(greedyItems, buyin);
+		}
+		return resultItems
+				.map(({value,weight,chip}) => chip)
+				.sort(byDenomAsc);
 	}
+}
+
+function correctBySubtraction(result, buyin){
+	return result;
+}
+
+function correctByAddition(result, buyin){
+	return result;
 }
 
 function greedy(copiedItems, players, buyin) {
@@ -44,10 +62,7 @@ function greedy(copiedItems, players, buyin) {
 		}
 		item.chip.amount = currentChipCount;
 	}
-	let result = copiedItems
-		.map(({value,weight,chip}) => chip)
-		.sort(byDenomAsc);
-	return result;
+	return copiedItems;
 }
 
 function convertToItems(assignedChips, players) {
@@ -97,6 +112,6 @@ function byValueAmountRatioDesc(one, two) {
 	return ratio2 - ratio1;
 }
 
-return {KnapsackSolver, applyValues, applyWeights};
+return {KnapsackSolver, applyValues, applyWeights, correctBySubtraction};
 
 })();
