@@ -23,7 +23,7 @@ class KnapsackSolver {
 		// TODO minimum of 1 in each denomination?
 		let greedyItems = greedy(copiedItems, this.players, buyin);
 		
-		let greedyStackWorth = greedyItems.reduce((prev, {color,amount,denomination}) => prev + (amount*denomination), 0);
+		let greedyStackWorth = getStackWorth(greedyItems);
 		
 		if (greedyStackWorth == buyin) {
 			resultItems = greedyItems;
@@ -40,17 +40,9 @@ class KnapsackSolver {
 	}
 }
 
-function correctBySubtraction(result, buyin){
-	return result;
-}
-
-function correctByAddition(result, buyin){
-	return result;
-}
-
-function greedy(copiedItems, players, buyin) {
+function greedy(items, players, buyin) {
 	let stackWorth = 0;
-	let sortedItems = copiedItems.sort(byValueDesc);
+	let sortedItems = items.sort(byValueDesc);
 
 	for (let item of sortedItems) {
 		let maxChipCount = _.floor(item.chip.amount / players);
@@ -62,7 +54,23 @@ function greedy(copiedItems, players, buyin) {
 		}
 		item.chip.amount = currentChipCount;
 	}
-	return copiedItems;
+	return items.sort(itemByDenomAsc);
+}
+
+function correctBySubtraction(items, buyin) {
+	let stackWorth = getStackWorth(items);
+	let sortedItems = items.sort(byValueAsc);
+
+	for (let item of sortedItems) {
+		let currentValue = item.chip.denomination;
+		
+	}
+
+	return items.sort(itemByDenomAsc);
+}
+
+function correctByAddition(items, buyin){
+	return items;
 }
 
 function convertToItems(assignedChips, players) {
@@ -104,8 +112,13 @@ function applyWeights(items, players) {
 	return items.map((el) => totalAmount - _.floor(el.amount / players, 2));
 }
 
+function getStackWorth(stack) {
+	return stack.reduce((prev, {color,amount,denomination}) => prev + (amount*denomination), 0);
+}
+function itemByDenomAsc({v1,w1,chip:one}, {v2,w2,chip:two}){ return one.denomination - two.denomination; }
 function byDenomAsc(one, two){ return one.denomination - two.denomination; }
 function byValueDesc(one, two) { return two.value - one.value;}
+function byValueAsc(one, two)  { return one.value - two.value;}
 function byValueAmountRatioDesc(one, two) {
 	let ratio1 = one.value / one.chip.amount;
 	let ratio2 = two.value / two.chip.amount;

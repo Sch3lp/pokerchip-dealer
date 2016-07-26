@@ -136,8 +136,100 @@ describe('KnapsackSolver', function() {
 	});
 
 	describe.only('correctBySubtraction', function() {
-		it('exactly one denomination overGreedy, removes 1 chip of that denomination', function() {
-
+		it('exactly one highest denomination overGreedy, removes 1 chip of that denomination', function() {
+			let overGreedy = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:3,denomination: 1}}
+			];
+			let expectedCorrected = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
+			];
+			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11);
+			let correctedStack = correctBySubtraction(overGreedy,10);
+			expect(correctedStack).to.deep.equal(expectedCorrected);
+		});
+		it('exactly one lowest denomination overGreedy, removes 1 chip of that denomination', function() {
+			let overGreedy = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:16,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
+			];
+			let expectedCorrected = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
+			];
+			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(10.05);
+			let correctedStack = correctBySubtraction(overGreedy,10);
+			expect(correctedStack).to.deep.equal(expectedCorrected);
+		});
+		it('exactly two lowest and heighest valued denominations overGreedy, removes both chips', function() {
+			let overGreedy = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:16,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:3,denomination: 1}}
+			];
+			let expectedCorrected = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
+			];
+			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11.1);
+			let correctedStack = correctBySubtraction(overGreedy,10);
+			expect(correctedStack).to.deep.equal(expectedCorrected);
+		});
+		it('exactly two lowest and second to heighest valued denominations overGreedy, removes both chips', function() {
+			let overGreedy = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:8,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:3,denomination: 1}}
+			];
+			let expectedCorrected = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
+			];
+			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11.25);
+			let correctedStack = correctBySubtraction(overGreedy,10);
+			expect(correctedStack).to.deep.equal(expectedCorrected);
+		});
+		it('exactly two denominations overGreedy, one small blind, one heighest denomination, removes both chips', function() {
+			let overGreedy = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:16,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:3,denomination: 1}}
+			];
+			let expectedCorrected = [
+					{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
+					{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
+					{value:4, weight: 458.34, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
+					{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
+					{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
+			];
+			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11.05);
+			let correctedStack = correctBySubtraction(overGreedy,10);
+			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
 		it('more than one denomination overGreedy, removes chips with lowest value first', function() {
 			let overGreedy = [
