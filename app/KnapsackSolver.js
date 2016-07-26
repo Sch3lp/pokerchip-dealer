@@ -9,9 +9,33 @@ module.exports = (() => {
 class KnapsackSolver {
 
 	constructor(assignedChips, players){
+		this.players = players;
 		this.items = convertToItems(assignedChips, players);
 	}
 
+	solve(buyin) {
+		let copiedItems = Array.from(this.items);
+		let selectedItems = [];
+		let totalWorth = 0;
+
+		// TODO check if sum of all amounts, divided by players, is already lower than the buyin
+		copiedItems
+			.sort(byValueDesc)
+			.forEach((item) => {
+				let maxChipCount = Math.floor(item.chip.amount / this.players);
+				let currentChipCount = 0;
+				while (item.chip.amount > 0 && maxChipCount > currentChipCount && buyin > totalWorth) {
+					currentChipCount++;
+					item.chip.amount--;
+					totalWorth += item.chip.denomination;
+				};
+			});
+		console.log(`copiedItems after forEach`);
+		copiedItems.forEach((item) => console.log(item));
+		return copiedItems
+			.map(({value,weight,chip}) => chip)
+			.sort(byDenomAsc);
+	}
 }
 
 function convertToItems(assignedChips, players) {
@@ -29,7 +53,7 @@ function convertToItems(assignedChips, players) {
 function applyValues(assignedChips) {
 	if (assignedChips.length == 1) return [1];
 	if (assignedChips.length == 2) return [1,1];
-	if (assignedChips.length == 3) return [2, 3, 1];
+	if (assignedChips.length == 3) return [2,3,1];
 	let copy = Array.from(assignedChips);
 	let sb = copy.shift();
 	let bb = copy.shift();
@@ -43,7 +67,7 @@ function applyValues(assignedChips) {
 			denomination: el.denomination
 		};
 	})//retain denom so I can retain idx position by sorting (fragile I know)
-	.sort((values1, values2) => values1.denomination - values2.denomination)
+	.sort(byDenomAsc)
 	.map(({value}) => value);//just retain value
 }
 
@@ -61,6 +85,9 @@ function applyWeights(items, players) {
 	let totalAmount = items.reduce((prev,{amount}) => prev + amount, 0);
 	return items.map((el) => totalAmount - floor(el.amount / players, 2));
 }
+
+function byDenomAsc(one, two){ return one.denomination - two.denomination; }
+function byValueDesc(one, two){ return two.value - one.value; }
 
 return {KnapsackSolver, applyValues, applyWeights};
 

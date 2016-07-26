@@ -122,6 +122,28 @@ describe.only('KnapsackSolver', function() {
 			]);
 		});
 	});
+
+	describe('solve', function() {
+		it('buyin 10, 6 players', function() {
+			let buyin = 10;
+			let solver = new KnapsackSolver(_5chips, 6);
+			let stack = solver.solve(buyin);
+			expect(stack).to.deep.equal([
+				{color:'white'	,amount:10	,denomination: 0.05	},
+				{color:'red'	,amount:15	,denomination: 0.1	},
+				{color:'blue'	,amount:12	,denomination: 0.25	},
+				{color:'green'	,amount:6	,denomination: 0.5	},
+				{color:'black'	,amount:2	,denomination: 1	}
+			]);
+		});
+		it('Stackworth == buyin', function() {
+			let buyin = 10;
+			let solver = new KnapsackSolver(_5chips, 6);
+			let stack = solver.solve(buyin);
+			let stackWorth = stack.reduce((prev, {color,amount,denomination}) => (amount * denomination) + prev,0);
+			expect(stackWorth).to.equal(buyin);
+		});
+	});
 });
 
 function toValueColorPairs(values, chips){
