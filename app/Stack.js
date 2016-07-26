@@ -8,7 +8,7 @@ class Stack {
 	}
 
 	get denominations() {
-		return this.distribution.map(([d,_]) => d);
+		return this.distribution.map(([d,a]) => d);
 	}
 
 	get smallBlindDenomination() {
@@ -20,7 +20,7 @@ class Stack {
 	}
 
 	get amounts() {
-		return this.distribution.map(([_,a]) => a);
+		return this.distribution.map(([d,a]) => a);
 	}
 
 	get totalChips() {

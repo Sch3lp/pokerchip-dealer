@@ -1,11 +1,11 @@
 /* jshint undef: true, unused: false, esnext: true, strict:false */
 /* globals module */
+module.exports = (() => {
+
 let Helper = require('./helper');
 let Stack = require('./stack');
 let PokerSet = require('./pokerset');
 let ColorPicker = require('./colorpicker');
-
-module.exports = (() => {
 
 const idealAmountOfDenoms = 5;
 

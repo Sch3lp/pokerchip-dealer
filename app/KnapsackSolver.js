@@ -1,6 +1,8 @@
 /* jshint undef: true, unused: false, esnext: true, strict:false */
 /* globals module */
 module.exports = (() => {
+
+let _ = require('lodash');
 	
 /* 
  * See LOG.md#Day5
@@ -14,7 +16,7 @@ class KnapsackSolver {
 	}
 
 	solve(buyin) {
-		let copiedItems = Array.from(this.items);
+		let copiedItems = _.cloneDeep(this.items);
 		let selectedItems = [];
 		let totalWorth = 0;
 
@@ -24,14 +26,14 @@ class KnapsackSolver {
 			.forEach((item) => {
 				let maxChipCount = Math.floor(item.chip.amount / this.players);
 				let currentChipCount = 0;
-				while (item.chip.amount > 0 && maxChipCount > currentChipCount && buyin > totalWorth) {
+				while (item.chip.amount > 0 
+					&& maxChipCount > currentChipCount 
+					&& buyin > totalWorth) {
 					currentChipCount++;
 					item.chip.amount--;
 					totalWorth += item.chip.denomination;
 				};
 			});
-		console.log(`copiedItems after forEach`);
-		copiedItems.forEach((item) => console.log(item));
 		return copiedItems
 			.map(({value,weight,chip}) => chip)
 			.sort(byDenomAsc);
@@ -54,7 +56,7 @@ function applyValues(assignedChips) {
 	if (assignedChips.length == 1) return [1];
 	if (assignedChips.length == 2) return [1,1];
 	if (assignedChips.length == 3) return [2,3,1];
-	let copy = Array.from(assignedChips);
+	let copy = _.cloneDeep(assignedChips);
 	let sb = copy.shift();
 	let bb = copy.shift();
 	let bbplus1 = copy.shift();
@@ -72,18 +74,8 @@ function applyValues(assignedChips) {
 }
 
 function applyWeights(items, players) {
-	/*
-	 * Thanks MDN ♥︎
-	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round#Example:_Decimal_rounding
-	 */
-	function floor(number, precision) {
-	    var factor = Math.pow(10, precision);
-	    var tempNumber = number * factor;
-	    var roundedTempNumber = Math.floor(tempNumber);
-	    return roundedTempNumber / factor;
-	};
 	let totalAmount = items.reduce((prev,{amount}) => prev + amount, 0);
-	return items.map((el) => totalAmount - floor(el.amount / players, 2));
+	return items.map((el) => totalAmount - _.floor(el.amount / players, 2));
 }
 
 function byDenomAsc(one, two){ return one.denomination - two.denomination; }

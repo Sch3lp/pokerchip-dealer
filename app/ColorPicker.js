@@ -8,11 +8,11 @@ class ColorPicker {
 		if (!denominations || denominations.length == 0 || !availableColors || availableColors.length ==0) {
 			return [];
 		}
-		let denoms = Array.from(denominations);
+		let denoms = _.cloneDeep(denominations);
 		let sb = denoms.shift();
 		let bb = denoms.shift();
 		denoms.unshift(bb, sb);
-		let sortedColors = Array.from(availableColors.sort(byMostAvailableColorDesc));
+		let sortedColors = _.cloneDeep(availableColors.sort(byMostAvailableColorDesc));
 		
 		// So far for safe assumptions (WHERE IS MY PAIR?!)
 		// Since we limit the denoms to 5, it's possible that denoms < colors.

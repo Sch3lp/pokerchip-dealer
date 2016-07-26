@@ -1,7 +1,7 @@
 let expect = require('chai').expect;
 let {KnapsackSolver, applyValues, applyWeights} = require('../app/knapsacksolver');
 
-describe.only('KnapsackSolver', function() {
+describe('KnapsackSolver', function() {
 	let _1chips =                [{color:'white',amount:100,denomination:.05}];
 	let _2chips = _1chips.concat([{color:'red',amount:150,denomination:.1}]);
 	let _3chips = _2chips.concat([{color:'blue',amount:100,denomination:.25}]);
@@ -123,7 +123,7 @@ describe.only('KnapsackSolver', function() {
 		});
 	});
 
-	describe('solve', function() {
+	describe.only('solve', function() {
 		it('buyin 10, 6 players', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(_5chips, 6);
