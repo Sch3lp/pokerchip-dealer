@@ -1,5 +1,5 @@
-/* jshint undef: true, unused: false, esnext: true, strict:false */
-/* globals module */
+/* jshint undef: true, unused: false, esnext: true, strict:false, laxbreak:true */
+/* globals module, require */
 module.exports = (() => {
 
 let _ = require('lodash');
@@ -17,32 +17,37 @@ class KnapsackSolver {
 
 	solve(buyin) {
 		let copiedItems = _.cloneDeep(this.items);
-		let selectedItems = [];
-		let stackWorth = 0;
 
 		// TODO check if sum of all amounts, divided by players, is already lower than the buyin
-		let sortedItems = copiedItems.sort(byValueDesc);
-		for (let item of sortedItems) {
-			let maxChipCount = _.floor(item.chip.amount / this.players);
-			let currentChipCount = 0;
-			while (item.chip.amount > 0 
-				&& currentChipCount < maxChipCount
-				&& stackWorth < buyin) {
-				currentChipCount++;
-				item.chip.amount--;
-				stackWorth += item.chip.denomination;
-			};
-			item.chip.amount = currentChipCount;
-		};
-		let result= copiedItems
-			.map(({value,weight,chip}) => chip)
-			.sort(byDenomAsc);
-		stackWorth = result.reduce((prev, {c,a,d}) => prev + (a*d));
-		if (stackWorth > buyin) { //apply correction
+		// TODO minimum of 1 in each denomination?
+		let result = greedy(copiedItems, this.players, buyin);
+		
+		let greedyStackWorth = result.reduce((prev, {color,amount,denomination}) => prev + (amount*denomination), 0);
+		if (greedyStackWorth > buyin) { //apply correction
 
 		}
 		return result;
 	}
+}
+
+function greedy(copiedItems, players, buyin) {
+	let stackWorth = 0;
+	let sortedItems = copiedItems.sort(byValueDesc);
+
+	for (let item of sortedItems) {
+		let maxChipCount = _.floor(item.chip.amount / players);
+		let currentChipCount = 0;
+		while (item.chip.amount > 0 && currentChipCount < maxChipCount && stackWorth < buyin) {
+			currentChipCount++;
+			item.chip.amount--;
+			stackWorth += item.chip.denomination;
+		}
+		item.chip.amount = currentChipCount;
+	}
+	let result = copiedItems
+		.map(({value,weight,chip}) => chip)
+		.sort(byDenomAsc);
+	return result;
 }
 
 function convertToItems(assignedChips, players) {
@@ -61,6 +66,7 @@ function applyValues(assignedChips) {
 	if (assignedChips.length == 1) return [1];
 	if (assignedChips.length == 2) return [1,1];
 	if (assignedChips.length == 3) return [2,3,1];
+	// if (assignedChips.length == 5) return [4,5,3,2,1];
 	let copy = _.cloneDeep(assignedChips);
 	let sb = copy.shift();
 	let bb = copy.shift();
@@ -84,7 +90,12 @@ function applyWeights(items, players) {
 }
 
 function byDenomAsc(one, two){ return one.denomination - two.denomination; }
-function byValueDesc(one, two){ return two.value - one.value; }
+function byValueDesc(one, two) { return two.value - one.value;}
+function byValueAmountRatioDesc(one, two) {
+	let ratio1 = one.value / one.chip.amount;
+	let ratio2 = two.value / two.chip.amount;
+	return ratio2 - ratio1;
+}
 
 return {KnapsackSolver, applyValues, applyWeights};
 

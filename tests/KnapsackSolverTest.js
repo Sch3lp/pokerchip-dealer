@@ -1,3 +1,5 @@
+/* jshint undef: true, unused: false, esnext: true, strict:false, laxbreak:true */
+/* globals require, describe, it, console */
 let expect = require('chai').expect;
 let {KnapsackSolver, applyValues, applyWeights} = require('../app/knapsacksolver');
 
@@ -7,7 +9,14 @@ describe('KnapsackSolver', function() {
 	let _3chips = _2chips.concat([{color:'blue',	amount:100,	denomination:0.25}]);
 	let _4chips = _3chips.concat([{color:'green',	amount:75,	denomination:0.5}]);
 	let _5chips = _4chips.concat([{color:'black',	amount:50,	denomination:1}]);
-	
+	let myChips = [
+	{color:'white-red',		amount: 100,	denomination:0.05},
+	{color:'red-blue',		amount: 100,	denomination:0.1},
+	{color:'blue-white',	amount: 50,		denomination:0.25},
+	{color:'green-pink',	amount: 50,		denomination:0.5},
+	{color:'black-salmon',	amount: 25,		denomination:1}
+	];
+
 	describe('applyValues', function() {
 		it('with 1 item => value is 1', function() {
 			let items = applyValues(_1chips);
@@ -46,6 +55,9 @@ describe('KnapsackSolver', function() {
 		it('with 5 items => same as with 4', function() {
 			let items = applyValues(_5chips);
 			let itemValues = toValueColorPairs(items,_5chips);
+			items.forEach((value,idx) => {
+				console.log(`${value} / ${_5chips[idx].amount }: ${value / _5chips[idx].amount}`);
+			});
 			expect(itemValues).to.deep.equal([
 				{color:'white',	value:3},
 				{color:'red',	value:5},
@@ -114,10 +126,10 @@ describe('KnapsackSolver', function() {
 		it('converts assigned chips to valued and weighted items for use in knapsack', function() {
 			let items = new KnapsackSolver(_5chips, 6).items;
 			expect(items).to.deep.equal([
-		{value:3,	weight: 458.34,	chip: {color:'white',amount:100,denomination:.05}},
-		{value:5,	weight: 450.00,	chip: {color:'red',amount:150,denomination:.1}},
-		{value:4,	weight: 458.34,	chip: {color:'blue',amount:100,denomination:.25}},
-		{value:2,	weight: 462.50,	chip: {color:'green',amount:75,denomination:.5}},
+		{value:3,	weight: 458.34,	chip: {color:'white',amount:100,denomination:0.05}},
+		{value:5,	weight: 450.00,	chip: {color:'red',amount:150,denomination:0.1}},
+		{value:4,	weight: 458.34,	chip: {color:'blue',amount:100,denomination:0.25}},
+		{value:2,	weight: 462.50,	chip: {color:'green',amount:75,denomination:0.5}},
 		{value:1,	weight: 466.67,	chip: {color:'black',amount:50,denomination:1}}
 			]);
 		});
@@ -126,15 +138,16 @@ describe('KnapsackSolver', function() {
 	describe.only('solve', function() {
 		it('buyin 10, 6 players', function() {
 			let buyin = 10;
-			let solver = new KnapsackSolver(_5chips, 6);
+			let solver = new KnapsackSolver(myChips, 6);
 			let stack = solver.solve(buyin);
 			expect(stack).to.deep.equal([
-				{color:'white'	,amount:10	,denomination: 0.05	},
-				{color:'red'	,amount:15	,denomination: 0.1	},
-				{color:'blue'	,amount:12	,denomination: 0.25	},
-				{color:'green'	,amount:6	,denomination: 0.5	},
-				{color:'black'	,amount:2	,denomination: 1	}
+				{color:'white-red'	,	amount:10	,denomination: 0.05	},
+				{color:'red-blue'	,	amount:15	,denomination: 0.1	},
+				{color:'blue-white'	,	amount:12	,denomination: 0.25	},
+				{color:'green-pink'	,	amount:6	,denomination: 0.5	},
+				{color:'black-salmon',	amount:2	,denomination: 1	}
 			]);
+			expect(getStackWorth(stack)).to.equal(buyin);
 		});
 		it.skip('total worth of available chips is lower than buyin', function() {
 			let buyin = 10;
@@ -146,16 +159,20 @@ describe('KnapsackSolver', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(_5chips, 6);
 			let stack = solver.solve(buyin);
-			let stackWorth = stack.reduce((prev, {color,amount,denomination}) => prev + (amount * denomination),0);
-			expect(stackWorth).to.equal(buyin);
+			expect(getStackWorth(stack)).to.equal(buyin);
 		});
 	});
 });
 
-function toValueColorPairs(values, chips){
+function toValueColorPairs(values, chips) {
 	return values.map((value, idx) => {return {color:chips[idx].color,value};});
 }
 
-function toWeightColorPairs(weights, chips){
+function toWeightColorPairs(weights, chips) {
 	return weights.map((weight, idx) => {return {color:chips[idx].color,weight};});
 }
+
+function getStackWorth(stack) {
+	return stack.reduce((prev, {color,amount,denomination}) => prev + (amount * denomination), 0);
+}
+
