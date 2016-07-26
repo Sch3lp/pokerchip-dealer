@@ -4,7 +4,9 @@ Some derping around with `Array.from()` copying objects by reference where I exp
 
 (Re-)Discovered `lodash`'s `_.deepCopy()`.
 
-Something funky's going on that I'm already noticing in the `greedy` solve. Not all chip denominations are being used. I'm guessing that after I've properly implemented it, by doing some tweaking to value setting I can get a better distribution. Maybe by enforcing to have at least 1 of each denomination in the stack.
+Something funky's going on that I'm already noticing in the `greedy` solve. I'm not sure all chip denominations are being used. I'm guessing that after I've properly implemented it, by doing some tweaking to value setting I can get a better distribution. Maybe by enforcing to have at least 1 of each denomination in the stack.
+
+The way I'm trying to solve at the moment is by first applying a greedy solve, and afterwards correcting it by adding (highest value first) or subtracting chips (lowest value first).
 
 ## Day 8
 My idea that weight == amount of chips divided by players is incorrect.
