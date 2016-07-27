@@ -3,7 +3,8 @@
 module.exports = (() => {
 
 let _ = require('lodash');
-	
+let BigNumber = require('bignumber.js')
+
 /* 
  * See LOG.md#Day5
  * See also https://en.wikipedia.org/wiki/Knapsack_problem#Definition
@@ -45,7 +46,7 @@ function greedy(items, players, buyin) {
 	let sortedItems = items.sort(byValueDesc);
 
 	for (let item of sortedItems) {
-		let maxChipCount = _.floor(item.chip.amount / players);
+		let maxChipCount = _.round(item.chip.amount / players,2);
 		let currentChipCount = 0;
 		while (item.chip.amount > 0 && currentChipCount < maxChipCount && stackWorth < buyin) {
 			currentChipCount++;
@@ -57,18 +58,17 @@ function greedy(items, players, buyin) {
 	return items.sort(itemByDenomAsc);
 }
 
-function correctBySubtraction(items, buyin) { 
+function correctBySubtraction(items, buyin) {
 	// I'd want to just pass in the difference instead of the buyin, 
 	// but I don't think I'd like the way my tests end up looking like
-	let toCorrect = (itemsStackWorth(items) - buyin).toFixed(3);
+	let toCorrect = new BigNumber(itemsStackWorth(items)).minus(buyin);
 	let sortedItems = items.sort(byValueAsc);
 	
 	while(toCorrect > 0) {
 		for (let item of sortedItems) {
-			let currentValue = (item.chip.denomination).toFixed(3);
-			if (currentValue <= toCorrect && item.chip.amount > 0) {
-				toCorrect -= currentValue;
-				toCorrect = (toCorrect).toFixed(3);
+			let currentValue = new BigNumber(item.chip.denomination);
+			if (currentValue.lte(toCorrect) && item.chip.amount > 0) {
+				toCorrect = toCorrect.minus(currentValue);
 				item.chip.amount--;
 			}
 		}

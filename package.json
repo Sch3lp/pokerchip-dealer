@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/Sch3lp/pokerchip-dealer#readme",
   "dependencies": {
+    "bignumber.js": "^2.4.0",
     "lodash": "^4.14.0"
   },
   "devDependencies": {
