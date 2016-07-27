@@ -143,7 +143,7 @@ describe('KnapsackSolver', function() {
 		});
 	});
 
-	describe.only('correctBySubtraction', function() {
+	describe('correctBySubtraction', function() {
 		
 		it('exactly one highest denomination overGreedy, removes 1 chip of that denomination', function() {
 			let overGreedy = [
@@ -246,7 +246,7 @@ describe('KnapsackSolver', function() {
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
 		
-		it.skip('exactly two lowest and second to heighest valued denominations overGreedy, removes both chips', function() {
+		it('exactly two lowest and second to heighest valued denominations overGreedy, removes both chips', function() {
 			let overGreedy = [
 		{value:3, weight: 458.34, chip: {color:'white-red',		amount:15,denomination: 0.05}},
 		{value:5, weight: 450.00, chip: {color:'red-blue',		amount:15,denomination: 0.1}},

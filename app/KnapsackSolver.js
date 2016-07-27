@@ -63,11 +63,13 @@ function correctBySubtraction(items, buyin) {
 	let toCorrect = itemsStackWorth(items) - buyin;
 	let sortedItems = items.sort(byValueAsc);
 
-	for (let item of sortedItems) {
-		let currentValue = item.chip.denomination;
-		if (currentValue <= toCorrect) {
-			toCorrect -= currentValue;
-			item.chip.amount--;
+	while(toCorrect >0){
+		for (let item of sortedItems) {
+			let currentValue = item.chip.denomination;
+			if (currentValue <= toCorrect) {
+				toCorrect -= currentValue;
+				item.chip.amount--;
+			}
 		}
 	}
 
