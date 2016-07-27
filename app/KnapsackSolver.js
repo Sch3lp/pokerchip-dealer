@@ -60,14 +60,15 @@ function greedy(items, players, buyin) {
 function correctBySubtraction(items, buyin) { 
 	// I'd want to just pass in the difference instead of the buyin, 
 	// but I don't think I'd like the way my tests end up looking like
-	let toCorrect = itemsStackWorth(items) - buyin;
+	let toCorrect = (itemsStackWorth(items) - buyin).toFixed(3);
 	let sortedItems = items.sort(byValueAsc);
-
-	while(toCorrect >0){
+	
+	while(toCorrect > 0) {
 		for (let item of sortedItems) {
-			let currentValue = item.chip.denomination;
-			if (currentValue <= toCorrect) {
+			let currentValue = (item.chip.denomination).toFixed(3);
+			if (currentValue <= toCorrect && item.chip.amount > 0) {
 				toCorrect -= currentValue;
+				toCorrect = (toCorrect).toFixed(3);
 				item.chip.amount--;
 			}
 		}
