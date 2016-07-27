@@ -1,4 +1,9 @@
 # Captains Log
+## Day 10
+Got reacquainted with floating point arithmetic. Discovered http://floating-point-gui.de/ excellently documents the issue and provides a cheat sheet for different languages.
+
+Started looking for node libraries, and discovered that http://mikemcl.github.io/bignumber.js/ is the best one because this small library has no dependencies and is still being maintained. 
+
 ## Day 9
 Some derping around with `Array.from()` copying objects by reference where I expected them to be copied by value.
 
