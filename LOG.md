@@ -4,6 +4,26 @@ Got reacquainted with floating point arithmetic. Discovered http://floating-poin
 
 Started looking for node libraries, and discovered that http://mikemcl.github.io/bignumber.js/ is the best one because this small library has no dependencies and is still being maintained. 
 
+Current greedy + correction produces a _weird_ stack.
+
+Expected:
+
+    white-red      amount:10   denomination: 0.05 
+    red-blue       amount:15   denomination: 0.1  
+    blue-white     amount:12   denomination: 0.25 
+    green-pink     amount:6    denomination: 0.5  
+    black-salmon   amount:2    denomination: 1
+
+But was:
+
+    white-red      amount:16   denomination: 0.05 
+    red-blue       amount:17   denomination: 0.1  
+    blue-white     amount:8    denomination: 0.25 
+    green-pink     amount:9    denomination: 0.5  
+    black-salmon   amount:1    denomination: 1
+
+
+
 ## Day 9
 Some derping around with `Array.from()` copying objects by reference where I expected them to be copied by value.
 
