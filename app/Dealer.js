@@ -32,8 +32,8 @@ class Dealer {
 
 		let assignedChips = ColorPicker.smartpickColors(limitedDenoms, this.pokerSet.distributionPerColor);
 
-		// let proportionedChips = Helper.findIdealProportions(assignedChips);
-		return new Stack(limitedDenoms.map((nom) => [nom]));
+		let stackChips = new KnapsackSolver(assignedChips, this.players).solve(this.buyIn);
+		return new Stack(stackChips);
 	}
 
 	validateRequirements() {

@@ -3,24 +3,24 @@
 module.exports = (() => {
 
 class Stack {
-	constructor(distribution) {
-		this.distribution = distribution; //2D array of denominations and their amounts
+	constructor(chips) {
+		this.chips = chips.sort(byDenomAsc); //array of chips with color, amount and denomination
 	}
 
 	get denominations() {
-		return this.distribution.map(([d,a]) => d);
+		return this.chips.map(({c,a,denomination}) => denomination);
 	}
 
-	get smallBlindDenomination() {
-		return this.denominations[0];
+	get smallBlind() {
+		return this.chips[0];
 	}
 
-	get bigBlindDenomination() {
-		return this.denominations[1];
+	get bigBlind() {
+		return this.chips[1];
 	}
 
 	get amounts() {
-		return this.distribution.map(([d,a]) => a);
+		return this.chips.map(({c,amount,d}) => amount);
 	}
 
 	get totalChips() {
@@ -28,10 +28,11 @@ class Stack {
 	}
 
 	get totalValue() {
-		return this.distribution.map(([d,a]) => d * a)
-								.reduce(((prev, cur) => prev + cur), 0);
+		return this.chips.reduce((prev, {c,amount,denomination}) => prev + denomination * amount, 0);
 	}
 }
+
+function byDenomAsc(one, two){ return one.denomination - two.denomination; }
 
 return Stack;
 
