@@ -1,4 +1,14 @@
 # Captains Log
+## Day 12
+I made some diagrams that should explain the general flow of the program, and how the KnapsackSolver currently works.
+
+![][Dealer.jpg]
+
+![][KnapsackSolver.jpg]
+
+## Day 11
+I did no coding today.
+
 ## Day 10
 Got reacquainted with floating point arithmetic. Discovered http://floating-point-gui.de/ excellently documents the issue and provides a cheat sheet for different languages.
 
@@ -138,3 +148,7 @@ I did some reading and learned that **in tournaments** you need to provide your 
 Set out to code a program that helps me make nice Stacks for when we host poker nights.
 
 I recently bought a new pokerset (a bigger one), which has way more different kinds of chips than the one I previously had. And it feels wasteful not to use them all in our game.
+
+[Dealer.jpg]: 
+
+[KnapsackSolver.jpg]: 
