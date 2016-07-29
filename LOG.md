@@ -2,9 +2,9 @@
 ## Day 12
 I made some diagrams that should explain the general flow of the program, and how the KnapsackSolver currently works.
 
-![][Dealer.jpg]
+![Dealer](Dealer.jpg "The general flow of the program")
 
-![][KnapsackSolver.jpg]
+![KnapsackSolver](KnapsackSolver.jpg "Inner workings of the KnapsackSolver")
 
 ## Day 11
 I did no coding today.
@@ -148,7 +148,3 @@ I did some reading and learned that **in tournaments** you need to provide your 
 Set out to code a program that helps me make nice Stacks for when we host poker nights.
 
 I recently bought a new pokerset (a bigger one), which has way more different kinds of chips than the one I previously had. And it feels wasteful not to use them all in our game.
-
-[Dealer.jpg]: 
-
-[KnapsackSolver.jpg]: 
