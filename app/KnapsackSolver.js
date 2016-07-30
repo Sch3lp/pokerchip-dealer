@@ -32,9 +32,6 @@ class KnapsackSolver {
 		if (greedyStackWorth > buyin) {
 			resultItems = correctBySubtraction(greedyItems, buyin);
 		}
-		if (greedyStackWorth < buyin) {
-			resultItems = correctByAddition(greedyItems, buyin);
-		}
 		return resultItems
 				.map(({value,weight,chip}) => chip)
 				.sort(byDenomAsc);
@@ -74,10 +71,6 @@ function correctBySubtraction(items, buyin) {
 		}
 	}
 
-	return items.sort(itemByDenomAsc);
-}
-
-function correctByAddition(items, buyin){
 	return items.sort(itemByDenomAsc);
 }
 

@@ -1,7 +1,7 @@
 let expect = require('chai').expect;
 let Stack = require('../app/stack');
 
-describe.only('Stack', function() {
+describe('Stack', function() {
 	let chips  =               [{color:'blue-white',	amount:12,	denomination: 0.25}];
 	let chips2 = chips.concat( [{color:'white-red',		amount:10,	denomination: 0.05}]);
 	let chips3 = chips2.concat([{color:'black-salmon',	amount:2,	denomination: 1}]);

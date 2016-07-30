@@ -2,10 +2,11 @@
 /* globals module */
 module.exports = (() => {
 
-let Helper = require('./helper');
-let Stack = require('./stack');
-let PokerSet = require('./pokerset');
-let ColorPicker = require('./colorpicker');
+let Helper = require('./helper'),
+    Stack = require('./stack'),
+    PokerSet = require('./pokerset'),
+    ColorPicker = require('./colorpicker'),
+    KnapsackSolver = require('./knapsacksolver').KnapsackSolver;
 
 const idealAmountOfDenoms = 5;
 
@@ -22,7 +23,8 @@ class Dealer {
 	}
 
 	deal() {
-		let validationErrors = this.validateRequirements();
+		let self = this;
+		let validationErrors = validateRequirements(self);
 		return validationErrors || '';
 	}
 
@@ -36,27 +38,28 @@ class Dealer {
 		return new Stack(stackChips);
 	}
 
-	validateRequirements() {
-		if (!this.pokerSet || !PokerSet.prototype.isPrototypeOf(this.pokerSet)) {
-			return 'I require a PokerSet before dealing.';
-		}
-		if (this.pokerSet.validate()) {
-			return this.pokerSet.validate();
-		}
- 		if (!this.amountOfPlayers || this.amountOfPlayers <= 0) {
-			return 'I require a number of players before dealing.';
- 		}
- 		if (!this.buyIn || this.buyIn <= 0) {
-			return 'I require a buy-in (total value) before dealing.';
- 		}
- 		if (!this.lowestDenom || this.lowestDenom <= 0) {
-			return 'I require a lowest denomination before dealing.';
- 		}
- 		return '';
-	}
 }
 
-return Dealer;
+function validateRequirements(dealer) {
+	if (!dealer.pokerSet || !PokerSet.prototype.isPrototypeOf(dealer.pokerSet)) {
+		return 'I require a PokerSet before dealing.';
+	}
+	if (dealer.pokerSet.validate()) {
+		return dealer.pokerSet.validate();
+	}
+	if (!dealer.amountOfPlayers || dealer.amountOfPlayers <= 0) {
+	return 'I require a number of players before dealing.';
+	}
+	if (!dealer.buyIn || dealer.buyIn <= 0) {
+	return 'I require a buy-in (total value) before dealing.';
+	}
+	if (!dealer.lowestDenom || dealer.lowestDenom <= 0) {
+	return 'I require a lowest denomination before dealing.';
+	}
+	return '';
+}
+
+return { Dealer, validateRequirements };
 
 })();
 
