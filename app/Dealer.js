@@ -12,11 +12,11 @@ const idealAmountOfDenoms = 5;
 
 class Dealer {
 	constructor(pokerSet,
-				amountOfPlayers,
+				players,
 				buyIn,
 				lowestDenom) {
 		this.pokerSet = pokerSet;
-		this.amountOfPlayers = amountOfPlayers;
+		this.players = players;
 		this.buyIn = buyIn;
 		this.lowestDenom = lowestDenom;
 		this.amountOfRebuys = 0;
@@ -25,13 +25,12 @@ class Dealer {
 	deal() {
 		let self = this;
 		let validationErrors = validateRequirements(self);
-		return validationErrors || '';
+		return validationErrors || this.distribute();
 	}
 
 	distribute() {
 		let denoms = Helper.findIdealDenominations(this.pokerSet.amountOfColors, this.lowestDenom);
 		let limitedDenoms = denoms.slice(0,idealAmountOfDenoms);
-
 		let assignedChips = ColorPicker.smartpickColors(limitedDenoms, this.pokerSet.distributionPerColor);
 
 		let stackChips = new KnapsackSolver(assignedChips, this.players).solve(this.buyIn);
@@ -47,7 +46,7 @@ function validateRequirements(dealer) {
 	if (dealer.pokerSet.validate()) {
 		return dealer.pokerSet.validate();
 	}
-	if (!dealer.amountOfPlayers || dealer.amountOfPlayers <= 0) {
+	if (!dealer.players || dealer.players <= 0) {
 	return 'I require a number of players before dealing.';
 	}
 	if (!dealer.buyIn || dealer.buyIn <= 0) {

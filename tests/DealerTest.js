@@ -79,10 +79,10 @@ describe.only('Dealer', function() {
 			let players = 6;
 			let buyin = 10;
 			let stack = new Dealer(largePokerSet, players, buyin, 0.05).distribute();
+			expect(stack.totalValue).to.equal(buyin);
 			expect(stack.denominations).to.deep.equal([0.05, 0.10, 0.25, 0.50, 1]);
 			expect(stack.amounts).to.deep.equal([10, 15, 12, 6, 2]);
 			expect(stack.totalChips).to.equal(55);
-			expect(stack.totalValue).to.equal(buyin);
 		});
 
 		it.skip('with 1000 chips, 1 denomination, 10 players, 10 buy-in', function() {
