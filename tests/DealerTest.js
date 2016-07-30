@@ -9,7 +9,7 @@ let PokerSet = require('../app/pokerset');
 let myDealer = new Dealer();
 let largePokerSet = new PokerSet();
 
-describe.only('Dealer', function() {
+describe('Dealer', function() {
 	describe('Validation', function() {
 		let validPokerSet = new PokerSet(20,20);
 		let dummyPokerSet = new PokerSet(); 

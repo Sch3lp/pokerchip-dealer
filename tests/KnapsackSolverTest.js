@@ -1,9 +1,10 @@
 /* jshint undef: true, unused: false, esnext: true, strict:false, laxbreak:true */
 /* globals require, describe, it, console */
 let expect = require('chai').expect;
+let Stack = require('../app/stack');
 let {KnapsackSolver, applyValues, applyWeights, correctBySubtraction} = require('../app/knapsacksolver');
 
-describe('KnapsackSolver', function() {
+describe.only('KnapsackSolver', function() {
 	let _1chips =                [{color:'white',	amount:100,	denomination:0.05}];
 	let _2chips = _1chips.concat([{color:'red',		amount:150,	denomination:0.1}]);
 	let _3chips = _2chips.concat([{color:'blue',	amount:100,	denomination:0.25}]);
@@ -160,7 +161,8 @@ describe('KnapsackSolver', function() {
 		{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
 		{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
 			];
-			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11);
+			let stack = overGreedy.map(({v,w,chip})=>chip);
+			expect(new Stack(stack).totalValue).to.equal(11);
 			let correctedStack = correctBySubtraction(overGreedy,10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
@@ -180,7 +182,8 @@ describe('KnapsackSolver', function() {
 		{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
 		{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
 			];
-			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(10.05);
+			let stack = overGreedy.map(({v,w,chip})=>chip);
+			expect(new Stack(stack).totalValue).to.equal(10.05);
 			let correctedStack = correctBySubtraction(overGreedy,10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
@@ -200,7 +203,8 @@ describe('KnapsackSolver', function() {
 		{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
 		{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
 			];
-			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11.05);
+			let stack = overGreedy.map(({v,w,chip})=>chip);
+			expect(new Stack(stack).totalValue).to.equal(11.05);
 			let correctedStack = correctBySubtraction(overGreedy,10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
@@ -220,7 +224,8 @@ describe('KnapsackSolver', function() {
 		{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
 		{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
 			];
-			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(10.9);
+			let stack = overGreedy.map(({v,w,chip})=>chip);
+			expect(new Stack(stack).totalValue).to.equal(10.9);
 			let correctedStack = correctBySubtraction(overGreedy,10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
@@ -240,9 +245,10 @@ describe('KnapsackSolver', function() {
 		{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8, denomination: 0.5}},
 		{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2, denomination: 1}}
 			];
-			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11.1);
+			let stack = overGreedy.map(({v,w,chip})=>chip);
+			expect(new Stack(stack).totalValue).to.equal(11.1);
 			let correctedStack = correctBySubtraction(overGreedy,10);
-			expect(getStackWorth(correctedStack.map(({v,w,chip})=>chip))).to.equal(10);
+			expect(new Stack(correctedStack.map(({v,w,chip})=>chip)).totalValue).to.equal(10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
 		
@@ -261,7 +267,8 @@ describe('KnapsackSolver', function() {
 		{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
 		{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
 			];
-			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11.25);
+			let stack = overGreedy.map(({v,w,chip})=>chip);
+			expect(new Stack(stack).totalValue).to.equal(11.25);
 			let correctedStack = correctBySubtraction(overGreedy,10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
@@ -281,7 +288,8 @@ describe('KnapsackSolver', function() {
 		{value:2, weight: 462.50, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
 		{value:1, weight: 466.67, chip: {color:'black-salmon',	amount:2,denomination: 1}}
 			];
-			expect(getStackWorth(overGreedy.map(({v,w,chip})=>chip))).to.equal(11.9);
+			let stack = overGreedy.map(({v,w,chip})=>chip);
+			expect(new Stack(stack).totalValue).to.equal(11.9);
 			let correctedStack = correctBySubtraction(overGreedy,10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
@@ -300,7 +308,7 @@ describe('KnapsackSolver', function() {
 				{color:'green-pink'	,	amount:6	,denomination: 0.5	},
 				{color:'black-salmon',	amount:2	,denomination: 1	}
 			]);
-			expect(getStackWorth(stack)).to.equal(buyin);
+			expect(new Stack(stack).totalValue).to.equal(buyin);
 		});
 		
 		it.skip('total worth of available chips is lower than buyin', function() {
@@ -314,7 +322,7 @@ describe('KnapsackSolver', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(_5chips, 6);
 			let stack = solver.solve(buyin);
-			expect(getStackWorth(stack)).to.equal(buyin);
+			expect(new Stack(stack).totalValue).to.equal(buyin);
 		});
 	});
 });
@@ -326,8 +334,3 @@ function toValueColorPairs(values, chips) {
 function toWeightColorPairs(weights, chips) {
 	return weights.map((weight, idx) => {return {color:chips[idx].color,weight};});
 }
-
-function getStackWorth(stack) {
-	return stack.reduce((prev, {color,amount,denomination}) => prev + (amount * denomination), 0);
-}
-
