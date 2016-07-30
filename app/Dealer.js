@@ -23,9 +23,7 @@ class Dealer {
 	}
 
 	deal() {
-		let self = this;
-		let validationErrors = validateRequirements(self);
-		return validationErrors || this.distribute();
+		return validateRequirements(this) || this.distribute();
 	}
 
 	distribute() {
