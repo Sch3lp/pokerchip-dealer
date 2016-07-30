@@ -30,6 +30,12 @@ class Stack {
 	get totalValue() {
 		return this.chips.reduce((prev, {c,amount,denomination}) => prev + denomination * amount, 0);
 	}
+
+	toString() {
+		return this.chips.map(({color, amount, denomination}) => {
+			return `${color} chips (${denomination}):  ${amount}`;
+		}).join('\n');
+	}
 }
 
 function byDenomAsc(one, two){ return one.denomination - two.denomination; }

@@ -301,6 +301,8 @@ describe.only('KnapsackSolver', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(myChips, 6);
 			let stack = solver.solve(buyin);
+			expect(new Stack(stack).totalValue).to.equal(buyin);
+			console.log(new Stack(stack).toString());
 			expect(stack).to.deep.equal([
 				{color:'white-red'	,	amount:10	,denomination: 0.05	},
 				{color:'red-blue'	,	amount:15	,denomination: 0.1	},
@@ -308,21 +310,12 @@ describe.only('KnapsackSolver', function() {
 				{color:'green-pink'	,	amount:6	,denomination: 0.5	},
 				{color:'black-salmon',	amount:2	,denomination: 1	}
 			]);
-			expect(new Stack(stack).totalValue).to.equal(buyin);
 		});
 		
 		it.skip('total worth of available chips is lower than buyin', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(_3chips, 6);
 			let stack = solver.solve(buyin);
-			
-		});
-		
-		it('Stackworth must be equal to the buyin', function() {
-			let buyin = 10;
-			let solver = new KnapsackSolver(_5chips, 6);
-			let stack = solver.solve(buyin);
-			expect(new Stack(stack).totalValue).to.equal(buyin);
 		});
 	});
 });

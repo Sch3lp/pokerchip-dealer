@@ -40,7 +40,7 @@ class KnapsackSolver {
 
 function greedy(items, players, buyin) {
 	let stackWorth = 0;
-	let sortedItems = items.sort(byValueDesc);
+	let sortedItems = items.sort(byValueAmountRatioDesc);
 
 	for (let item of sortedItems) {
 		let maxChipCount = _.round(item.chip.amount / players,2);
