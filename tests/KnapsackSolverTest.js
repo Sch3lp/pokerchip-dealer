@@ -300,16 +300,15 @@ describe.only('KnapsackSolver', function() {
 		it('buyin 10, 6 players', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(myChips, 6);
-			let stack = solver.solve(buyin);
-			expect(new Stack(stack).totalValue).to.equal(buyin);
-			console.log(new Stack(stack).toString());
-			expect(stack).to.deep.equal([
+			let stack = new Stack(solver.solve(buyin));
+			assertStackConstraints(stack, myChips, buyin, 6);
+			expect(stack.chips).to.deep.equal([
 				{color:'white-red'	,	amount:10	,denomination: 0.05	},
 				{color:'red-blue'	,	amount:15	,denomination: 0.1	},
 				{color:'blue-white'	,	amount:12	,denomination: 0.25	},
 				{color:'green-pink'	,	amount:6	,denomination: 0.5	},
 				{color:'black-salmon',	amount:2	,denomination: 1	}
-			]);
+			], `\nActual:\n${stack.toString()}\n`);
 		});
 		
 		it.skip('total worth of available chips is lower than buyin', function() {
@@ -326,4 +325,12 @@ function toValueColorPairs(values, chips) {
 
 function toWeightColorPairs(weights, chips) {
 	return weights.map((weight, idx) => {return {color:chips[idx].color,weight};});
+}
+
+function assertStackConstraints(actualStack, givenChips, buyin, players) {
+	expect(actualStack.totalValue).to.equal(buyin, `Total value of stack (${actualStack.totalValue}) should be equal to the buyin of ${buyin}`);
+	actualStack.chips.forEach((chip) => {
+		let chipLimit = Math.floor(new Stack(givenChips).amountOf(chip.color) / players);
+		expect(chip.amount).to.be.at.most(chipLimit, `Total amount of ${chip.color} (${chip.denomination}): ${chip.amount} can't exceed maximum of ${chipLimit}`);
+	});
 }

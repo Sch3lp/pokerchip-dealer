@@ -21,7 +21,6 @@ class KnapsackSolver {
 		let copiedItems = _.cloneDeep(this.items);
 
 		// TODO check if sum of all amounts, divided by players, is already lower than the buyin
-		// TODO minimum of 1 in each denomination?
 		let greedyItems = greedy(copiedItems, this.players, buyin);
 		
 		let greedyStackWorth = itemsStackWorth(greedyItems);
@@ -40,7 +39,7 @@ class KnapsackSolver {
 
 function greedy(items, players, buyin) {
 	let stackWorth = 0;
-	let sortedItems = items.sort(byValueAmountRatioDesc);
+	let sortedItems = items.sort(byValueDesc);
 
 	for (let item of sortedItems) {
 		let maxChipCount = _.round(item.chip.amount / players,2);

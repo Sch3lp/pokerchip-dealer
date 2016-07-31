@@ -23,6 +23,11 @@ class Stack {
 		return this.chips.map(({c,amount,d}) => amount);
 	}
 
+	amountOf(chipColor) {
+		let chip = this.chips.find(({color, amount, denomination}) => color === chipColor);
+		return chip ? chip.amount : 0;
+	}
+
 	get totalChips() {
 		return this.amounts.reduce((prev,cur) => prev + cur);
 	}
