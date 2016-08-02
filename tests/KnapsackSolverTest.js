@@ -239,7 +239,7 @@ describe.only('KnapsackSolver', function() {
 
 	describe('solve', function() {
 		
-		it('buyin 10, 6 players', function() {
+		it('pokerbros case', function() {
 			let buyin = 10;
 			let solver = new KnapsackSolver(myChips, 6);
 			let stack = new Stack(solver.solve(buyin));
