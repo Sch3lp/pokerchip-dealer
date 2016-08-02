@@ -1,4 +1,51 @@
 # Captains Log
+## Day 13
+From this point on, I'll start logging the times when I work on this project, but for consistency's sake I'll also tag them with _Day x_. It'll usually be _SoftwareSandbox_ sessions, so a _Day_ will typically count as about 2-4 hours of work in an evening.
+
+Today I realized that the stack I expected all the while, was wrong. It was wrong because the starting chips I had set up in my test have wrong amounts.
+
+In my real life example, I use _orange_ chips with a denomination of .05, of which I have 75.
+
+So instead of
+
+    color:'orange',     amount: 75,     denomination:0.05
+    color:'white-red',  amount: 100,    denomination:0.1
+    color:'red-blue',   amount: 100,    denomination:0.25
+    color:'blue-white', amount: 50,     denomination:0.5
+    color:'green-pink', amount: 50,     denomination:1
+
+I had
+
+    color:'white-red',    amount: 100,    denomination:0.05
+    color:'red-blue',     amount: 100,    denomination:0.1
+    color:'blue-white',   amount: 50,     denomination:0.25
+    color:'green-pink',   amount: 50,     denomination:0.5
+    color:'black-salmon', amount: 25,     denomination:1
+
+And all the while I was wondering why my 0.25 denomination wasn't getting a higher expected amount of chips in the stack... :sob:
+
+Now, when I'm using the correct set up, I'm not getting ANY chips of denomination '1'. 
+
+I thought about instead of a completely greedy solution, I might want to try a _chip-color proportion approximation_ solution, followed by a correction solution.
+
+So for 5 denominations, and according to the stack I expect, that would mean proportions as follows:
+
+    color:'orange'      denomination:0.05   proportion: 22.22
+    color:'white-red'   denomination:0.1    proportion: 33.33
+    color:'red-blue'    denomination:0.25   proportion: 26.66
+    color:'blue-white'  denomination:0.5    proportion: 13.33
+    color:'green-pink'  denomination:1      proportion: 4.44
+
+Which **could** be _simplified_ to 
+
+    proportion: 22
+    proportion: 34
+    proportion: 27
+    proportion: 13
+    proportion: 4
+
+I still need to figure out what the proportions would look like with lower or higher amounts of denominations. Or even better, what the relation between those proportions is, and hence find an algorithm to give me these _sweetspot_ proportions based on an amount of denominations.
+
 ## Day 12
 I made some diagrams that should explain the general flow of the program, and how the KnapsackSolver currently works.
 
