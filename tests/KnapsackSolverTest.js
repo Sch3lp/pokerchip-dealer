@@ -11,12 +11,13 @@ describe.only('KnapsackSolver', function() {
 	let _4chips = _3chips.concat([{color:'green',	amount:75,	denomination:0.5}]);
 	let _5chips = _4chips.concat([{color:'black',	amount:50,	denomination:1}]);
 	let myChips = [
-	{color:'white-red',		amount: 100,	denomination:0.05},
-	{color:'red-blue',		amount: 100,	denomination:0.1},
-	{color:'blue-white',	amount: 50,		denomination:0.25},
-	{color:'green-pink',	amount: 50,		denomination:0.5},
-	{color:'black-salmon',	amount: 25,		denomination:1}
+	{color:'orange',		amount: 75,		denomination:0.05},
+	{color:'white-red',		amount: 100,	denomination:0.1},
+	{color:'red-blue',		amount: 100,	denomination:0.25},
+	{color:'blue-white',	amount: 50,		denomination:0.5},
+	{color:'green-pink',	amount: 50,		denomination:1}
 	];
+	// {color:'black-salmon',	amount: 25,		denomination:1},
 
 	describe('applyValues', function() {
 		
@@ -244,11 +245,11 @@ describe.only('KnapsackSolver', function() {
 			let stack = new Stack(solver.solve(buyin));
 			assertStackConstraints(stack, myChips, buyin, 6);
 			expect(stack.chips).to.deep.equal([
-				{color:'white-red'	,	amount:10	,denomination: 0.05	},
-				{color:'red-blue'	,	amount:15	,denomination: 0.1	},
-				{color:'blue-white'	,	amount:12	,denomination: 0.25	},
-				{color:'green-pink'	,	amount:6	,denomination: 0.5	},
-				{color:'black-salmon',	amount:2	,denomination: 1	}
+				{color:'orange'	,		amount:10	,denomination: 0.05	},
+				{color:'white-red'	,	amount:15	,denomination: 0.1	},
+				{color:'red-blue'	,	amount:12	,denomination: 0.25	},
+				{color:'blue-white'	,	amount:6	,denomination: 0.5	},
+				{color:'green-pink',	amount:2	,denomination: 1	}
 			], `\nActual:\n${stack.toString()}\n`);
 		});
 		

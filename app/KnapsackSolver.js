@@ -42,12 +42,18 @@ function greedy(items, players, buyin) {
 	let sortedItems = items.sort(byValueDesc);
 
 	for (let item of sortedItems) {
-		let maxChipCount = _.floor(item.chip.amount / players,2);
+		let maxChipCount = _.floor(item.chip.amount / players, 2);
 		let currentChipCount = 0;
+		// console.log('################');
+		// console.log(`color: ${item.chip.color}`);
+		// console.log('################');
 		while (--item.chip.amount > 0 
 			&& ++currentChipCount < maxChipCount 
 			&& stackWorth < buyin) {
 			stackWorth += item.chip.denomination;
+			// console.log(`--item.chip.amount > 0: ${item.chip.amount + 1 > 0 }`);
+			// console.log(`++currentChipCount < maxChipCount: ${currentChipCount + 1 < maxChipCount}`);
+			// console.log(`stackWorth < buyin: ${stackWorth < buyin}`);
 		}
 		item.chip.amount = currentChipCount;
 	}
