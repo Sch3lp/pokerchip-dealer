@@ -253,11 +253,6 @@ describe.only('KnapsackSolver', function() {
 			], `\nActual:\n${stack.toString()}\n`);
 		});
 		
-		it.skip('total worth of available chips is lower than buyin', function() {
-			let buyin = 10;
-			let solver = new KnapsackSolver(_3chips, 6);
-			let stack = solver.solve(buyin);
-		});
 	});
 });
 

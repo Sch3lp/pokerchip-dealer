@@ -26,9 +26,11 @@ class KnapsackSolver {
 		let greedyStackWorth = itemsStackWorth(greedyItems);
 		
 		if (greedyStackWorth == buyin) {
+			console.log('Greedy algorithm matched buyin exactly');
 			resultItems = greedyItems;
 		}
 		if (greedyStackWorth > buyin) {
+			console.log('Greedy algorithm was more than buyin, correcting by subtraction');
 			resultItems = correctBySubtraction(greedyItems, buyin);
 		}
 		return resultItems
@@ -44,16 +46,14 @@ function greedy(items, players, buyin) {
 	for (let item of sortedItems) {
 		let maxChipCount = _.floor(item.chip.amount / players, 2);
 		let currentChipCount = 0;
-		// console.log('################');
 		// console.log(`color: ${item.chip.color}`);
-		// console.log('################');
 		while (--item.chip.amount > 0 
 			&& ++currentChipCount < maxChipCount 
 			&& stackWorth < buyin) {
 			stackWorth += item.chip.denomination;
-			// console.log(`--item.chip.amount > 0: ${item.chip.amount + 1 > 0 }`);
-			// console.log(`++currentChipCount < maxChipCount: ${currentChipCount + 1 < maxChipCount}`);
-			// console.log(`stackWorth < buyin: ${stackWorth < buyin}`);
+			// console.log(`\t--item.chip.amount > 0: ${item.chip.amount + 1 > 0 }`);
+			// console.log(`\t++currentChipCount < maxChipCount: ${currentChipCount + 1 < maxChipCount}`);
+			// console.log(`\tstackWorth < buyin: ${stackWorth < buyin}`);
 		}
 		item.chip.amount = currentChipCount;
 	}
