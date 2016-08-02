@@ -62,7 +62,7 @@ Constraining the denominations according to buyin should happen in Dealer.valida
 
 Back to the Knapsacksolving, we then started discussing about how a possible other solution might be to attribute some sort of "importance" (proportion) to the denominations. And have the "importance" of a chipcolor weaken the more it's being used.
 
-This in combination with constraints like stackworth can't exceed buyin, and chipcolorcount can't exceed total amount of chips in that color, might approximate our _Ideal proportions_ stack. (see [KnapsackSolverTest.js solve pokerbros case](test/KnapsackSolverTest.js)).
+This in combination with constraints like stackworth can't exceed buyin, and chipcolorcount can't exceed total amount of chips in that color, might approximate our _Ideal proportions_ stack. (see [KnapsackSolverTest.js solve pokerbros case](tests/KnapsackSolverTest.js)).
 
 Another idea of his was just to visualize/write down _Ideal proportions_ of other stacks that have a different amount of denominations to try and recognize patterns.
 
