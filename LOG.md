@@ -46,6 +46,32 @@ Which **could** be _simplified_ to
 
 I still need to figure out what the proportions would look like with lower or higher amounts of denominations. Or even better, what the relation between those proportions is, and hence find an algorithm to give me these _sweetspot_ proportions based on an amount of denominations.
 
+### Frank lend me his brain.
+
+Maybe first use greedy solution, then try to approach ideal proportion solution? This won't work properly though, will be better to use a better algorithm from the start.
+
+Fix for Buyin too small for amount of denoms: big blind denom should be "50 big blinds of buyin". This doesn't have anything to do directly with Knapsack solving, but it was interesting to see how Frank also struggles with the ping-pong between hitting those other variables (buyin vs. pokerset; buyin vs. stack; denominations vs. chip colors; ...) as well. It makes thinking about this whole ideal stack creation issue a lot more difficult. So we did get to thinking that limiting some of these variables will be easier to reason about.
+
+_Ideal proportions_ are only possible with 5 denominations, a buyin of 10 and the known 1,2,5 series.
+
+Let **amount** of denominations depend on buyin and small blind denom.
+
+Spell out stacks with different amounts of denominations.
+
+Constraining the denominations according to buyin should happen in Dealer.validation somewhere, with e.g. an underlimit of 50 times a buyin, and an upperlimit of 100 times a buyin.
+
+Back to the Knapsacksolving, we then started discussing about how a possible other solution might be to attribute some sort of "importance" (proportion) to the denominations. And have the "importance" of a chipcolor weaken the more it's being used.
+
+This in combination with constraints like stackworth can't exceed buyin, and chipcolorcount can't exceed total amount of chips in that color, might approximate our _Ideal proportions_ stack. (see [KnapsackSolverTest.js solve pokerbros case](test/KnapsackSolverTest.js)).
+
+Another idea of his was just to visualize/write down _Ideal proportions_ of other stacks that have a different amount of denominations to try and recognize patterns.
+
+We got kicked out again the Cegeka building by security doing their job. Been a while since that happened for me, but it feels like we've been productive.
+
+Vincent really has been productive. He was able to make a [Starcraft2 soundboard](https://github.com/verhoevenv/sc2soundboard) in Kotlin.
+
+_My Life for Aiur!_
+
 ## Day 12
 I made some diagrams that should explain the general flow of the program, and how the KnapsackSolver currently works.
 
