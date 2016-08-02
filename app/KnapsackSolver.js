@@ -42,11 +42,11 @@ function greedy(items, players, buyin) {
 	let sortedItems = items.sort(byValueDesc);
 
 	for (let item of sortedItems) {
-		let maxChipCount = _.round(item.chip.amount / players,2);
+		let maxChipCount = _.floor(item.chip.amount / players,2);
 		let currentChipCount = 0;
-		while (item.chip.amount > 0 && currentChipCount < maxChipCount && stackWorth < buyin) {
-			currentChipCount++;
-			item.chip.amount--;
+		while (--item.chip.amount > 0 
+			&& ++currentChipCount < maxChipCount 
+			&& stackWorth < buyin) {
 			stackWorth += item.chip.denomination;
 		}
 		item.chip.amount = currentChipCount;
@@ -75,11 +75,9 @@ function correctBySubtraction(items, buyin) {
 
 function convertToItems(assignedChips, players) {
 	let values = applyValues(assignedChips);
-	let weights = applyWeights(assignedChips, players);
 	return assignedChips.map((chip, idx) => {
 		return {
 			value: values[idx],
-			weight: weights[idx],
 			chip: chip
 		};
 	});
@@ -89,7 +87,6 @@ function applyValues(assignedChips) {
 	if (assignedChips.length == 1) return [1];
 	if (assignedChips.length == 2) return [1,1];
 	if (assignedChips.length == 3) return [2,3,1];
-	// if (assignedChips.length == 5) return [4,5,3,2,1];
 	let copy = _.cloneDeep(assignedChips);
 	let sb = copy.shift();
 	let bb = copy.shift();
@@ -107,24 +104,19 @@ function applyValues(assignedChips) {
 	.map(({value}) => value);//just retain value
 }
 
-function applyWeights(items, players) {
-	let totalAmount = items.reduce((prev,{amount}) => prev + amount, 0);
-	return items.map((el) => totalAmount - _.floor(el.amount / players, 2));
-}
-
 function itemsStackWorth(stack) {
 	return stack.reduce((prev, {v,w,chip:{color,amount,denomination}}) => prev + (amount*denomination), 0);
 }
 function itemByDenomAsc({v1,w1,chip:one}, {v2,w2,chip:two}){ return one.denomination - two.denomination; }
 function byDenomAsc(one, two){ return one.denomination - two.denomination; }
-function byValueDesc(one, two) { return two.value - one.value;}
 function byValueAsc(one, two)  { return one.value - two.value;}
+function byValueDesc(one, two) { return two.value - one.value;}
 function byValueAmountRatioDesc(one, two) {
 	let ratio1 = one.value / one.chip.amount;
 	let ratio2 = two.value / two.chip.amount;
 	return ratio2 - ratio1;
 }
 
-return {KnapsackSolver, applyValues, applyWeights, correctBySubtraction};
+return {KnapsackSolver, applyValues, correctBySubtraction};
 
 })();
