@@ -1,4 +1,9 @@
 # Captains Log
+## Day 14
+Googled some more and came across some dynamic programming solution explanations to the 0/1 Knapsack problem. After following some more links in the rabbit hole, I came across [this javascript solution](https://rosettacode.org/wiki/Knapsack_problem/Bounded#JavaScript). This appears to be the best guide yet to the more specific problem I'm trying to solve, and it uses a Dynamic Programming solution. 
+
+So now I have a path, I only have to write it as an implementation in my code somewhere now. :)
+
 ## Day 13
 From this point on, I'll start logging the times when I work on this project, but for consistency's sake I'll also tag them with _Day x_. It'll usually be _SoftwareSandbox_ sessions, so a _Day_ will typically count as about 2-4 hours of work in an evening.
 

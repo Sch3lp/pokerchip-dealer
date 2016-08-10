@@ -245,11 +245,11 @@ describe.only('KnapsackSolver', function() {
 			let stack = new Stack(solver.solve(buyin));
 			assertStackConstraints(stack, myChips, buyin, 7);
 			expect(stack.chips).to.deep.equal([
-				{color:'orange'	,		amount:10	,denomination: 0.05	},// 22.22% -> 22 -> 25
-				{color:'white-red'	,	amount:15	,denomination: 0.1	},// 33.33% -> 34 -> 35
-				{color:'red-blue'	,	amount:12	,denomination: 0.25	},// 26.66% -> 27 -> 25
-				{color:'blue-white'	,	amount:6	,denomination: 0.5	},// 13.33% -> 13 -> 10
-				{color:'green-pink',	amount:2	,denomination: 1	} //  4.44% ->  4 ->  5
+				{color:'orange'			,amount:10	,denomination: 0.05	},// 22.22% -> 22 -> 25
+				{color:'white-red'		,amount:15	,denomination: 0.1	},// 33.33% -> 34 -> 35
+				{color:'red-blue'		,amount:12	,denomination: 0.25	},// 26.66% -> 27 -> 25
+				{color:'blue-white'		,amount:6	,denomination: 0.5	},// 13.33% -> 13 -> 10
+				{color:'green-pink'		,amount:2	,denomination: 1	} //  4.44% ->  4 ->  5
 			], `\nActual:\n${stack.toString()}\n`);
 		});
 		
