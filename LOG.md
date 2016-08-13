@@ -1,4 +1,18 @@
 # Captains Log
+## Day 15
+After trying to understand the rosettacode solution by refactoring it, I think it's safe to say that it's the same problem I'm trying to solve.
+
+    Knapsack        =   Stack
+    TotalWeight     =   Buyin
+    Item            =   Chip
+    Pieces          =   Chip amount (limited by total amount in the pokerset divided by players)
+    Weight          =   Chip denomination (the value of 1 chip)
+    Value           =   How much I want one color to be in the stack. I have a method for that
+
+So! The type of Knapsack problem I'm solving is called the Bounded Knapsack Problem. I was so close on Day 5. :)
+
+The mistake I made back then was that I considered the buy-in the _extra_ constraint. And I had a formula to attribute the weight.
+
 ## Day 14
 Googled some more and came across some dynamic programming solution explanations to the 0/1 Knapsack problem. After following some more links in the rabbit hole, I came across [this javascript solution](https://rosettacode.org/wiki/Knapsack_problem/Bounded#JavaScript). This appears to be the best guide yet to the more specific problem I'm trying to solve, and it uses a Dynamic Programming solution. 
 
