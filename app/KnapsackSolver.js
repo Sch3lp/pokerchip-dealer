@@ -102,6 +102,7 @@ function convertToItems(assignedChips) {
 	return assignedChips.map((chip, idx) => {
 		return {
 			value: values[idx],
+			weight: chip.denomination,
 			chip: chip
 		};
 	});

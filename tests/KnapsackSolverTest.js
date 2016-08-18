@@ -24,7 +24,7 @@ describe('KnapsackSolver', function() {
 			
 			it('with 1 item => value is 1', function() {
 				let items = convertToItems(_1chips);
-				let itemValues = toValueColorPairs(items);
+				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:1}
 				]);
@@ -32,7 +32,7 @@ describe('KnapsackSolver', function() {
 			
 			it('with 2 items => values are equal', function() {
 				let items = convertToItems(_2chips);
-				let itemValues = toValueColorPairs(items);
+				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:1},
 					{color:'red',	value:1}
@@ -41,7 +41,7 @@ describe('KnapsackSolver', function() {
 			
 			it('with 3 items => second item has highest value, last item lowest', function() {
 				let items = convertToItems(_3chips);
-				let itemValues = toValueColorPairs(items);
+				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:2},
 					{color:'red',	value:3},
@@ -51,7 +51,7 @@ describe('KnapsackSolver', function() {
 			
 			it('with 4 items => second item has highest value, 3rd item second highest, rest descend in values along position in item list', function() {
 				let items = convertToItems(_4chips);
-				let itemValues = toValueColorPairs(items);
+				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:2},
 					{color:'red',	value:4},
@@ -62,7 +62,7 @@ describe('KnapsackSolver', function() {
 			
 			it('with 5 items => same as with 4', function() {
 				let items = convertToItems(_5chips);
-				let itemValues = toValueColorPairs(items);
+				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:3},
 					{color:'red',	value:5},
@@ -74,6 +74,17 @@ describe('KnapsackSolver', function() {
 		});
 		describe('applyWeights', function() {
 
+			it('basically translates denomination to weight', function(){
+				let items = convertToItems(_5chips);
+				let itemValues = toColorWeightPairs(items);
+				expect(itemValues).to.deep.equal([
+					{color:'white',	weight:0.05},
+					{color:'red',	weight:0.1},
+					{color:'blue',	weight:0.25},
+					{color:'green',	weight:0.5},
+					{color:'black',	weight:1}
+				]);
+			});
 		});
 	});
 
@@ -82,11 +93,11 @@ describe('KnapsackSolver', function() {
 		it('converts assigned chips to valued and weighted items for use in knapsack', function() {
 			let items = new KnapsackSolver(_5chips, 6).items;
 			expect(items).to.deep.equal([
-		{value:3, chip: {color:'white',amount:100,denomination:0.05}},
-		{value:5, chip: {color:'red',amount:150,denomination:0.1}},
-		{value:4, chip: {color:'blue',amount:100,denomination:0.25}},
-		{value:2, chip: {color:'green',amount:75,denomination:0.5}},
-		{value:1, chip: {color:'black',amount:50,denomination:1}}
+		{value:3, weight:0.05,	chip: {color:'white',amount:100,denomination:0.05}},
+		{value:5, weight:0.1,	chip: {color:'red',amount:150,denomination:0.1}},
+		{value:4, weight:0.25,	chip: {color:'blue',amount:100,denomination:0.25}},
+		{value:2, weight:0.5,	chip: {color:'green',amount:75,denomination:0.5}},
+		{value:1, weight:1,		chip: {color:'black',amount:50,denomination:1}}
 			]);
 		});
 	});
@@ -236,8 +247,11 @@ describe('KnapsackSolver', function() {
 	});
 });
 
-function toValueColorPairs(items) {
+function toColorValuePairs(items) {
 	return items.map((item) => {return {value:item.value, color:item.chip.color};});
+}
+function toColorWeightPairs(items) {
+	return items.map((item) => {return {weight:item.weight, color:item.chip.color};});
 }
 
 function assertStackConstraints(actualStack, givenChips, buyin, players) {
