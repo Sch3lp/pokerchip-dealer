@@ -23,7 +23,7 @@ describe('KnapsackSolver', function() {
 		describe('applyValues', function() {
 			
 			it('with 1 item => value is 1', function() {
-				let items = convertToItems(_1chips);
+				let items = convertToItems(_1chips, 6);
 				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:1}
@@ -31,7 +31,7 @@ describe('KnapsackSolver', function() {
 			});
 			
 			it('with 2 items => values are equal', function() {
-				let items = convertToItems(_2chips);
+				let items = convertToItems(_2chips, 6);
 				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:1},
@@ -40,7 +40,7 @@ describe('KnapsackSolver', function() {
 			});
 			
 			it('with 3 items => second item has highest value, last item lowest', function() {
-				let items = convertToItems(_3chips);
+				let items = convertToItems(_3chips, 6);
 				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:2},
@@ -50,7 +50,7 @@ describe('KnapsackSolver', function() {
 			});
 			
 			it('with 4 items => second item has highest value, 3rd item second highest, rest descend in values along position in item list', function() {
-				let items = convertToItems(_4chips);
+				let items = convertToItems(_4chips, 6);
 				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:2},
@@ -61,7 +61,7 @@ describe('KnapsackSolver', function() {
 			});
 			
 			it('with 5 items => same as with 4', function() {
-				let items = convertToItems(_5chips);
+				let items = convertToItems(_5chips, 6);
 				let itemValues = toColorValuePairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	value:3},
@@ -75,7 +75,7 @@ describe('KnapsackSolver', function() {
 		describe('applyWeights', function() {
 
 			it('basically translates denomination to weight', function(){
-				let items = convertToItems(_5chips);
+				let items = convertToItems(_5chips, 6);
 				let itemValues = toColorWeightPairs(items);
 				expect(itemValues).to.deep.equal([
 					{color:'white',	weight:0.05},
@@ -86,6 +86,20 @@ describe('KnapsackSolver', function() {
 				]);
 			});
 		});
+		describe('applyAmounts', function() {
+
+			it('amount of an item is equal to the amount of chips of that color, divided by the amount of players', function(){
+				let items = convertToItems(_5chips, 6);
+				let itemValues = toColorAmountPairs(items);
+				expect(itemValues).to.deep.equal([
+					{color:'white',	amount:16},
+					{color:'red',	amount:25},
+					{color:'blue',	amount:16},
+					{color:'green',	amount:12},
+					{color:'black',	amount:8}
+				]);
+			});
+		});
 	});
 
 	describe('constructor', function() {
@@ -93,11 +107,11 @@ describe('KnapsackSolver', function() {
 		it('converts assigned chips to valued and weighted items for use in knapsack', function() {
 			let items = new KnapsackSolver(_5chips, 6).items;
 			expect(items).to.deep.equal([
-		{value:3, weight:0.05,	chip: {color:'white',amount:100,denomination:0.05}},
-		{value:5, weight:0.1,	chip: {color:'red',amount:150,denomination:0.1}},
-		{value:4, weight:0.25,	chip: {color:'blue',amount:100,denomination:0.25}},
-		{value:2, weight:0.5,	chip: {color:'green',amount:75,denomination:0.5}},
-		{value:1, weight:1,		chip: {color:'black',amount:50,denomination:1}}
+		{value:3, weight:0.05,	amount:16,	chip: {color:'white',amount:100,denomination:0.05}},
+		{value:5, weight:0.1,	amount:25,	chip: {color:'red',amount:150,denomination:0.1}},
+		{value:4, weight:0.25,	amount:16,	chip: {color:'blue',amount:100,denomination:0.25}},
+		{value:2, weight:0.5,	amount:12,	chip: {color:'green',amount:75,denomination:0.5}},
+		{value:1, weight:1,		amount:8,	chip: {color:'black',amount:50,denomination:1}}
 			]);
 		});
 	});
@@ -252,6 +266,9 @@ function toColorValuePairs(items) {
 }
 function toColorWeightPairs(items) {
 	return items.map((item) => {return {weight:item.weight, color:item.chip.color};});
+}
+function toColorAmountPairs(items) {
+	return items.map((item) => {return {amount:item.amount, color:item.chip.color};});
 }
 
 function assertStackConstraints(actualStack, givenChips, buyin, players) {

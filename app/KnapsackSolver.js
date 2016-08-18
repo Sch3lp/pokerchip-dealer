@@ -46,7 +46,7 @@ function dynamic(items, players, buyin) {
 
 	// limit amounts of chips as a floor(item.amount/players)
 	for (let item of items){
-		_.floor(item.chip.amount / players, 2);
+		_.floor(item.chip.amount / players);
 	}
 	// initialize DP matrix
 	//   amount of dimensions
@@ -97,12 +97,13 @@ function correctBySubtraction(items, buyin) {
 	return items.sort(itemByDenomAsc);
 }
 
-function convertToItems(assignedChips) {
+function convertToItems(assignedChips, players) {
 	let values = applyValues(assignedChips);
 	return assignedChips.map((chip, idx) => {
 		return {
 			value: values[idx],
-			weight: chip.denomination,
+			weight: _.clone(chip.denomination),
+			amount: _.floor(chip.amount / players),
 			chip: chip
 		};
 	});
