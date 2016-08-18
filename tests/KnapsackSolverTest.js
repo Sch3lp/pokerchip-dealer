@@ -2,9 +2,9 @@
 /* globals require, describe, it, console */
 let expect = require('chai').expect;
 let Stack = require('../app/stack');
-let {KnapsackSolver, applyValues, correctBySubtraction} = require('../app/knapsacksolver');
+let {KnapsackSolver, applyValues, correctBySubtraction, convertToItems, dynamic} = require('../app/knapsacksolver');
 
-describe.only('KnapsackSolver', function() {
+describe('KnapsackSolver', function() {
 	let _1chips =                [{color:'white',	amount:100,	denomination:0.05}];
 	let _2chips = _1chips.concat([{color:'red',		amount:150,	denomination:0.1}]);
 	let _3chips = _2chips.concat([{color:'blue',	amount:100,	denomination:0.25}]);
@@ -19,56 +19,61 @@ describe.only('KnapsackSolver', function() {
 	];
 	// {color:'black-salmon',	amount: 25,		denomination:1},
 
-	describe('applyValues', function() {
-		
-		it('with 1 item => value is 1', function() {
-			let items = applyValues(_1chips);
-			let itemValues = toValueColorPairs(items,_1chips);
-			expect(itemValues).to.deep.equal([
-				{color:'white',	value:1}
-			]);
+	describe('convertToItems', function() {
+		describe('applyValues', function() {
+			
+			it('with 1 item => value is 1', function() {
+				let items = convertToItems(_1chips);
+				let itemValues = toValueColorPairs(items);
+				expect(itemValues).to.deep.equal([
+					{color:'white',	value:1}
+				]);
+			});
+			
+			it('with 2 items => values are equal', function() {
+				let items = convertToItems(_2chips);
+				let itemValues = toValueColorPairs(items);
+				expect(itemValues).to.deep.equal([
+					{color:'white',	value:1},
+					{color:'red',	value:1}
+				]);
+			});
+			
+			it('with 3 items => second item has highest value, last item lowest', function() {
+				let items = convertToItems(_3chips);
+				let itemValues = toValueColorPairs(items);
+				expect(itemValues).to.deep.equal([
+					{color:'white',	value:2},
+					{color:'red',	value:3},
+					{color:'blue',	value:1}
+				]);
+			});
+			
+			it('with 4 items => second item has highest value, 3rd item second highest, rest descend in values along position in item list', function() {
+				let items = convertToItems(_4chips);
+				let itemValues = toValueColorPairs(items);
+				expect(itemValues).to.deep.equal([
+					{color:'white',	value:2},
+					{color:'red',	value:4},
+					{color:'blue',	value:3},
+					{color:'green',	value:1}
+				]);
+			});
+			
+			it('with 5 items => same as with 4', function() {
+				let items = convertToItems(_5chips);
+				let itemValues = toValueColorPairs(items);
+				expect(itemValues).to.deep.equal([
+					{color:'white',	value:3},
+					{color:'red',	value:5},
+					{color:'blue',	value:4},
+					{color:'green',	value:2},
+					{color:'black',	value:1}
+				]);
+			});
 		});
-		
-		it('with 2 items => values are equal', function() {
-			let items = applyValues(_2chips);
-			let itemValues = toValueColorPairs(items,_2chips);
-			expect(itemValues).to.deep.equal([
-				{color:'white',	value:1},
-				{color:'red',	value:1}
-			]);
-		});
-		
-		it('with 3 items => second item has highest value, last item lowest', function() {
-			let items = applyValues(_3chips);
-			let itemValues = toValueColorPairs(items,_3chips);
-			expect(itemValues).to.deep.equal([
-				{color:'white',	value:2},
-				{color:'red',	value:3},
-				{color:'blue',	value:1}
-			]);
-		});
-		
-		it('with 4 items => second item has highest value, 3rd item second highest, rest descend in values along position in item list', function() {
-			let items = applyValues(_4chips);
-			let itemValues = toValueColorPairs(items,_4chips);
-			expect(itemValues).to.deep.equal([
-				{color:'white',	value:2},
-				{color:'red',	value:4},
-				{color:'blue',	value:3},
-				{color:'green',	value:1}
-			]);
-		});
-		
-		it('with 5 items => same as with 4', function() {
-			let items = applyValues(_5chips);
-			let itemValues = toValueColorPairs(items,_5chips);
-			expect(itemValues).to.deep.equal([
-				{color:'white',	value:3},
-				{color:'red',	value:5},
-				{color:'blue',	value:4},
-				{color:'green',	value:2},
-				{color:'black',	value:1}
-			]);
+		describe('applyWeights', function() {
+
 		});
 	});
 
@@ -171,50 +176,7 @@ describe.only('KnapsackSolver', function() {
 			let correctedStack = correctBySubtraction(overGreedy,10);
 			expect(correctedStack).to.deep.equal(expectedCorrected);
 		});
-		
-		it.skip('exactly two lowest and heighest valued denominations overGreedy, removes both chips', function() {
-			let overGreedy = [
-		{value:3, chip: {color:'white-red',		amount:15,denomination: 0.05}},
-		{value:5, chip: {color:'red-blue',		amount:16,denomination: 0.1}},
-		{value:4, chip: {color:'blue-white',	amount:7, denomination: 0.25}},
-		{value:2, chip: {color:'green-pink',	amount:8, denomination: 0.5}},
-		{value:1, chip: {color:'black-salmon',	amount:3, denomination: 1}}
-			];
-			let expectedCorrected = [
-		{value:3, chip: {color:'white-red',		amount:15,denomination: 0.05}},
-		{value:5, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
-		{value:4, chip: {color:'blue-white',	amount:7, denomination: 0.25}},
-		{value:2, chip: {color:'green-pink',	amount:8, denomination: 0.5}},
-		{value:1, chip: {color:'black-salmon',	amount:2, denomination: 1}}
-			];
-			let stack = overGreedy.map(({v,w,chip})=>chip);
-			expect(new Stack(stack).totalValue).to.equal(11.1);
-			let correctedStack = correctBySubtraction(overGreedy,10);
-			expect(new Stack(correctedStack.map(({v,w,chip})=>chip)).totalValue).to.equal(10);
-			expect(correctedStack).to.deep.equal(expectedCorrected);
-		});
-		
-		it.skip('exactly two lowest and second to heighest valued denominations overGreedy, removes both chips', function() {
-			let overGreedy = [
-		{value:3, chip: {color:'white-red',		amount:15,denomination: 0.05}},
-		{value:5, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
-		{value:4, chip: {color:'blue-white',	amount:8,denomination: 0.25}},
-		{value:2, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
-		{value:1, chip: {color:'black-salmon',	amount:3,denomination: 1}}
-			];
-			let expectedCorrected = [
-		{value:3, chip: {color:'white-red',		amount:15,denomination: 0.05}},
-		{value:5, chip: {color:'red-blue',		amount:15,denomination: 0.1}},
-		{value:4, chip: {color:'blue-white',	amount:7,denomination: 0.25}},
-		{value:2, chip: {color:'green-pink',	amount:8,denomination: 0.5}},
-		{value:1, chip: {color:'black-salmon',	amount:2,denomination: 1}}
-			];
-			let stack = overGreedy.map(({v,w,chip})=>chip);
-			expect(new Stack(stack).totalValue).to.equal(11.25);
-			let correctedStack = correctBySubtraction(overGreedy,10);
-			expect(correctedStack).to.deep.equal(expectedCorrected);
-		});
-
+				
 		it('biggest possible overGreediness, removes necessary chips', function() {
 			let overGreedy = [
 		{value:3, chip: {color:'white-red',		amount:16,denomination: 0.05}},
@@ -254,10 +216,28 @@ describe.only('KnapsackSolver', function() {
 		});
 		
 	});
+
+	describe('dynamic', function() {
+		
+		it('', function() {
+			let buyin = 10;
+			let solver = new KnapsackSolver(myChips, 7);
+			let stack = new Stack(solver.solve(buyin));
+			assertStackConstraints(stack, myChips, buyin, 7);
+			expect(stack.chips).to.deep.equal([
+				{color:'orange'			,amount:10	,denomination: 0.05	},// 22.22% -> 22 -> 25
+				{color:'white-red'		,amount:15	,denomination: 0.1	},// 33.33% -> 34 -> 35
+				{color:'red-blue'		,amount:12	,denomination: 0.25	},// 26.66% -> 27 -> 25
+				{color:'blue-white'		,amount:6	,denomination: 0.5	},// 13.33% -> 13 -> 10
+				{color:'green-pink'		,amount:2	,denomination: 1	} //  4.44% ->  4 ->  5
+			], `\nActual:\n${stack.toString()}\n`);
+		});
+		
+	});
 });
 
-function toValueColorPairs(values, chips) {
-	return values.map((value, idx) => {return {color:chips[idx].color,value};});
+function toValueColorPairs(items) {
+	return items.map((item) => {return {value:item.value, color:item.chip.color};});
 }
 
 function assertStackConstraints(actualStack, givenChips, buyin, players) {

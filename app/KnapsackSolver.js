@@ -23,6 +23,8 @@ class KnapsackSolver {
 		// TODO check if sum of all amounts, divided by players, is already lower than the buyin
 		let greedyItems = greedy(copiedItems, this.players, buyin);
 		
+		let dynamicItems = dynamic(copiedItems, this.players, buyin);
+
 		let greedyStackWorth = itemsStackWorth(greedyItems);
 		
 		if (greedyStackWorth == buyin) {
@@ -39,6 +41,25 @@ class KnapsackSolver {
 	}
 }
 
+function dynamic(items, players, buyin) {
+	let stackWorth = 0;
+
+	// limit amounts of chips as a floor(item.amount/players)
+	for (let item of items){
+		_.floor(item.chip.amount / players, 2);
+	}
+	// initialize DP matrix
+	//   amount of dimensions
+	let amountOfDimensions = items.length;
+	//   max depth
+	let maxDepth = items.reduce((prev,{v,w,chip:{c,amount:cur,d}}) => {
+		return cur > prev ? cur : prev;
+	}, 0);
+
+	// calculate DP matrix
+	// find ideal solution
+}
+
 function greedy(items, players, buyin) {
 	let stackWorth = 0;
 	let sortedItems = items.sort(byValueDesc);
@@ -46,14 +67,11 @@ function greedy(items, players, buyin) {
 	for (let item of sortedItems) {
 		let maxChipCount = _.floor(item.chip.amount / players, 2);
 		let currentChipCount = 0;
-		// console.log(`color: ${item.chip.color}`);
+
 		while (--item.chip.amount > 0 
 			&& ++currentChipCount < maxChipCount 
 			&& stackWorth < buyin) {
 			stackWorth += item.chip.denomination;
-			// console.log(`\t--item.chip.amount > 0: ${item.chip.amount + 1 > 0 }`);
-			// console.log(`\t++currentChipCount < maxChipCount: ${currentChipCount + 1 < maxChipCount}`);
-			// console.log(`\tstackWorth < buyin: ${stackWorth < buyin}`);
 		}
 		item.chip.amount = currentChipCount;
 	}
@@ -79,7 +97,7 @@ function correctBySubtraction(items, buyin) {
 	return items.sort(itemByDenomAsc);
 }
 
-function convertToItems(assignedChips, players) {
+function convertToItems(assignedChips) {
 	let values = applyValues(assignedChips);
 	return assignedChips.map((chip, idx) => {
 		return {
@@ -123,6 +141,6 @@ function byValueAmountRatioDesc(one, two) {
 	return ratio2 - ratio1;
 }
 
-return {KnapsackSolver, applyValues, correctBySubtraction};
+return {KnapsackSolver, applyValues, correctBySubtraction, convertToItems, dynamic};
 
 })();
