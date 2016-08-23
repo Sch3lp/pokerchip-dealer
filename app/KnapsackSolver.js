@@ -20,7 +20,6 @@ class KnapsackSolver {
 		let resultItems = [];
 		let copiedItems = _.cloneDeep(this.items);
 
-		// TODO check if sum of all amounts, divided by players, is already lower than the buyin
 		let greedyItems = greedy(copiedItems, this.players, buyin);
 		
 		let dynamicItems = dynamic(copiedItems, this.players, buyin);
@@ -36,7 +35,7 @@ class KnapsackSolver {
 			resultItems = correctBySubtraction(greedyItems, buyin);
 		}
 		return resultItems
-				.map(({value,weight,chip}) => chip)
+				.map(({value,weight,amount,chip}) => chip)
 				.sort(byDenomAsc);
 	}
 }
@@ -44,10 +43,6 @@ class KnapsackSolver {
 function dynamic(items, players, buyin) {
 	let stackWorth = 0;
 
-	// limit amounts of chips as a floor(item.amount/players)
-	for (let item of items){
-		_.floor(item.chip.amount / players);
-	}
 	// initialize DP matrix
 	//   amount of dimensions
 	let amountOfDimensions = items.length;
@@ -55,7 +50,36 @@ function dynamic(items, players, buyin) {
 	let maxDepth = items.reduce((prev,{v,w,chip:{c,amount:cur,d}}) => {
 		return cur > prev ? cur : prev;
 	}, 0);
+	//   initialize matrix with dimensions and until max depth
+	let matrix = items.map((item) => {
+		let dimension = { id:item.chip.color, values:[] };
+		for (let amount = 0; amount <= maxDepth; amount++) {
+			dimension.values[amount] = 0;
+		}
+		return dimension;
+	});
 
+	// initialize subsolutions
+	let solutions = [{}];
+	for(let subBuyin=1; subBuyin<=buyin; subBuyin++){
+		solutions[subBuyin] = bestSolution(subBuyin,items);
+	}
+	function bestSolution(subBuyin,items) {
+		let itemsInBestSolution = [];
+		let bestValue = 0;
+
+		for(let item of items) {
+			let availableWeight = subBuyin - totalWeight(itemsInBestSolution);
+			for(let amount = 0; amount <= item.amount; amount++) {
+				if (item.weight < availableWeight) {
+					itemsInBestSolution.push(item);
+				}
+			}
+		}
+	}
+	function totalWeight(items) {
+		return items.reduce((prev,cur) => cur.weight + prev, 0);
+	}
 	// calculate DP matrix
 	// find ideal solution
 }
@@ -98,8 +122,9 @@ function correctBySubtraction(items, buyin) {
 }
 
 function convertToItems(assignedChips, players) {
-	let values = applyValues(assignedChips);
-	return assignedChips.map((chip, idx) => {
+	let copiedChips = _.cloneDeep(assignedChips);
+	let values = applyValues(copiedChips);
+	return copiedChips.map((chip, idx) => {
 		return {
 			value: values[idx],
 			weight: _.clone(chip.denomination),

@@ -246,8 +246,9 @@ describe('KnapsackSolver', function() {
 		
 		it('', function() {
 			let buyin = 10;
-			let solver = new KnapsackSolver(myChips, 7);
-			let stack = new Stack(solver.solve(buyin));
+			let items = new KnapsackSolver(myChips, 7).items;
+			dynamic(items, 6, buyin)
+			let stack = new Stack();
 			assertStackConstraints(stack, myChips, buyin, 7);
 			expect(stack.chips).to.deep.equal([
 				{color:'orange'			,amount:10	,denomination: 0.05	},// 22.22% -> 22 -> 25
