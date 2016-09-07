@@ -36,36 +36,22 @@ function enrich(chipsPerColor, players){
 	});
 }
 
-class PartialStack {
-
-	constructor(amountOfChipKinds) {
-		let amountOfChipsPerValue = [],
-		    canAddChipOfValue = [];
-		
-		for(let i = 0; i < amountOfChipKinds; i++){
-			amountOfChipsPerValue[i] = 0;
-			canAddChipOfValue[i] = true;
-		}
-		this.amountOfChipsPerValue = amountOfChipsPerValue;
-		this.canAddChipOfValue = canAddChipOfValue;
+class PartialStack extends Stack {
+	/*
+	 * chip looks like this
+	 * { denomination: 10, color: 'yellow', amount: 0}
+	*/
+	constructor(chips, maxStackSize) {
+		super(chips);
+		this.maxStackSize = maxStackSize;
+		// TODO ensure all amounts are set to 0
+		// TODO ensure chips are sorted by denomination highest first
 	}
 
-	get totalValue() {
-		return 0;
-		// return this.amountOfChipsPerValue.reduce(());
-	}
-
-	mustStopAddingChips() {
-		for (let bool of this.canAddChipOfValue){
-			if (bool) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	addChipToStack(chip) {
-		
+	canAddAnotherChipOfDenomination(denomination){
+		//TODO should return true if adding another chip of the given denomination does not exceed maxStackSize
+		//TODO should return false if adding another chip DOES exceed maxStackSize
+		//TODO should return false if denomination does not exist in the stack
 	}
 
 	copy() {
