@@ -11,7 +11,7 @@ view : Model -> Html.Html Msg
 view model =
     div []
         [ div [] [ text "Your PokerSet contains: " ]
-        , div [] <| stackToDivs model.pokerset
+        , div [] <| pokersetToDivs model.pokerset
         , Html.br [] []
         , div [] [ text <| "You seem to want above chips to be divided over " ++ (toString model.players) ++ " players" ++ " for a buyin of " ++ (toString model.buyin) ++ " eurodollars" ]
         , Html.br [] []
@@ -21,11 +21,21 @@ view model =
         ]
 
 
-stackToDivs : Stack -> List (Html Msg)
-stackToDivs stack =
-    List.map chipsInColorToDiv stack
+pokersetToDivs : PokerSet -> List (Html Msg)
+pokersetToDivs pokerset =
+    List.map chipsInColorToDiv pokerset
 
 
 chipsInColorToDiv : ChipsInColor -> Html Msg
 chipsInColorToDiv chips =
     div [] [ text <| chipsInColorToString chips ]
+
+
+stackToDivs : Stack -> List (Html Msg)
+stackToDivs stack =
+    List.map chipsInColorWithValueToDiv stack
+
+
+chipsInColorWithValueToDiv : ChipsInColorWithValue -> Html msg
+chipsInColorWithValueToDiv chips =
+    div [] [ text <| chipsInColorWithValueToString chips ]

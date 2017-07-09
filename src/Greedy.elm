@@ -5,4 +5,4 @@ import Model exposing (..)
 
 greedySolve : Model -> Stack
 greedySolve model =
-    [ ( "green", 100 ) ]
+    [ ( "green", 100, 5 ) ]
