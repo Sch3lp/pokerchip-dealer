@@ -9,4 +9,17 @@ import Update exposing (..)
 
 view : Model -> Html.Html Msg
 view model =
-    div [] [ text <| (++) "Your PokerSet contains: " <| String.join ", " <| pokersetToString model.pokerset ]
+    div []
+        [ div [] [ text "Your PokerSet contains: " ]
+        , div [] <| pokersetToDivs model.pokerset
+        ]
+
+
+pokersetToDivs : PokerSet -> List (Html Msg)
+pokersetToDivs pokerset =
+    List.map chipsInColorToDiv pokerset
+
+
+chipsInColorToDiv : ChipsInColor -> Html Msg
+chipsInColorToDiv chips =
+    div [] [ text <| chipsInColorToString chips ]
