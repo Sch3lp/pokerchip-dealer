@@ -36,8 +36,3 @@ pokersetToString pokerset =
 chipsInColorToString : ChipsInColor -> String
 chipsInColorToString ( color, amount ) =
     (toString amount) ++ " " ++ color ++ " chips"
-
-
-solve : Model -> Stack
-solve model =
-    [ ( "green", 100 ) ]
