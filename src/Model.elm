@@ -26,11 +26,11 @@ type alias Stack =
 
 
 type alias ChipsInColor =
-    ( String, Amount )
+    { color : String, amount : Amount }
 
 
 type alias ChipsInColorWithValue =
-    ( String, Amount, Value )
+    { color : String, amount : Amount, value : Value }
 
 
 type alias Amount =
@@ -43,12 +43,12 @@ pokersetToString pokerset =
 
 
 chipsInColorToString : ChipsInColor -> String
-chipsInColorToString ( color, amount ) =
+chipsInColorToString { color, amount } =
     (toString amount) ++ " " ++ color ++ " chips"
 
 
 chipsInColorWithValueToString : ChipsInColorWithValue -> String
-chipsInColorWithValueToString ( color, amount, value ) =
+chipsInColorWithValueToString { color, amount, value } =
     (toString amount) ++ " " ++ color ++ " chips"
 
 

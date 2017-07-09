@@ -5,16 +5,25 @@ import Model exposing (..)
 
 greedySolve : Model -> Stack
 greedySolve model =
-    [ ( "green", 100, 5 ) ]
+    [ ChipsInColorWithValue "green" 100 5 ]
+
+
+assignPreferredDenominationValues : List Value -> PokerSet -> Stack
+assignPreferredDenominationValues values pokerset =
+    let
+        sortedByAmount =
+            List.sortBy .amount pokerset
+    in
+        [ ChipsInColorWithValue "green" 100 5 ]
 
 
 limitAmount : Players -> PokerSet -> PokerSet
 limitAmount players pokerset =
-    List.map (limitAmountOfChip players) pokerset
+    List.map (limitAmountOfChips players) pokerset
 
 
-limitAmountOfChip : Players -> ChipsInColor -> ChipsInColor
-limitAmountOfChip players ( color, amount ) =
+limitAmountOfChips : Players -> ChipsInColor -> ChipsInColor
+limitAmountOfChips players { color, amount } =
     let
         amountAsFloat =
             toFloat amount
@@ -25,4 +34,4 @@ limitAmountOfChip players ( color, amount ) =
         newAmount =
             floor <| amountAsFloat / playersAsFloat
     in
-        ( color, newAmount )
+        ChipsInColor color newAmount

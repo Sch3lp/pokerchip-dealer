@@ -8,14 +8,14 @@ import View exposing (..)
 
 myPokerSet : PokerSet
 myPokerSet =
-    [ ( "purple", 75 )
-    , ( "orange", 75 )
-    , ( "white-red", 100 )
-    , ( "red-blue", 100 )
-    , ( "blue-white", 50 )
-    , ( "green-pink", 50 )
-    , ( "black-salmon", 25 )
-    , ( "purple-pink", 25 )
+    [ ChipsInColor "purple" 75
+    , ChipsInColor "orange" 75
+    , ChipsInColor "white-red" 100
+    , ChipsInColor "red-blue" 100
+    , ChipsInColor "blue-white" 50
+    , ChipsInColor "green-pink" 50
+    , ChipsInColor "black-salmon" 25
+    , ChipsInColor "purple-pink" 25
     ]
 
 
