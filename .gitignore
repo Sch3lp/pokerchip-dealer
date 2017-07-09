@@ -46,3 +46,6 @@ jspm_packages
 ### IntelliJ ###
 
 .idea
+
+### Elm ###
+elm-stuff/
