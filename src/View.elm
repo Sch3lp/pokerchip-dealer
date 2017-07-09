@@ -11,13 +11,19 @@ view : Model -> Html.Html Msg
 view model =
     div []
         [ div [] [ text "Your PokerSet contains: " ]
-        , div [] <| pokersetToDivs model.pokerset
+        , div [] <| stackToDivs model.pokerset
+        , Html.br [] []
+        , div [] [ text <| "You seem to want above chips to be divided over " ++ (toString model.players) ++ " players" ++ " for a buyin of " ++ (toString model.buyin) ++ " eurodollars" ]
+        , Html.br [] []
+        , div [] [ text "The ideal solution I came up with is:" ]
+        , Html.br [] []
+        , div [] <| stackToDivs <| solve model
         ]
 
 
-pokersetToDivs : PokerSet -> List (Html Msg)
-pokersetToDivs pokerset =
-    List.map chipsInColorToDiv pokerset
+stackToDivs : Stack -> List (Html Msg)
+stackToDivs stack =
+    List.map chipsInColorToDiv stack
 
 
 chipsInColorToDiv : ChipsInColor -> Html Msg
