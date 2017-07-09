@@ -9,4 +9,4 @@ import Update exposing (..)
 
 view : Model -> Html.Html Msg
 view model =
-    div [] [ text <| (++) "Your PokerSet contains:" <| String.join ", " <| pokersetToString model.pokerset ]
+    div [] [ text <| (++) "Your PokerSet contains: " <| String.join ", " <| pokersetToString model.pokerset ]
