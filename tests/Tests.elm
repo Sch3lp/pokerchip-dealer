@@ -11,16 +11,10 @@ import Greedy exposing (..)
 all : Test
 all =
     describe "pokerchip dealer"
-        [ greedyTests
+        [ greedyUnitTests
+
+        --, scenarioTests
         ]
-
-
-
--- {color:'orange'			,amount:10	,denomination: 0.05	},// 22.22% -> 22 -> 25
--- 				{color:'white-red'		,amount:15	,denomination: 0.1	},// 33.33% -> 34 -> 35
--- 				{color:'red-blue'		,amount:12	,denomination: 0.25	},// 26.66% -> 27 -> 25
--- 				{color:'blue-white'		,amount:6	,denomination: 0.5	},// 13.33% -> 13 -> 10
--- 				{color:'green-pink'		,amount:2	,denomination: 1	} //  4.44% ->  4 ->  5
 
 
 pokerbrosPokerset : PokerSet
@@ -36,8 +30,29 @@ pokerbrosPokerset =
     ]
 
 
-greedyTests : Test
-greedyTests =
+greedyUnitTests : Test
+greedyUnitTests =
+    describe "Greedy Unit Tests"
+        [ describe "Find limited amount of chips per color"
+            [ test "for 6 players" <|
+                \() ->
+                    Expect.equal
+                        (limitAmount 6 pokerbrosPokerset)
+                        [ ( "purple", 12 )
+                        , ( "orange", 12 )
+                        , ( "white-red", 16 )
+                        , ( "red-blue", 16 )
+                        , ( "blue-white", 8 )
+                        , ( "green-pink", 8 )
+                        , ( "black-salmon", 4 )
+                        , ( "purple-pink", 4 )
+                        ]
+            ]
+        ]
+
+
+scenarioTests : Test
+scenarioTests =
     describe "Greedy Algorithm"
         [ describe "Pokerbros case"
             [ test "10 euro for 6 players" <|

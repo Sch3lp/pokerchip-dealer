@@ -26,11 +26,15 @@ type alias Stack =
 
 
 type alias ChipsInColor =
-    ( String, Int )
+    ( String, Amount )
 
 
 type alias ChipsInColorWithValue =
-    ( String, Int, Value )
+    ( String, Amount, Value )
+
+
+type alias Amount =
+    Int
 
 
 pokersetToString : PokerSet -> List String
