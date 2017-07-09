@@ -1,5 +1,7 @@
 /* jshint undef: true, unused: false, esnext: true, strict:false, laxbreak:true */
 /* globals module, require */
+let Stack = require('./stack');
+
 module.exports = (() => {
 
 let _ = require('lodash');
@@ -28,10 +30,10 @@ class AaronAlg {
 
 }
 
-function enrich(chipsPerColor, players){
+function enrich(chipsPerColor, players) {
 	return chipsPerColor.map((chip) => {
 		let enriched = _.cloneDeep(chip);
-		enriched.max = _.floor(enriched.amount / players)
+		enriched.max = _.floor(enriched.amount / players);
 		return enriched;
 	});
 }

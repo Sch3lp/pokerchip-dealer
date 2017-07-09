@@ -42,3 +42,7 @@ jspm_packages
 
 # OSX
 .DS_Store
+
+### IntelliJ ###
+
+.idea

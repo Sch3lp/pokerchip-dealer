@@ -15,9 +15,9 @@ describe('KnapsackSolver', function() {
 	{color:'white-red',		amount: 100,	denomination:0.1},
 	{color:'red-blue',		amount: 100,	denomination:0.25},
 	{color:'blue-white',	amount: 50,		denomination:0.5},
-	{color:'green-pink',	amount: 50,		denomination:1}
+	{color:'green-pink',	amount: 50,		denomination:1},
+	{color:'black-salmon',	amount: 25,		denomination:2}
 	];
-	// {color:'black-salmon',	amount: 25,		denomination:1},
 
 	describe('convertToItems', function() {
 		describe('applyValues', function() {
@@ -224,13 +224,13 @@ describe('KnapsackSolver', function() {
 		});
 	});
 
-	describe('solve', function() {
+	describe.only('solve', function() {
 		
 		it('pokerbros case', function() {
 			let buyin = 10;
-			let solver = new KnapsackSolver(myChips, 7);
+			let solver = new KnapsackSolver(myChips, 9);
 			let stack = new Stack(solver.solve(buyin));
-			assertStackConstraints(stack, myChips, buyin, 7);
+			assertStackConstraints(stack, myChips, buyin, 9);
 			expect(stack.chips).to.deep.equal([
 				{color:'orange'			,amount:10	,denomination: 0.05	},// 22.22% -> 22 -> 25
 				{color:'white-red'		,amount:15	,denomination: 0.1	},// 33.33% -> 34 -> 35

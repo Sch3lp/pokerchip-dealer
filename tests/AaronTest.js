@@ -10,14 +10,14 @@ describe('PartialStack', function() {
 			let partialStack = new PartialStack(5);
 			expect(partialStack.mustStopAddingChips()).to.be.false;
 		});
-		it('should return false when at least one chip of any kind can be added', function() {
+		it('should return false when at least one chip of any denom can be added', function() {
 			let partialStack = new PartialStack(3);
 			partialStack.canAddChipOfValue[0] = false;
 			partialStack.canAddChipOfValue[1] = false;
 			partialStack.canAddChipOfValue[2] = true;
 			expect(partialStack.mustStopAddingChips()).to.be.false;
 		});
-		it('should return true when at no chip of any kind can be added', function() {
+		it('should return true when at no chip of any denom can be added', function() {
 			let partialStack = new PartialStack(3);
 			partialStack.canAddChipOfValue[0] = false;
 			partialStack.canAddChipOfValue[1] = false;
@@ -25,7 +25,6 @@ describe('PartialStack', function() {
 			expect(partialStack.mustStopAddingChips()).to.be.true;
 		});
 	});
-
 	describe('copy', function() {
 		it('should return a deep copy of the given PartialStack', function() {
 			let partialStack = new PartialStack(4);
@@ -37,9 +36,15 @@ describe('PartialStack', function() {
 			expect(copy).to.deep.equal(partialStack);
 		});
 	});
+
+	describe('satisfiesConstraints', function() {
+		it('should return false when totalValue exceeds buyin', function() {
+			let partialStack = new PartialStack(4);
+		});
+	});
 });
 
-describe.only('AaronAlg', function() {
+describe('AaronAlg', function() {
 	let _1chips =                [{color:'white',	amount:100}];
 	let _2chips = _1chips.concat([{color:'red',		amount:150}]);
 	let _3chips = _2chips.concat([{color:'blue',	amount:100}]);

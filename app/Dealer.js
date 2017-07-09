@@ -30,7 +30,7 @@ class Dealer {
 		let denoms = Helper.findIdealDenominations(this.pokerSet.amountOfColors, this.lowestDenom);
 		let limitedDenoms = denoms.slice(0,idealAmountOfDenoms);
 		let assignedChips = ColorPicker.smartpickColors(limitedDenoms, this.pokerSet.distributionPerColor);
-
+		let bestStack = new DPSolver(stackEvaluationFunction).solve(assignedChips, this.buyIn, this.players);
 		let stackChips = new KnapsackSolver(assignedChips, this.players).solve(this.buyIn);
 		return new Stack(stackChips);
 	}
