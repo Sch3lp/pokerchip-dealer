@@ -11,25 +11,37 @@ greedySolve model =
 assignPreferredDenominationValues : List Value -> PokerSet -> Stack
 assignPreferredDenominationValues values pokerset =
     let
-        sortedByAmount =
-            List.reverse <| List.sortBy .amount pokerset
-
         chipsIn3124Order =
-            to3124 sortedByAmount
+            to3124 <| sortedByAmountDesc pokerset
     in
         List.map2 toChipsWithValue chipsIn3124Order values
+
+
+byAmountDesc : ChipsInColor -> ChipsInColor -> Order
+byAmountDesc a b =
+    case compare a.amount b.amount of
+        LT ->
+            GT
+
+        EQ ->
+            EQ
+
+        GT ->
+            LT
+
+
+sortedByAmountDesc : PokerSet -> PokerSet
+sortedByAmountDesc pokerset =
+    List.sortWith byAmountDesc pokerset
 
 
 to3124 : List a -> List a
 to3124 list =
     case list of
-        [] ->
-            []
+        one :: two :: three :: t ->
+            three :: one :: two :: t
 
-        one :: (two :: (three :: t)) ->
-            (three :: (one :: (two :: t)))
-
-        one :: t ->
+        list ->
             list
 
 

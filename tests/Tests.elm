@@ -2,8 +2,6 @@ module Tests exposing (..)
 
 import Test exposing (..)
 import Expect
-import Fuzz exposing (list, int, tuple, string)
-import String
 import Model exposing (..)
 import Greedy exposing (..)
 
@@ -46,6 +44,21 @@ greedyUnitTests =
                         , ChipsInColor "green-pink" 8
                         , ChipsInColor "black-salmon" 4
                         , ChipsInColor "purple-pink" 4
+                        ]
+            ]
+        , describe "sortedByAmountDesc"
+            [ test "returns pokerset sortedByAmount Desc" <|
+                \() ->
+                    Expect.equal
+                        (sortedByAmountDesc pokerbrosPokerset)
+                        [ ChipsInColor "white-red" 100
+                        , ChipsInColor "red-blue" 100
+                        , ChipsInColor "purple" 75
+                        , ChipsInColor "orange" 75
+                        , ChipsInColor "blue-white" 50
+                        , ChipsInColor "green-pink" 50
+                        , ChipsInColor "black-salmon" 25
+                        , ChipsInColor "purple-pink" 25
                         ]
             ]
         , describe "to3214Order"
@@ -100,10 +113,10 @@ greedyUnitTests =
                 \() ->
                     Expect.equal
                         (assignPreferredDenominationValues standardDenomValues pokerbrosPokerset)
-                        [ ChipsInColorWithValue "orange" 75 5
+                        [ ChipsInColorWithValue "purple" 75 5
                         , ChipsInColorWithValue "white-red" 100 10
                         , ChipsInColorWithValue "red-blue" 100 25
-                        , ChipsInColorWithValue "purple" 75 50
+                        , ChipsInColorWithValue "orange" 75 50
                         , ChipsInColorWithValue "blue-white" 50 100
                         , ChipsInColorWithValue "green-pink" 50 250
                         , ChipsInColorWithValue "black-salmon" 25 500
