@@ -12,9 +12,30 @@ assignPreferredDenominationValues : List Value -> PokerSet -> Stack
 assignPreferredDenominationValues values pokerset =
     let
         sortedByAmount =
-            List.sortBy .amount pokerset
+            List.reverse <| List.sortBy .amount pokerset
+
+        chipsIn3124Order =
+            to3124 sortedByAmount
     in
-        [ ChipsInColorWithValue "green" 100 5 ]
+        List.map2 toChipsWithValue chipsIn3124Order values
+
+
+to3124 : List a -> List a
+to3124 list =
+    case list of
+        [] ->
+            []
+
+        one :: (two :: (three :: t)) ->
+            (three :: (one :: (two :: t)))
+
+        one :: t ->
+            list
+
+
+toChipsWithValue : ChipsInColor -> Value -> ChipsInColorWithValue
+toChipsWithValue { color, amount } value =
+    ChipsInColorWithValue color amount value
 
 
 limitAmount : Players -> PokerSet -> PokerSet

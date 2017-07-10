@@ -48,15 +48,62 @@ greedyUnitTests =
                         , ChipsInColor "purple-pink" 4
                         ]
             ]
+        , describe "to3214Order"
+            [ test "Empty list returns empty list" <|
+                \() ->
+                    let
+                        someList =
+                            [ 1, 2, 3, 4, 5 ]
+                    in
+                        Expect.equal
+                            (to3124 someList)
+                            [ 3, 1, 2, 4, 5 ]
+            , test "List with one element returns same list" <|
+                \() ->
+                    let
+                        someList =
+                            [ 1 ]
+                    in
+                        Expect.equal
+                            (to3124 someList)
+                            [ 1 ]
+            , test "List with two elements returns same list" <|
+                \() ->
+                    let
+                        someList =
+                            [ 1, 2 ]
+                    in
+                        Expect.equal
+                            (to3124 someList)
+                            [ 1, 2 ]
+            , test "List with exactly three elements returns 3 1 2" <|
+                \() ->
+                    let
+                        someList =
+                            [ 1, 2, 3 ]
+                    in
+                        Expect.equal
+                            (to3124 someList)
+                            [ 3, 1, 2 ]
+            , test "List with more than three elements returns three first" <|
+                \() ->
+                    let
+                        someList =
+                            [ 1, 2, 3, 4, 5 ]
+                    in
+                        Expect.equal
+                            (to3124 someList)
+                            [ 3, 1, 2, 4, 5 ]
+            ]
         , describe "assignPreferredDenominationValues"
             [ test "Highest amount is assigned big blind value, third highest small blind, second is third, fourth is fourth, ..." <|
                 \() ->
                     Expect.equal
                         (assignPreferredDenominationValues standardDenomValues pokerbrosPokerset)
-                        [ ChipsInColorWithValue "purple" 75 50
-                        , ChipsInColorWithValue "orange" 75 5
+                        [ ChipsInColorWithValue "orange" 75 5
                         , ChipsInColorWithValue "white-red" 100 10
                         , ChipsInColorWithValue "red-blue" 100 25
+                        , ChipsInColorWithValue "purple" 75 50
                         , ChipsInColorWithValue "blue-white" 50 100
                         , ChipsInColorWithValue "green-pink" 50 250
                         , ChipsInColorWithValue "black-salmon" 25 500
