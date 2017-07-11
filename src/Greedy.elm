@@ -1,6 +1,7 @@
 module Greedy exposing (..)
 
 import Model exposing (..)
+import Util exposing (..)
 
 
 greedySolve : Model -> Stack
@@ -17,22 +18,9 @@ assignPreferredDenominationValues values pokerset =
         List.map2 toChipsWithValue chipsIn3124Order values
 
 
-byAmountDesc : ChipsInColor -> ChipsInColor -> Order
-byAmountDesc a b =
-    case compare a.amount b.amount of
-        LT ->
-            GT
-
-        EQ ->
-            EQ
-
-        GT ->
-            LT
-
-
 sortedByAmountDesc : PokerSet -> PokerSet
 sortedByAmountDesc pokerset =
-    List.sortWith byAmountDesc pokerset
+    sortWithDesc .amount <| pokerset
 
 
 to3124 : List a -> List a
