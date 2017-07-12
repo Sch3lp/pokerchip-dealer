@@ -14,7 +14,7 @@ type alias Players =
 
 
 type alias Buyin =
-    Int
+    Float
 
 
 type alias PokerSet =

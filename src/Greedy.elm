@@ -6,31 +6,29 @@ import Util exposing (..)
 
 greedySolve : Model -> Stack
 greedySolve model =
-    [ ChipsInColorWithValue "green" 100 5 ]
+    assignPreferredDenominationValues standardDenomValues <| sortedByAmountDesc model.pokerset
 
 
 assignPreferredDenominationValues : List Value -> PokerSet -> Stack
 assignPreferredDenominationValues values pokerset =
     let
         chipsIn3124Order =
-            to3124 <| sortedByAmountDesc pokerset
+            to3124WhenDifferentAmounts pokerset
     in
         List.map2 toChipsWithValue chipsIn3124Order values
+
+
+to3124WhenDifferentAmounts : PokerSet -> PokerSet
+to3124WhenDifferentAmounts pokerset =
+    if hasAllSame (List.map .amount pokerset) then
+        pokerset
+    else
+        to3124 <| sortedByAmountDesc pokerset
 
 
 sortedByAmountDesc : PokerSet -> PokerSet
 sortedByAmountDesc pokerset =
     sortWithDesc .amount <| pokerset
-
-
-to3124 : List a -> List a
-to3124 list =
-    case list of
-        one :: two :: three :: t ->
-            three :: one :: two :: t
-
-        list ->
-            list
 
 
 toChipsWithValue : ChipsInColor -> Value -> ChipsInColorWithValue

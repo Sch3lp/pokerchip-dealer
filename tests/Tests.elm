@@ -10,8 +10,16 @@ all : Test
 all =
     describe "pokerchip dealer"
         [ greedyUnitTests
+        , scenarioTests
+        ]
 
-        --, scenarioTests
+
+scenarioTests : Test
+scenarioTests =
+    describe "Scenario tests"
+        [ simpleCase
+
+        -- , pokerbrosCase
         ]
 
 
@@ -61,53 +69,6 @@ greedyUnitTests =
                         , ChipsInColor "purple-pink" 25
                         ]
             ]
-        , describe "to3214Order"
-            [ test "Empty list returns empty list" <|
-                \() ->
-                    let
-                        someList =
-                            [ 1, 2, 3, 4, 5 ]
-                    in
-                        Expect.equal
-                            (to3124 someList)
-                            [ 3, 1, 2, 4, 5 ]
-            , test "List with one element returns same list" <|
-                \() ->
-                    let
-                        someList =
-                            [ 1 ]
-                    in
-                        Expect.equal
-                            (to3124 someList)
-                            [ 1 ]
-            , test "List with two elements returns same list" <|
-                \() ->
-                    let
-                        someList =
-                            [ 1, 2 ]
-                    in
-                        Expect.equal
-                            (to3124 someList)
-                            [ 1, 2 ]
-            , test "List with exactly three elements returns 3 1 2" <|
-                \() ->
-                    let
-                        someList =
-                            [ 1, 2, 3 ]
-                    in
-                        Expect.equal
-                            (to3124 someList)
-                            [ 3, 1, 2 ]
-            , test "List with more than three elements returns three first" <|
-                \() ->
-                    let
-                        someList =
-                            [ 1, 2, 3, 4, 5 ]
-                    in
-                        Expect.equal
-                            (to3124 someList)
-                            [ 3, 1, 2, 4, 5 ]
-            ]
         , describe "assignPreferredDenominationValues"
             [ test "Highest amount is assigned big blind value, third highest small blind, second is third, fourth is fourth, ..." <|
                 \() ->
@@ -126,21 +87,50 @@ greedyUnitTests =
         ]
 
 
-scenarioTests : Test
-scenarioTests =
-    describe "Greedy Algorithm"
-        [ describe "Pokerbros case"
-            [ test "10 euro for 6 players" <|
-                \() ->
-                    Expect.equal
-                        (greedySolve <| Model pokerbrosPokerset standardDenomValues 10 6)
-                        [ ChipsInColorWithValue "orange" 10 5
-                        , ChipsInColorWithValue "white-red" 15 10
-                        , ChipsInColorWithValue "red-blue" 12 25
-                        , ChipsInColorWithValue "blue-white" 6 50
-                        , ChipsInColorWithValue "green-pink" 2 100
+simpleCase : Test
+simpleCase =
+    describe "Simple case"
+        [ test "10 euro for 1 player with exact amount in pokerset" <|
+            \() ->
+                let
+                    simplePokerset =
+                        [ ChipsInColor "purple" 1
+                        , ChipsInColor "orange" 1
+                        , ChipsInColor "white-red" 1
+                        , ChipsInColor "red-blue" 1
+                        , ChipsInColor "blue-white" 1
+                        , ChipsInColor "green-pink" 1
+                        , ChipsInColor "black-salmon" 1
+                        , ChipsInColor "purple-pink" 1
                         ]
-            ]
+                in
+                    Expect.equal
+                        (greedySolve <| Model simplePokerset standardDenomValues 19.4 1)
+                        [ ChipsInColorWithValue "purple" 1 5
+                        , ChipsInColorWithValue "orange" 1 10
+                        , ChipsInColorWithValue "white-red" 1 25
+                        , ChipsInColorWithValue "red-blue" 1 50
+                        , ChipsInColorWithValue "blue-white" 1 100
+                        , ChipsInColorWithValue "green-pink" 1 250
+                        , ChipsInColorWithValue "black-salmon" 1 500
+                        , ChipsInColorWithValue "purple-pink" 1 1000
+                        ]
+        ]
+
+
+pokerbrosCase : Test
+pokerbrosCase =
+    describe "Pokerbros case"
+        [ test "10 euro for 6 players" <|
+            \() ->
+                Expect.equal
+                    (greedySolve <| Model pokerbrosPokerset standardDenomValues 10 6)
+                    [ ChipsInColorWithValue "orange" 10 5
+                    , ChipsInColorWithValue "white-red" 15 10
+                    , ChipsInColorWithValue "red-blue" 12 25
+                    , ChipsInColorWithValue "blue-white" 6 50
+                    , ChipsInColorWithValue "green-pink" 2 100
+                    ]
         ]
 
 
