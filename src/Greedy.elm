@@ -6,7 +6,11 @@ import Util exposing (..)
 
 greedySolve : Model -> Stack
 greedySolve model =
-    assignPreferredDenominationValues standardDenomValues <| sortedByAmountDesc model.pokerset
+    let
+        chips =
+            assignPreferredDenominationValues standardDenomValues <| sortedByAmountDesc model.pokerset
+    in
+        chips
 
 
 assignPreferredDenominationValues : List Value -> PokerSet -> Stack

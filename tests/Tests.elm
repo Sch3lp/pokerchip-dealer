@@ -115,6 +115,31 @@ simpleCase =
                         , ChipsInColorWithValue "black-salmon" 1 500
                         , ChipsInColorWithValue "purple-pink" 1 1000
                         ]
+        , test "10 euro for 2 players with exact amount in pokerset" <|
+            \() ->
+                let
+                    simplePokerset =
+                        [ ChipsInColor "purple" 1
+                        , ChipsInColor "orange" 1
+                        , ChipsInColor "white-red" 1
+                        , ChipsInColor "red-blue" 1
+                        , ChipsInColor "blue-white" 1
+                        , ChipsInColor "green-pink" 1
+                        , ChipsInColor "black-salmon" 1
+                        , ChipsInColor "purple-pink" 1
+                        ]
+                in
+                    Expect.equal
+                        (greedySolve <| Model simplePokerset standardDenomValues 38.4 2)
+                        [ ChipsInColorWithValue "purple" 2 5
+                        , ChipsInColorWithValue "orange" 2 10
+                        , ChipsInColorWithValue "white-red" 2 25
+                        , ChipsInColorWithValue "red-blue" 2 50
+                        , ChipsInColorWithValue "blue-white" 2 100
+                        , ChipsInColorWithValue "green-pink" 2 250
+                        , ChipsInColorWithValue "black-salmon" 2 500
+                        , ChipsInColorWithValue "purple-pink" 2 1000
+                        ]
         ]
 
 
