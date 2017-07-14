@@ -10,7 +10,8 @@ all : Test
 all =
     describe "pokerchip dealer"
         [ greedyUnitTests
-        , scenarioTests
+
+        -- , scenarioTests
         ]
 
 
@@ -82,6 +83,22 @@ greedyUnitTests =
                         , ChipsInColorWithValue "green-pink" 50 250
                         , ChipsInColorWithValue "black-salmon" 25 500
                         , ChipsInColorWithValue "purple-pink" 25 1000
+                        ]
+            ]
+        , describe "limitChipsInStack"
+            [ test "2 players, divisable amount" <|
+                \() ->
+                    Expect.equal
+                        (limitChipsInStack 2 [ ChipsInColorWithValue "purple" 50 5, ChipsInColorWithValue "white-red" 20 10 ])
+                        [ ChipsInColorWithValue "purple" 25 5
+                        , ChipsInColorWithValue "white-red" 10 10
+                        ]
+            , test "2 players, non divisable amount, is rounded down" <|
+                \() ->
+                    Expect.equal
+                        (limitChipsInStack 2 [ ChipsInColorWithValue "purple" 49 5, ChipsInColorWithValue "white-red" 33 10 ])
+                        [ ChipsInColorWithValue "purple" 24 5
+                        , ChipsInColorWithValue "white-red" 16 10
                         ]
             ]
         ]

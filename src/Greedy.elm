@@ -4,13 +4,34 @@ import Model exposing (..)
 import Util exposing (..)
 
 
+type alias MaxStackValue =
+    Float
+
+
 greedySolve : Model -> Stack
 greedySolve model =
     let
-        chips =
+        stack =
             assignPreferredDenominationValues standardDenomValues <| sortedByAmountDesc model.pokerset
+
+        limitedChips =
+            limitChipsInStack model.players stack
     in
-        chips
+        limitedChips
+
+
+limitChipsInStack : Players -> Stack -> Stack
+limitChipsInStack players stack =
+    List.map (divideAmountBy players) stack
+
+
+divideAmountBy : Players -> (ChipsInColorWithValue -> ChipsInColorWithValue)
+divideAmountBy players chips =
+    let
+        newAmount =
+            floor <| (toFloat chips.amount / toFloat players)
+    in
+        { chips | amount = newAmount }
 
 
 assignPreferredDenominationValues : List Value -> PokerSet -> Stack
