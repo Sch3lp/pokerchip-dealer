@@ -14,18 +14,49 @@ greedySolve model =
         stack =
             assignPreferredDenominationValues standardDenomValues <| sortedByAmountDesc model.pokerset
 
-        limitedChips =
-            limitChipsInStack model.players stack
+        limitedChipsPerPlayer =
+            limitChipsByPlayers model.players stack
     in
-        limitedChips
+        limitedChipsPerPlayer
 
 
-limitChipsInStack : Players -> Stack -> Stack
-limitChipsInStack players stack =
+redistribute : Buyin -> Stack -> Stack
+redistribute buyin stack =
+    limitChipsToBuyin buyin stack
+
+
+limitChipsToBuyin : Buyin -> Stack -> Stack
+limitChipsToBuyin buyin stack =
+    if (stackWorth stack <= buyin) then
+        stack
+    else
+        limitToBuyin buyin stack
+
+
+limitToBuyin : Buyin -> Stack -> Stack
+limitToBuyin buyin stack =
+    let
+        lastChips =
+            List.head <| sortWithDesc .value <| stack
+
+        updatedChips =
+            case lastChips of
+                Just c ->
+                    subtractChips 1 c
+
+                --todo: fix this shit
+                _ ->
+                    { amount = 0, color = "fuck", value = 0 }
+    in
+        stack
+
+
+limitChipsByPlayers : Players -> Stack -> Stack
+limitChipsByPlayers players stack =
     List.map (divideAmountBy players) stack
 
 
-divideAmountBy : Players -> (ChipsInColorWithValue -> ChipsInColorWithValue)
+divideAmountBy : Players -> ChipsInColorWithValue -> ChipsInColorWithValue
 divideAmountBy players chips =
     let
         newAmount =

@@ -25,12 +25,35 @@ type alias Stack =
     List ChipsInColorWithValue
 
 
+type alias StackWorth =
+    Float
+
+
+stackWorth : Stack -> StackWorth
+stackWorth stack =
+    List.sum <| List.map chipsValue stack
+
+
 type alias ChipsInColor =
     { color : String, amount : Amount }
 
 
 type alias ChipsInColorWithValue =
     { color : String, amount : Amount, value : Value }
+
+
+chipsValue : ChipsInColorWithValue -> Float
+chipsValue chips =
+    toFloat (chips.amount * chips.value)
+
+
+subtractChips : Int -> ChipsInColorWithValue -> ChipsInColorWithValue
+subtractChips amountToSubtract chips =
+    let
+        subtractedAmount =
+            chips.amount - amountToSubtract
+    in
+        { chips | amount = subtractedAmount }
 
 
 type alias Amount =

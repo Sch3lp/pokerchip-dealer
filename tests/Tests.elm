@@ -85,21 +85,39 @@ greedyUnitTests =
                         , ChipsInColorWithValue "purple-pink" 25 1000
                         ]
             ]
-        , describe "limitChipsInStack"
+        , describe "limitChipsByPlayers"
             [ test "2 players, divisable amount" <|
                 \() ->
                     Expect.equal
-                        (limitChipsInStack 2 [ ChipsInColorWithValue "purple" 50 5, ChipsInColorWithValue "white-red" 20 10 ])
+                        (limitChipsByPlayers 2 [ ChipsInColorWithValue "purple" 50 5, ChipsInColorWithValue "white-red" 20 10 ])
                         [ ChipsInColorWithValue "purple" 25 5
                         , ChipsInColorWithValue "white-red" 10 10
                         ]
             , test "2 players, non divisable amount, is rounded down" <|
                 \() ->
                     Expect.equal
-                        (limitChipsInStack 2 [ ChipsInColorWithValue "purple" 49 5, ChipsInColorWithValue "white-red" 33 10 ])
+                        (limitChipsByPlayers 2 [ ChipsInColorWithValue "purple" 49 5, ChipsInColorWithValue "white-red" 33 10 ])
                         [ ChipsInColorWithValue "purple" 24 5
                         , ChipsInColorWithValue "white-red" 16 10
                         ]
+            ]
+        , describe "limitChipsToBuyin"
+            [ test "stackworth is exactly equal to the buyin, just return the stack" <|
+                \() ->
+                    Expect.equal
+                        (limitChipsToBuyin 10 [ ChipsInColorWithValue "purple" 40 5, ChipsInColorWithValue "white-red" 30 10, ChipsInColorWithValue "red-blue" 20 25 ])
+                        [ ChipsInColorWithValue "purple" 40 5, ChipsInColorWithValue "white-red" 30 10, ChipsInColorWithValue "red-blue" 20 25 ]
+            , test "stackworth is lower than the buyin, also return the stack, this might now become the new buyin" <|
+                \() ->
+                    Expect.equal
+                        (limitChipsToBuyin 11 [ ChipsInColorWithValue "purple" 40 5, ChipsInColorWithValue "white-red" 30 10, ChipsInColorWithValue "red-blue" 20 25 ])
+                        [ ChipsInColorWithValue "purple" 40 5, ChipsInColorWithValue "white-red" 30 10, ChipsInColorWithValue "red-blue" 20 25 ]
+            , test "stackworth is exactly 1 chip higher than buyin" <|
+                -- how do I subtract 1 from an items amount in the list?
+                \() ->
+                    Expect.equal
+                        (limitChipsToBuyin 10 [ ChipsInColorWithValue "purple" 3 5 ])
+                        [ ChipsInColorWithValue "purple" 2 5 ]
             ]
         ]
 
