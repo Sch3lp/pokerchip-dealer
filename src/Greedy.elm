@@ -44,7 +44,6 @@ limitToBuyin buyin stack =
                 Just c ->
                     subtractChips 1 c
 
-                --todo: fix this shit
                 _ ->
                     { amount = 0, color = "fuck", value = 0 }
     in
@@ -99,14 +98,4 @@ limitAmount players pokerset =
 
 limitAmountOfChips : Players -> ChipsInColor -> ChipsInColor
 limitAmountOfChips players { color, amount } =
-    let
-        amountAsFloat =
-            toFloat amount
-
-        playersAsFloat =
-            toFloat players
-
-        newAmount =
-            floor <| amountAsFloat / playersAsFloat
-    in
-        ChipsInColor color newAmount
+    ChipsInColor color (amount // players)
