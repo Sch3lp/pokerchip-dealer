@@ -27,9 +27,43 @@ greedySolve model =
         List.reverse greedyStack
 
 
+
+-- prep
+
+
+assignPreferredDenominationValues : List Value -> PokerSet -> Stack
+assignPreferredDenominationValues values pokerset =
+    let
+        valuesSortedAsc =
+            List.sort values
+
+        chipsIn3124Order =
+            to3124WhenDifferentAmounts <| sortedByAmountDesc pokerset
+    in
+        List.map2 toChipsWithValue chipsIn3124Order valuesSortedAsc
+
+
+to3124WhenDifferentAmounts : PokerSet -> PokerSet
+to3124WhenDifferentAmounts pokerset =
+    if hasAllSame <| List.map .amount <| pokerset then
+        pokerset
+    else if hasAllSame <| List.take 3 <| List.map .amount pokerset then
+        List.append (List.take 3 pokerset) (sortedByAmountDesc <| List.drop 3 pokerset)
+    else
+        to3124 <| sortedByAmountDesc pokerset
+
+
+
+-- finalize
+
+
 combineDenoms : Value -> ChipsInColorWithValue -> ChipsInColorWithValue
 combineDenoms value chipsInColorWithValue =
     { chipsInColorWithValue | amount = value }
+
+
+
+-- greedy solve
 
 
 type alias Data =
@@ -68,40 +102,8 @@ makeChangeForDenom value data =
         }
 
 
-limitChipsByPlayers : Players -> Stack -> Stack
-limitChipsByPlayers players stack =
-    List.map (divideAmountBy players) stack
 
-
-divideAmountBy : Players -> ChipsInColorWithValue -> ChipsInColorWithValue
-divideAmountBy players chips =
-    let
-        newAmount =
-            floor <| (toFloat chips.amount / toFloat players)
-    in
-        { chips | amount = newAmount }
-
-
-assignPreferredDenominationValues : List Value -> PokerSet -> Stack
-assignPreferredDenominationValues values pokerset =
-    let
-        valuesSortedAsc =
-            List.sort values
-
-        chipsIn3124Order =
-            to3124WhenDifferentAmounts <| sortedByAmountDesc pokerset
-    in
-        List.map2 toChipsWithValue chipsIn3124Order valuesSortedAsc
-
-
-to3124WhenDifferentAmounts : PokerSet -> PokerSet
-to3124WhenDifferentAmounts pokerset =
-    if hasAllSame <| List.map .amount <| pokerset then
-        pokerset
-    else if hasAllSame <| List.take 3 <| List.map .amount pokerset then
-        List.append (List.take 3 pokerset) (sortedByAmountDesc <| List.drop 3 pokerset)
-    else
-        to3124 <| sortedByAmountDesc pokerset
+--util
 
 
 sortedByAmountDesc : PokerSet -> PokerSet
@@ -122,3 +124,17 @@ limitAmount players pokerset =
 limitAmountOfChips : Players -> ChipsInColor -> ChipsInColor
 limitAmountOfChips players { color, amount } =
     ChipsInColor color (amount // players)
+
+
+limitChipsByPlayers : Players -> Stack -> Stack
+limitChipsByPlayers players stack =
+    List.map (divideAmountBy players) stack
+
+
+divideAmountBy : Players -> ChipsInColorWithValue -> ChipsInColorWithValue
+divideAmountBy players chips =
+    let
+        newAmount =
+            floor <| (toFloat chips.amount / toFloat players)
+    in
+        { chips | amount = newAmount }
