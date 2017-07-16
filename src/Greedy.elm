@@ -54,15 +54,6 @@ to3124WhenDifferentAmounts pokerset =
 
 
 
--- finalize
-
-
-combineDenoms : Value -> ChipsInColorWithValue -> ChipsInColorWithValue
-combineDenoms value chipsInColorWithValue =
-    { chipsInColorWithValue | amount = value }
-
-
-
 -- greedy solve
 
 
@@ -139,3 +130,8 @@ divideAmountBy players chips =
             floor <| (toFloat chips.amount / toFloat players)
     in
         { chips | amount = newAmount }
+
+
+combineDenoms : Value -> ChipsInColorWithValue -> ChipsInColorWithValue
+combineDenoms value chipsInColorWithValue =
+    { chipsInColorWithValue | amount = value }
