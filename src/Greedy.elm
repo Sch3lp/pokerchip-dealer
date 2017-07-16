@@ -13,10 +13,10 @@ greedySolve : Model -> Stack
 greedySolve model =
     let
         data =
-            Debug.log "data" <| greedyChange model.buyin <| Debug.log "3214 denoms" <| to2314 standardDenomValues
+            Debug.log "data" <| greedyChange model.buyin <| to2314 standardDenomValues
 
         stack =
-            assignPreferredDenominationValues standardDenomValues <| sortedByAmountDesc model.pokerset
+            assignPreferredDenominationValues standardDenomValues model.pokerset
 
         stackIn3124Reversed =
             List.reverse <| to2314 stack
@@ -32,6 +32,10 @@ combineDenoms value chipsInColorWithValue =
     { chipsInColorWithValue | amount = value }
 
 
+type alias Data =
+    { buyinToDistribute : Int, usedValues : List Value }
+
+
 greedyChange : Buyin -> List Value -> Data
 greedyChange buyin denomValues =
     let
@@ -39,16 +43,12 @@ greedyChange buyin denomValues =
             floor (buyin * 100)
 
         denomsToUse =
-            denomValues |> List.reverse
+            Debug.log "using denoms" denomValues
 
         initialData =
             Data buyinToDistribute []
     in
         List.foldl makeChangeForDenom initialData denomsToUse
-
-
-type alias Data =
-    { buyinToDistribute : Int, usedValues : List Value }
 
 
 makeChangeForDenom : Value -> Data -> Data
@@ -85,10 +85,13 @@ divideAmountBy players chips =
 assignPreferredDenominationValues : List Value -> PokerSet -> Stack
 assignPreferredDenominationValues values pokerset =
     let
-        chipsIn2314Order =
-            to3124WhenDifferentAmounts pokerset
+        valuesSortedAsc =
+            List.sort values
+
+        chipsIn3124Order =
+            to3124WhenDifferentAmounts <| sortedByAmountDesc pokerset
     in
-        List.map2 toChipsWithValue chipsIn2314Order values
+        List.map2 toChipsWithValue chipsIn3124Order valuesSortedAsc
 
 
 to3124WhenDifferentAmounts : PokerSet -> PokerSet
