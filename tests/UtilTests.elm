@@ -66,7 +66,7 @@ to3124Tests =
                     Expect.equal
                         (to3124 someList)
                         [ 3, 1, 2 ]
-        , test "List with more than three elements returns 3 2 1 4 5 ..." <|
+        , test "List with more than three elements returns 3 1 2 4 5 ..." <|
             \() ->
                 let
                     someList =
@@ -156,7 +156,7 @@ to2314Tests =
                     Expect.equal
                         (to2314 someList)
                         [ 2, 3, 1 ]
-        , test "List with more than three elements returns two first" <|
+        , test "List with more than three elements returns 2 3 1 4 5 ..." <|
             \() ->
                 let
                     someList =

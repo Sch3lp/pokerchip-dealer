@@ -1,5 +1,6 @@
 module Greedy exposing (..)
 
+import Debug exposing (..)
 import Model exposing (..)
 import Util exposing (..)
 
@@ -11,43 +12,60 @@ type alias MaxStackValue =
 greedySolve : Model -> Stack
 greedySolve model =
     let
+        data =
+            Debug.log "data" <| greedyChange model.buyin <| Debug.log "3214 denoms" <| to2314 standardDenomValues
+
         stack =
             assignPreferredDenominationValues standardDenomValues <| sortedByAmountDesc model.pokerset
 
-        limitedChipsPerPlayer =
-            limitChipsByPlayers model.players stack
+        stackIn3124Reversed =
+            List.reverse <| to2314 stack
+
+        greedyStack =
+            List.map2 combineDenoms data.usedValues stackIn3124Reversed
     in
-        limitedChipsPerPlayer
+        List.reverse greedyStack
 
 
-redistribute : Buyin -> Stack -> Stack
-redistribute buyin stack =
-    limitChipsToBuyin buyin stack
+combineDenoms : Value -> ChipsInColorWithValue -> ChipsInColorWithValue
+combineDenoms value chipsInColorWithValue =
+    { chipsInColorWithValue | amount = value }
 
 
-limitChipsToBuyin : Buyin -> Stack -> Stack
-limitChipsToBuyin buyin stack =
-    if (stackWorth stack <= buyin) then
-        stack
-    else
-        limitToBuyin buyin stack
-
-
-limitToBuyin : Buyin -> Stack -> Stack
-limitToBuyin buyin stack =
+greedyChange : Buyin -> List Value -> Data
+greedyChange buyin denomValues =
     let
-        lastChips =
-            List.head <| sortWithDesc .value <| stack
+        buyinToDistribute =
+            floor (buyin * 100)
 
-        updatedChips =
-            case lastChips of
-                Just c ->
-                    subtractChips 1 c
+        denomsToUse =
+            denomValues |> List.reverse
 
-                _ ->
-                    { amount = 0, color = "fuck", value = 0 }
+        initialData =
+            Data buyinToDistribute []
     in
-        stack
+        List.foldl makeChangeForDenom initialData denomsToUse
+
+
+type alias Data =
+    { buyinToDistribute : Int, usedValues : List Value }
+
+
+makeChangeForDenom : Value -> Data -> Data
+makeChangeForDenom value data =
+    let
+        remaining =
+            data.buyinToDistribute % value
+
+        usedValues =
+            data.buyinToDistribute // value
+    in
+        { data
+            | buyinToDistribute =
+                remaining
+            , usedValues =
+                usedValues :: data.usedValues
+        }
 
 
 limitChipsByPlayers : Players -> Stack -> Stack
@@ -67,16 +85,18 @@ divideAmountBy players chips =
 assignPreferredDenominationValues : List Value -> PokerSet -> Stack
 assignPreferredDenominationValues values pokerset =
     let
-        chipsIn3124Order =
+        chipsIn2314Order =
             to3124WhenDifferentAmounts pokerset
     in
-        List.map2 toChipsWithValue chipsIn3124Order values
+        List.map2 toChipsWithValue chipsIn2314Order values
 
 
 to3124WhenDifferentAmounts : PokerSet -> PokerSet
 to3124WhenDifferentAmounts pokerset =
-    if hasAllSame (List.map .amount pokerset) then
+    if hasAllSame <| List.map .amount <| pokerset then
         pokerset
+    else if hasAllSame <| List.take 3 <| List.map .amount pokerset then
+        List.append (List.take 3 pokerset) (sortedByAmountDesc <| List.drop 3 pokerset)
     else
         to3124 <| sortedByAmountDesc pokerset
 
