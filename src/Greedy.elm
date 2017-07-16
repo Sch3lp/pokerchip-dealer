@@ -76,6 +76,7 @@ greedyChange buyin denomValues =
         buyinToDistribute =
             floor (buyin * 100)
 
+        -- TODO: preferred order is ok, but makeChange doesn't take into account available chips
         denomsToUse =
             Debug.log "using denoms" denomValues
 
@@ -89,10 +90,10 @@ makeChangeForDenom : Value -> Data -> Data
 makeChangeForDenom value data =
     let
         remaining =
-            data.buyinToDistribute % value
+            Debug.log "remaining" <| data.buyinToDistribute % value
 
         usedValues =
-            data.buyinToDistribute // value
+            Debug.log "usedValues" <| data.buyinToDistribute // value
     in
         { data
             | buyinToDistribute =
@@ -103,7 +104,7 @@ makeChangeForDenom value data =
 
 
 
---util
+-- Util
 
 
 sortedByAmountDesc : PokerSet -> PokerSet

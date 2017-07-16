@@ -36,57 +36,68 @@ noPurplePokerset =
 simpleCase : Test
 simpleCase =
     describe "Simple case"
-        [ test "10 euro for 1 player with exact amount in pokerset" <|
-            \() ->
-                let
-                    simplePokerset =
-                        [ ChipsInColor "purple" 1
-                        , ChipsInColor "orange" 1
-                        , ChipsInColor "white-red" 1
-                        , ChipsInColor "red-blue" 1
-                        , ChipsInColor "blue-white" 1
-                        , ChipsInColor "green-pink" 1
-                        , ChipsInColor "black-salmon" 1
-                        , ChipsInColor "purple-pink" 1
-                        ]
-                in
-                    Expect.equal
-                        (greedySolve <| Model simplePokerset standardDenomValues 19.4 1)
-                        [ ChipsInColorWithValue "purple" 1 5
-                        , ChipsInColorWithValue "orange" 1 10
-                        , ChipsInColorWithValue "white-red" 1 25
-                        , ChipsInColorWithValue "red-blue" 1 50
-                        , ChipsInColorWithValue "blue-white" 1 100
-                        , ChipsInColorWithValue "green-pink" 1 250
-                        , ChipsInColorWithValue "black-salmon" 1 500
-                        , ChipsInColorWithValue "purple-pink" 1 1000
-                        ]
-        , test "10 euro for 2 players with exact amount in pokerset" <|
-            \() ->
-                let
-                    simplePokerset =
-                        [ ChipsInColor "purple" 2
-                        , ChipsInColor "orange" 2
-                        , ChipsInColor "white-red" 2
-                        , ChipsInColor "red-blue" 2
-                        , ChipsInColor "blue-white" 2
-                        , ChipsInColor "green-pink" 2
-                        , ChipsInColor "black-salmon" 2
-                        , ChipsInColor "purple-pink" 2
-                        ]
-                in
-                    Expect.equal
-                        (greedySolve <| Model simplePokerset standardDenomValues 38.8 2)
-                        [ ChipsInColorWithValue "purple" 1 5
-                        , ChipsInColorWithValue "orange" 1 10
-                        , ChipsInColorWithValue "white-red" 1 25
-                        , ChipsInColorWithValue "red-blue" 1 50
-                        , ChipsInColorWithValue "blue-white" 1 100
-                        , ChipsInColorWithValue "green-pink" 1 250
-                        , ChipsInColorWithValue "black-salmon" 1 500
-                        , ChipsInColorWithValue "purple-pink" 1 1000
-                        ]
+        [ with1Player
+
+        -- , with2Players
         ]
+
+
+with1Player : Test
+with1Player =
+    test "10 euro for 1 player with exact amount in pokerset" <|
+        \() ->
+            let
+                simplePokerset =
+                    [ ChipsInColor "purple" 1
+                    , ChipsInColor "orange" 1
+                    , ChipsInColor "white-red" 1
+                    , ChipsInColor "red-blue" 1
+                    , ChipsInColor "blue-white" 1
+                    , ChipsInColor "green-pink" 1
+                    , ChipsInColor "black-salmon" 1
+                    , ChipsInColor "purple-pink" 1
+                    ]
+            in
+                Expect.equal
+                    (greedySolve <| Model simplePokerset standardDenomValues 19.4 1)
+                    [ ChipsInColorWithValue "purple" 1 5
+                    , ChipsInColorWithValue "orange" 1 10
+                    , ChipsInColorWithValue "white-red" 1 25
+                    , ChipsInColorWithValue "red-blue" 1 50
+                    , ChipsInColorWithValue "blue-white" 1 100
+                    , ChipsInColorWithValue "green-pink" 1 250
+                    , ChipsInColorWithValue "black-salmon" 1 500
+                    , ChipsInColorWithValue "purple-pink" 1 1000
+                    ]
+
+
+with2Players : Test
+with2Players =
+    test "10 euro for 2 players with exact amount in pokerset" <|
+        \() ->
+            let
+                simplePokerset =
+                    [ ChipsInColor "purple" 2
+                    , ChipsInColor "orange" 2
+                    , ChipsInColor "white-red" 2
+                    , ChipsInColor "red-blue" 2
+                    , ChipsInColor "blue-white" 2
+                    , ChipsInColor "green-pink" 2
+                    , ChipsInColor "black-salmon" 2
+                    , ChipsInColor "purple-pink" 2
+                    ]
+            in
+                Expect.equal
+                    (greedySolve <| Model simplePokerset standardDenomValues 38.8 2)
+                    [ ChipsInColorWithValue "purple" 1 5
+                    , ChipsInColorWithValue "orange" 1 10
+                    , ChipsInColorWithValue "white-red" 1 25
+                    , ChipsInColorWithValue "red-blue" 1 50
+                    , ChipsInColorWithValue "blue-white" 1 100
+                    , ChipsInColorWithValue "green-pink" 1 250
+                    , ChipsInColorWithValue "black-salmon" 1 500
+                    , ChipsInColorWithValue "purple-pink" 1 1000
+                    ]
 
 
 pokerbrosCase : Test
