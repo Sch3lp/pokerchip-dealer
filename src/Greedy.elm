@@ -13,16 +13,16 @@ greedySolve : Model -> Stack
 greedySolve model =
     let
         stack =
-            assignPreferredDenominationValues standardDenomValues model.pokerset
+            assignPreferredDenominations standardDenoms model.pokerset
 
         data =
-            Debug.log "data" <| greedyChange model.buyin <| to2314 stack
+            greedyChange model.buyin <| to2314 stack
 
-        stackIn3124Reversed =
+        stackIn2314Reversed =
             List.reverse <| to2314 stack
 
         greedyStack =
-            List.map2 combineDenoms data.usedValues stackIn3124Reversed
+            List.map2 combineDenoms data.usedValues stackIn2314Reversed
     in
         List.reverse greedyStack
 
@@ -31,16 +31,16 @@ greedySolve model =
 -- prep
 
 
-assignPreferredDenominationValues : List Value -> PokerSet -> Stack
-assignPreferredDenominationValues values pokerset =
+assignPreferredDenominations : List Denomination -> PokerSet -> Stack
+assignPreferredDenominations denoms pokerset =
     let
-        valuesSortedAsc =
-            List.sort values
+        denomsSortedAsc =
+            List.sort denoms
 
         chipsIn3124Order =
             to3124WhenDifferentAmounts <| sortedByAmountDesc pokerset
     in
-        List.map2 toChipsWithValue chipsIn3124Order valuesSortedAsc
+        List.map2 toChipsWithDenomination chipsIn3124Order denomsSortedAsc
 
 
 to3124WhenDifferentAmounts : PokerSet -> PokerSet
@@ -67,10 +67,13 @@ greedyChange buyin stack =
         toDistribute =
             convertToDenomBase buyin
 
+        convertedStack =
+            List.map chipsWithDenomToValue stack
+
         initialData =
             Data toDistribute []
     in
-        List.foldl makeChangeForDenom initialData stack
+        List.foldl makeChangeForDenom initialData convertedStack
 
 
 makeChangeForDenom : ChipsInColorWithValue -> Data -> Data
@@ -105,11 +108,6 @@ sortedByAmountDesc pokerset =
     sortWithDesc .amount <| pokerset
 
 
-toChipsWithValue : ChipsInColor -> Value -> ChipsInColorWithValue
-toChipsWithValue { color, amount } value =
-    ChipsInColorWithValue color amount value
-
-
 limitAmount : Players -> PokerSet -> PokerSet
 limitAmount players pokerset =
     List.map (limitAmountOfChips players) pokerset
@@ -125,11 +123,11 @@ limitChipsByPlayers players stack =
     List.map (divideAmountBy players) stack
 
 
-divideAmountBy : Players -> ChipsInColorWithValue -> ChipsInColorWithValue
+divideAmountBy : Players -> ChipsInColorWithDenom -> ChipsInColorWithDenom
 divideAmountBy players chips =
     { chips | amount = chips.amount // players }
 
 
-combineDenoms : Value -> ChipsInColorWithValue -> ChipsInColorWithValue
-combineDenoms value chipsInColorWithValue =
-    { chipsInColorWithValue | amount = value }
+combineDenoms : Amount -> ChipsInColorWithDenom -> ChipsInColorWithDenom
+combineDenoms amount chips =
+    { chips | amount = amount }

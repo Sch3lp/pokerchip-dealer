@@ -22,7 +22,7 @@ type alias PokerSet =
 
 
 type alias Stack =
-    List ChipsInColorWithValue
+    List ChipsInColorWithDenom
 
 
 type alias StackWorth =
@@ -31,7 +31,7 @@ type alias StackWorth =
 
 stackWorth : Stack -> StackWorth
 stackWorth stack =
-    toFloat (List.sum <| List.map chipsValue stack) / denomBase
+    List.sum <| List.map chipValue stack
 
 
 type alias ChipsInColor =
@@ -124,3 +124,18 @@ toValue denom =
 toDenom : Value -> Denomination
 toDenom val =
     toFloat val / denomBase
+
+
+toChipsWithValue : ChipsInColor -> Value -> ChipsInColorWithValue
+toChipsWithValue { color, amount } value =
+    ChipsInColorWithValue color amount value
+
+
+toChipsWithDenomination : ChipsInColor -> Denomination -> ChipsInColorWithDenom
+toChipsWithDenomination { color, amount } denom =
+    ChipsInColorWithDenom color amount denom
+
+
+chipsWithDenomToValue : ChipsInColorWithDenom -> ChipsInColorWithValue
+chipsWithDenomToValue { color, amount, denom } =
+    ChipsInColorWithValue color amount (convertToDenomBase denom)

@@ -63,7 +63,19 @@ greedyUnitTests =
                     ]
         ]
     , describe "assignPreferredDenominationValues"
-        [ test "to2314 with ordered by amount desc" <|
+        [ test "Highest amount is assigned big blind value, third highest small blind, second is third, fourth is fourth, ..." <|
+            \() ->
+                Expect.equal
+                    (assignPreferredDenominations standardDenoms noPurplePokerset)
+                    [ ChipsInColorWithDenom "orange" 75 0.05
+                    , ChipsInColorWithDenom "white-red" 100 0.1
+                    , ChipsInColorWithDenom "red-blue" 100 0.25
+                    , ChipsInColorWithDenom "blue-white" 50 0.5
+                    , ChipsInColorWithDenom "green-pink" 50 1
+                    , ChipsInColorWithDenom "black-salmon" 25 2.5
+                    , ChipsInColorWithDenom "purple-pink" 25 5
+                    ]
+        , test "to2314 with ordered by amount desc" <|
             \() ->
                 let
                     input =
@@ -116,78 +128,66 @@ greedyUnitTests =
                         , ChipsInColor "green-pink" 75
                         , ChipsInColor "blue-white" 50
                         ]
-        , test "Highest amount is assigned big blind value, third highest small blind, second is third, fourth is fourth, ..." <|
-            \() ->
-                Expect.equal
-                    (assignPreferredDenominationValues standardDenomValues noPurplePokerset)
-                    [ ChipsInColorWithValue "orange" 75 5
-                    , ChipsInColorWithValue "white-red" 100 10
-                    , ChipsInColorWithValue "red-blue" 100 25
-                    , ChipsInColorWithValue "blue-white" 50 50
-                    , ChipsInColorWithValue "green-pink" 50 100
-                    , ChipsInColorWithValue "black-salmon" 25 250
-                    , ChipsInColorWithValue "purple-pink" 25 500
-                    ]
         ]
     , describe "limitChipsByPlayers"
         [ test "2 players, divisable amount" <|
             \() ->
                 Expect.equal
-                    (limitChipsByPlayers 2 [ ChipsInColorWithValue "purple" 50 5, ChipsInColorWithValue "white-red" 20 10 ])
-                    [ ChipsInColorWithValue "purple" 25 5
-                    , ChipsInColorWithValue "white-red" 10 10
+                    (limitChipsByPlayers 2 [ ChipsInColorWithDenom "purple" 50 0.05, ChipsInColorWithDenom "white-red" 20 0.1 ])
+                    [ ChipsInColorWithDenom "purple" 25 0.05
+                    , ChipsInColorWithDenom "white-red" 10 0.1
                     ]
         , test "2 players, non divisable amount, is rounded down" <|
             \() ->
                 Expect.equal
-                    (limitChipsByPlayers 2 [ ChipsInColorWithValue "purple" 49 5, ChipsInColorWithValue "white-red" 33 10 ])
-                    [ ChipsInColorWithValue "purple" 24 5
-                    , ChipsInColorWithValue "white-red" 16 10
+                    (limitChipsByPlayers 2 [ ChipsInColorWithDenom "purple" 49 0.05, ChipsInColorWithDenom "white-red" 33 0.1 ])
+                    [ ChipsInColorWithDenom "purple" 24 0.05
+                    , ChipsInColorWithDenom "white-red" 16 0.1
                     ]
         ]
     , describe "greedyChange"
         [ test "enough chips available" <|
             \() ->
                 Expect.equal
-                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 10 ])
+                    (greedyChange 10 [ ChipsInColorWithDenom "purple" 100 0.1 ])
                     { toDistribute = 0, usedValues = [ 100 ] }
         , test "not enough chips available" <|
             \() ->
                 Expect.equal
-                    (greedyChange 10 [ ChipsInColorWithValue "purple" 50 10 ])
+                    (greedyChange 10 [ ChipsInColorWithDenom "purple" 50 0.1 ])
                     { toDistribute = 500, usedValues = [ 50 ] }
         , test "no chips available" <|
             \() ->
                 Expect.equal
-                    (greedyChange 10 [ ChipsInColorWithValue "purple" 0 10 ])
+                    (greedyChange 10 [ ChipsInColorWithDenom "purple" 0 0.1 ])
                     { toDistribute = 1000, usedValues = [ 0 ] }
         , test "multiple denoms with exactly available amount" <|
             \() ->
                 Expect.equal
-                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 5, ChipsInColorWithValue "orange" 50 10 ])
+                    (greedyChange 10 [ ChipsInColorWithDenom "purple" 100 0.05, ChipsInColorWithDenom "orange" 50 0.1 ])
                     { toDistribute = 0, usedValues = [ 50, 100 ] }
         , test "multiple denoms with not enough available amount" <|
             \() ->
                 Expect.equal
-                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 5, ChipsInColorWithValue "orange" 49 10 ])
+                    (greedyChange 10 [ ChipsInColorWithDenom "purple" 100 0.05, ChipsInColorWithDenom "orange" 49 0.1 ])
                     { toDistribute = 10, usedValues = [ 49, 100 ] }
         , test "multiple denoms with excess amount" <|
             \() ->
                 Expect.equal
-                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 5, ChipsInColorWithValue "orange" 51 10 ])
+                    (greedyChange 10 [ ChipsInColorWithDenom "purple" 100 0.05, ChipsInColorWithDenom "orange" 51 0.1 ])
                     { toDistribute = 0, usedValues = [ 50, 100 ] }
         , test "simple pokerset with 1 of each color, to matched amount" <|
             \() ->
                 let
                     simplePokerSet =
-                        [ ChipsInColorWithValue "orange" 1 10
-                        , ChipsInColorWithValue "white-red" 1 25
-                        , ChipsInColorWithValue "purple" 1 5
-                        , ChipsInColorWithValue "red-blue" 1 50
-                        , ChipsInColorWithValue "blue-white" 1 100
-                        , ChipsInColorWithValue "green-pink" 1 250
-                        , ChipsInColorWithValue "black-salmon" 1 500
-                        , ChipsInColorWithValue "purple-pink" 1 1000
+                        [ ChipsInColorWithDenom "orange" 1 0.1
+                        , ChipsInColorWithDenom "white-red" 1 0.25
+                        , ChipsInColorWithDenom "purple" 1 0.05
+                        , ChipsInColorWithDenom "red-blue" 1 0.5
+                        , ChipsInColorWithDenom "blue-white" 1 1
+                        , ChipsInColorWithDenom "green-pink" 1 2.5
+                        , ChipsInColorWithDenom "black-salmon" 1 5
+                        , ChipsInColorWithDenom "purple-pink" 1 10
                         ]
                 in
                     Expect.equal
