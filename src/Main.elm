@@ -22,7 +22,7 @@ myPokerSet =
 initialModel : Model
 initialModel =
     { pokerset = myPokerSet
-    , denoms = standardDenomValues
+    , denoms = standardDenoms
     , buyin = 10
     , players = 6
     }

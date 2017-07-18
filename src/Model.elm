@@ -3,7 +3,7 @@ module Model exposing (..)
 
 type alias Model =
     { pokerset : PokerSet
-    , denoms : List Value
+    , denoms : List Denomination
     , buyin : Buyin
     , players : Players
     }

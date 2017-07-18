@@ -58,7 +58,7 @@ with1Player =
                     ]
             in
                 Expect.equal
-                    (greedySolve <| Model simplePokerset standardDenomValues 19.4 1)
+                    (greedySolve <| Model simplePokerset standardDenoms 19.4 1)
                     [ ChipsInColorWithDenom "purple" 1 0.05
                     , ChipsInColorWithDenom "orange" 1 0.1
                     , ChipsInColorWithDenom "white-red" 1 0.25
@@ -87,7 +87,7 @@ with2Players =
                     ]
             in
                 Expect.equal
-                    (greedySolve <| Model simplePokerset standardDenomValues 38.8 2)
+                    (greedySolve <| Model simplePokerset standardDenoms 38.8 2)
                     [ ChipsInColorWithDenom "purple" 1 0.05
                     , ChipsInColorWithDenom "orange" 1 0.1
                     , ChipsInColorWithDenom "white-red" 1 0.25
@@ -105,7 +105,7 @@ pokerbrosCase =
         [ test "10 euro for 6 players" <|
             \() ->
                 Expect.equal
-                    (greedySolve <| Model pokerbrosPokerset standardDenomValues 10 6)
+                    (greedySolve <| Model pokerbrosPokerset standardDenoms 10 6)
                     [ ChipsInColorWithDenom "orange" 10 0.05
                     , ChipsInColorWithDenom "white-red" 15 0.1
                     , ChipsInColorWithDenom "red-blue" 12 0.25
