@@ -161,5 +161,20 @@ greedyUnitTests =
                 Expect.equal
                     (greedyChange 10 [ ChipsInColorWithValue "purple" 0 10 ])
                     { toDistribute = 1000, usedValues = [ 0 ] }
+        , test "multiple denoms with exactly available amount" <|
+            \() ->
+                Expect.equal
+                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 5, ChipsInColorWithValue "orange" 50 10 ])
+                    { toDistribute = 0, usedValues = [ 50, 100 ] }
+        , test "multiple denoms with not enough available amount" <|
+            \() ->
+                Expect.equal
+                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 5, ChipsInColorWithValue "orange" 49 10 ])
+                    { toDistribute = 10, usedValues = [ 49, 100 ] }
+        , test "multiple denoms with excess amount" <|
+            \() ->
+                Expect.equal
+                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 5, ChipsInColorWithValue "orange" 51 10 ])
+                    { toDistribute = 0, usedValues = [ 50, 100 ] }
         ]
     ]
