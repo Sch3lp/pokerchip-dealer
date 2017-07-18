@@ -83,7 +83,7 @@ makeChangeForDenom chips data =
             chips.amount
 
         valuesToUse =
-            Debug.log "usedValues" <| data.toDistribute // chips.value
+            data.toDistribute // chips.value
 
         ( remaining, usedValues ) =
             if (valuesToUse < availableChips) then
