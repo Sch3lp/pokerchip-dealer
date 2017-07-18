@@ -177,5 +177,22 @@ greedyUnitTests =
                     Expect.equal
                         (greedyChange 19.4 simplePokerSet)
                         { toDistribute = 0, usedValues = [ 1, 1, 1, 1, 1, 1, 1, 1 ] }
+        , test "pokerbros limited" <|
+            \() ->
+                let
+                    pokerbro =
+                        [ ChipsInColorWithDenom "orange" 16 0.1
+                        , ChipsInColorWithDenom "white-red" 16 0.25
+                        , ChipsInColorWithDenom "purple" 12 0.05
+                        , ChipsInColorWithDenom "red-blue" 12 0.5
+                        , ChipsInColorWithDenom "blue-white" 8 1
+                        , ChipsInColorWithDenom "green-pink" 8 2.5
+                        , ChipsInColorWithDenom "black-salmon" 4 5
+                        , ChipsInColorWithDenom "purple-pink" 4 10
+                        ]
+                in
+                    Expect.equal
+                        (greedyChange 10 pokerbro)
+                        { toDistribute = 30, usedValues = [ 0, 0, 0, 0, 7, 12, 16, 16 ] }
         ]
     ]
