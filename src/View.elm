@@ -15,7 +15,7 @@ view model =
         , Html.br [] []
         , div [] [ text <| "You seem to want above chips to be divided over " ++ (toString model.players) ++ " players" ++ " for a buyin of " ++ (toString model.buyin) ++ " eurodollars" ]
         , Html.br [] []
-        , div [] [ text "The ideal solution I came up with is:" ]
+        , div [] [ text "The ideal stack I came up with is:" ]
         , Html.br [] []
         , div [] <| stackToDivs <| solve model
         ]
