@@ -65,11 +65,8 @@ greedyChange : Buyin -> Stack -> Data
 greedyChange buyin stack =
     let
         toDistribute =
-            floor (buyin * 100)
+            convertToDenomBase buyin
 
-        -- TODO: preferred order is ok, but makeChange doesn't take into account available chips
-        -- denomsToUse =
-        --     Debug.log "using denoms" denomValues
         initialData =
             Data toDistribute []
     in

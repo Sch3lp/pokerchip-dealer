@@ -37,8 +37,7 @@ simpleCase : Test
 simpleCase =
     describe "Simple case"
         [ with1Player
-
-        -- , with2Players
+        , with2Players
         ]
 
 
