@@ -84,6 +84,11 @@ chipsInColorWithValueToString { color, amount, value } =
     (toString amount) ++ " " ++ color ++ " chips"
 
 
+chipsInColorWithDenomToString : ChipsInColorWithDenom -> String
+chipsInColorWithDenomToString { color, amount, denom } =
+    (toString amount) ++ " " ++ color ++ " chips " ++ " valued at " ++ (toString denom)
+
+
 
 -- Value and Denomination stuff
 

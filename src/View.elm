@@ -33,9 +33,9 @@ chipsInColorToDiv chips =
 
 stackToDivs : Stack -> List (Html Msg)
 stackToDivs stack =
-    List.map chipsInColorWithValueToDiv stack
+    List.map chipsInColorWithDenomToDiv stack
 
 
-chipsInColorWithValueToDiv : ChipsInColorWithValue -> Html msg
-chipsInColorWithValueToDiv chips =
-    div [] [ text <| chipsInColorWithValueToString chips ]
+chipsInColorWithDenomToDiv : ChipsInColorWithDenom -> Html msg
+chipsInColorWithDenomToDiv chips =
+    div [] [ text <| chipsInColorWithDenomToString chips ]
