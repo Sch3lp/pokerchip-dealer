@@ -145,4 +145,16 @@ greedyUnitTests =
                     , ChipsInColorWithValue "white-red" 16 10
                     ]
         ]
+    , describe "greedyChange"
+        [ test "enough chips available" <|
+            \() ->
+                Expect.equal
+                    (greedyChange 10 [ ChipsInColorWithValue "purple" 100 10 ])
+                    { toDistribute = 0, usedValues = [ 100 ] }
+        , test "not enough chips available" <|
+            \() ->
+                Expect.equal
+                    (greedyChange 10 [ ChipsInColorWithValue "purple" 50 10 ])
+                    { toDistribute = 50, usedValues = [ 50 ] }
+        ]
     ]

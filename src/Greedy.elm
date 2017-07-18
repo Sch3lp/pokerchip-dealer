@@ -12,11 +12,11 @@ type alias MaxStackValue =
 greedySolve : Model -> Stack
 greedySolve model =
     let
-        data =
-            Debug.log "data" <| greedyChange model.buyin <| to2314 standardDenomValues
-
         stack =
             assignPreferredDenominationValues standardDenomValues model.pokerset
+
+        data =
+            Debug.log "data" <| greedyChange model.buyin <| to2314 stack
 
         stackIn3124Reversed =
             List.reverse <| to2314 stack
@@ -58,36 +58,35 @@ to3124WhenDifferentAmounts pokerset =
 
 
 type alias Data =
-    { buyinToDistribute : Int, usedValues : List Value }
+    { toDistribute : Int, usedValues : List Value }
 
 
-greedyChange : Buyin -> List Value -> Data
-greedyChange buyin denomValues =
+greedyChange : Buyin -> Stack -> Data
+greedyChange buyin stack =
     let
-        buyinToDistribute =
+        toDistribute =
             floor (buyin * 100)
 
         -- TODO: preferred order is ok, but makeChange doesn't take into account available chips
-        denomsToUse =
-            Debug.log "using denoms" denomValues
-
+        -- denomsToUse =
+        --     Debug.log "using denoms" denomValues
         initialData =
-            Data buyinToDistribute []
+            Data toDistribute []
     in
-        List.foldl makeChangeForDenom initialData denomsToUse
+        List.foldl makeChangeForDenom initialData stack
 
 
-makeChangeForDenom : Value -> Data -> Data
-makeChangeForDenom value data =
+makeChangeForDenom : ChipsInColorWithValue -> Data -> Data
+makeChangeForDenom chips data =
     let
         remaining =
-            Debug.log "remaining" <| data.buyinToDistribute % value
+            Debug.log "remaining" <| data.toDistribute % chips.value
 
         usedValues =
-            Debug.log "usedValues" <| data.buyinToDistribute // value
+            Debug.log "usedValues" <| data.toDistribute // chips.value
     in
         { data
-            | buyinToDistribute =
+            | toDistribute =
                 remaining
             , usedValues =
                 usedValues :: data.usedValues
