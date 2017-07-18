@@ -31,7 +31,7 @@ type alias StackWorth =
 
 stackWorth : Stack -> StackWorth
 stackWorth stack =
-    toFloat (List.sum <| List.map chipsValue stack) / 100
+    toFloat (List.sum <| List.map chipsValue stack) / denomBase
 
 
 type alias ChipsInColor =
@@ -40,6 +40,15 @@ type alias ChipsInColor =
 
 type alias ChipsInColorWithValue =
     { color : String, amount : Amount, value : Value }
+
+
+type alias ChipsInColorWithDenom =
+    { color : String, amount : Amount, denom : Denomination }
+
+
+chipValue : ChipsInColorWithDenom -> Float
+chipValue chips =
+    toFloat chips.amount * chips.denom
 
 
 chipsValue : ChipsInColorWithValue -> Int
