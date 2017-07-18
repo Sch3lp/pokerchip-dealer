@@ -79,11 +79,17 @@ greedyChange buyin stack =
 makeChangeForDenom : ChipsInColorWithValue -> Data -> Data
 makeChangeForDenom chips data =
     let
-        remaining =
-            Debug.log "remaining" <| data.toDistribute % chips.value
+        availableChips =
+            chips.amount
 
-        usedValues =
+        valuesToUse =
             Debug.log "usedValues" <| data.toDistribute // chips.value
+
+        ( remaining, usedValues ) =
+            if (valuesToUse < availableChips) then
+                ( data.toDistribute % chips.value, valuesToUse )
+            else
+                ( data.toDistribute - (chips.value * chips.amount), chips.amount )
     in
         { data
             | toDistribute =

@@ -155,6 +155,11 @@ greedyUnitTests =
             \() ->
                 Expect.equal
                     (greedyChange 10 [ ChipsInColorWithValue "purple" 50 10 ])
-                    { toDistribute = 50, usedValues = [ 50 ] }
+                    { toDistribute = 500, usedValues = [ 50 ] }
+        , test "no chips available" <|
+            \() ->
+                Expect.equal
+                    (greedyChange 10 [ ChipsInColorWithValue "purple" 0 10 ])
+                    { toDistribute = 1000, usedValues = [ 0 ] }
         ]
     ]
