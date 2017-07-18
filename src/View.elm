@@ -17,13 +17,13 @@ view model =
             [ div [] [ text "Your PokerSet contains: " ]
             , div [] <| pokersetToDivs model.pokerset
             , Html.br [] []
-            , div [] [ text <| "You seem to want above chips to be divided over " ++ (toString model.players) ++ " players" ++ " for a buyin of " ++ (toString model.buyin) ++ " eurodollars" ]
+            , div [] [ text <| "You seem to want above chips to be divided over " ++ (toString model.players) ++ " players" ++ " for a buyin of " ++ (toString model.buyin) ++ " moodollars" ]
             , Html.br [] []
             , div [] [ text "The ideal stack I came up with is:" ]
             , Html.br [] []
             , div [] <| stackToDivs <| greedySolve
             , Html.br [] []
-            , div [] [ text <| "Which is worth a total of " ++ (toString <| stackWorth greedySolve) ++ " eurodollars." ]
+            , div [] [ text <| "Which is worth a total of " ++ (toString <| stackWorth greedySolve) ++ " moodollars." ]
             ]
 
 

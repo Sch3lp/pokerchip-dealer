@@ -21,6 +21,16 @@ type alias PokerSet =
     List ChipsInColor
 
 
+pokersetToString : PokerSet -> List String
+pokersetToString pokerset =
+    List.map chipsInColorToString pokerset
+
+
+chipsInColorToString : ChipsInColor -> String
+chipsInColorToString { color, amount } =
+    (toString amount) ++ " " ++ color ++ " chips"
+
+
 type alias Stack =
     List ChipsInColorWithDenom
 
@@ -38,10 +48,6 @@ type alias ChipsInColor =
     { color : String, amount : Amount }
 
 
-type alias ChipsInColorWithValue =
-    { color : String, amount : Amount, value : Value }
-
-
 type alias ChipsInColorWithDenom =
     { color : String, amount : Amount, denom : Denomination }
 
@@ -51,37 +57,18 @@ chipValue chips =
     toFloat chips.amount * chips.denom
 
 
+type alias ChipsInColorWithValue =
+    { color : String, amount : Amount, value : Value }
+
+
 chipsValue : ChipsInColorWithValue -> Int
 chipsValue chips =
     chips.amount * chips.value
 
 
-subtractChips : Int -> ChipsInColorWithValue -> ChipsInColorWithValue
-subtractChips amountToSubtract chips =
-    let
-        subtractedAmount =
-            chips.amount - amountToSubtract
-    in
-        { chips | amount = subtractedAmount }
-
-
-type alias Amount =
-    Int
-
-
-pokersetToString : PokerSet -> List String
-pokersetToString pokerset =
-    List.map chipsInColorToString pokerset
-
-
-chipsInColorToString : ChipsInColor -> String
-chipsInColorToString { color, amount } =
-    (toString amount) ++ " " ++ color ++ " chips"
-
-
 chipsInColorWithValueToString : ChipsInColorWithValue -> String
 chipsInColorWithValueToString { color, amount, value } =
-    (toString amount) ++ " " ++ color ++ " chips"
+    (toString amount) ++ " " ++ color ++ " chips" ++ " with converted value of " ++ (toString value)
 
 
 chipsInColorWithDenomToString : ChipsInColorWithDenom -> String
@@ -101,14 +88,8 @@ type alias Denomination =
     Float
 
 
-convertToDenomBase : Float -> Int
-convertToDenomBase value =
-    round (value * denomBase)
-
-
-denomBase : number
-denomBase =
-    100
+type alias Amount =
+    Int
 
 
 standardDenoms : List Denomination
@@ -129,6 +110,16 @@ toValue denom =
 toDenom : Value -> Denomination
 toDenom val =
     toFloat val / denomBase
+
+
+convertToDenomBase : Float -> Int
+convertToDenomBase value =
+    round (value * denomBase)
+
+
+denomBase : number
+denomBase =
+    100
 
 
 toChipsWithValue : ChipsInColor -> Value -> ChipsInColorWithValue

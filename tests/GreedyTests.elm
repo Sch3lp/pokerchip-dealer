@@ -195,4 +195,6 @@ greedyUnitTests =
                         (greedyChange 10 pokerbro)
                         { toDistribute = 30, usedValues = [ 0, 0, 0, 0, 7, 12, 16, 16 ] }
         ]
+
+    -- TODO write fuzzy tests that given 10 euro should return 10 euro worth of chips
     ]
