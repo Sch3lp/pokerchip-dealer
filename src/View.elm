@@ -9,16 +9,22 @@ import Update exposing (..)
 
 view : Model -> Html.Html Msg
 view model =
-    div []
-        [ div [] [ text "Your PokerSet contains: " ]
-        , div [] <| pokersetToDivs model.pokerset
-        , Html.br [] []
-        , div [] [ text <| "You seem to want above chips to be divided over " ++ (toString model.players) ++ " players" ++ " for a buyin of " ++ (toString model.buyin) ++ " eurodollars" ]
-        , Html.br [] []
-        , div [] [ text "The ideal stack I came up with is:" ]
-        , Html.br [] []
-        , div [] <| stackToDivs <| solve model
-        ]
+    let
+        greedySolve =
+            solve model
+    in
+        div []
+            [ div [] [ text "Your PokerSet contains: " ]
+            , div [] <| pokersetToDivs model.pokerset
+            , Html.br [] []
+            , div [] [ text <| "You seem to want above chips to be divided over " ++ (toString model.players) ++ " players" ++ " for a buyin of " ++ (toString model.buyin) ++ " eurodollars" ]
+            , Html.br [] []
+            , div [] [ text "The ideal stack I came up with is:" ]
+            , Html.br [] []
+            , div [] <| stackToDivs <| greedySolve
+            , Html.br [] []
+            , div [] [ text <| "Which is worth a total of " ++ (toString <| stackWorth greedySolve) ++ " eurodollars." ]
+            ]
 
 
 pokersetToDivs : PokerSet -> List (Html Msg)
