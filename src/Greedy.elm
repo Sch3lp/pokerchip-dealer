@@ -12,8 +12,11 @@ type alias MaxStackValue =
 greedySolve : Model -> Stack
 greedySolve model =
     let
+        limitedByPlayers =
+            limitAmount model.players model.pokerset
+
         stack =
-            assignPreferredDenominations standardDenoms model.pokerset
+            assignPreferredDenominations standardDenoms <| limitedByPlayers
 
         data =
             greedyChange model.buyin <| to2314 stack
@@ -121,16 +124,6 @@ limitAmount players pokerset =
 limitAmountOfChips : Players -> ChipsInColor -> ChipsInColor
 limitAmountOfChips players { color, amount } =
     ChipsInColor color (amount // players)
-
-
-limitChipsByPlayers : Players -> Stack -> Stack
-limitChipsByPlayers players stack =
-    List.map (divideAmountBy players) stack
-
-
-divideAmountBy : Players -> ChipsInColorWithDenom -> ChipsInColorWithDenom
-divideAmountBy players chips =
-    { chips | amount = chips.amount // players }
 
 
 combineDenoms : Amount -> ChipsInColorWithDenom -> ChipsInColorWithDenom

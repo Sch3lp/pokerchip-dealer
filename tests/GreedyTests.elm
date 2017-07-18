@@ -129,22 +129,6 @@ greedyUnitTests =
                         , ChipsInColor "blue-white" 50
                         ]
         ]
-    , describe "limitChipsByPlayers"
-        [ test "2 players, divisable amount" <|
-            \() ->
-                Expect.equal
-                    (limitChipsByPlayers 2 [ ChipsInColorWithDenom "purple" 50 0.05, ChipsInColorWithDenom "white-red" 20 0.1 ])
-                    [ ChipsInColorWithDenom "purple" 25 0.05
-                    , ChipsInColorWithDenom "white-red" 10 0.1
-                    ]
-        , test "2 players, non divisable amount, is rounded down" <|
-            \() ->
-                Expect.equal
-                    (limitChipsByPlayers 2 [ ChipsInColorWithDenom "purple" 49 0.05, ChipsInColorWithDenom "white-red" 33 0.1 ])
-                    [ ChipsInColorWithDenom "purple" 24 0.05
-                    , ChipsInColorWithDenom "white-red" 16 0.1
-                    ]
-        ]
     , describe "greedyChange"
         [ test "enough chips available" <|
             \() ->
