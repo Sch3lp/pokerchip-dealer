@@ -127,11 +127,7 @@ limitChipsByPlayers players stack =
 
 divideAmountBy : Players -> ChipsInColorWithValue -> ChipsInColorWithValue
 divideAmountBy players chips =
-    let
-        newAmount =
-            floor <| (toFloat chips.amount / toFloat players)
-    in
-        { chips | amount = newAmount }
+    { chips | amount = chips.amount // players }
 
 
 combineDenoms : Value -> ChipsInColorWithValue -> ChipsInColorWithValue
