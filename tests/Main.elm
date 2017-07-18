@@ -14,8 +14,7 @@ main =
         Test.concat
             [ UtilTests.all
             , GreedyTests.all
-
-            -- , ScenarioTests.all
+            , ScenarioTests.all
             ]
 
 

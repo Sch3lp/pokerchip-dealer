@@ -89,7 +89,7 @@ makeChangeForDenom chips data =
             if (valuesToUse < availableChips) then
                 ( data.toDistribute % chips.value, valuesToUse )
             else
-                ( data.toDistribute - (chips.value * chips.amount), chips.amount )
+                ( data.toDistribute - (chipsValue chips), chips.amount )
     in
         { data
             | toDistribute =
