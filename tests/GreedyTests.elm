@@ -193,8 +193,13 @@ greedyUnitTests =
                 in
                     Expect.equal
                         (greedyChange 10 pokerbro)
-                        { toDistribute = 30, usedValues = [ 0, 0, 0, 0, 7, 12, 16, 16 ] }
+                        { toDistribute = 30, usedValues = [ 0, 0, 0, 0, 8, 12, 16, 16 ] }
         ]
 
+    -- generate all possible combinations (not necessarily solutions)
+    -- by just making stacks by adding 1 chip every time (end when all chips, limited by players, have been used)
+    -- only keep the real solutions (stackworth == buyin)
+    -- run an algorithm on those to retain the ideal solution:
+    -- 0.1 chips maxed, then .25, then .05, and that ideally have at least one from the first 5 denoms in the stack
     -- TODO write fuzzy tests that given 10 euro should return 10 euro worth of chips
     ]
