@@ -121,9 +121,9 @@ limitAmount players pokerset =
     List.map (limitAmountOfChips players) pokerset
 
 
-limitAmountOfChips : Players -> ChipsInColor -> ChipsInColor
+limitAmountOfChips : Players -> ChipsInColor a -> ChipsInColor {}
 limitAmountOfChips players { color, amount } =
-    ChipsInColor color (amount // players)
+    { color = color, amount = (amount // players) }
 
 
 combineDenoms : Amount -> ChipsInColorWithDenom -> ChipsInColorWithDenom

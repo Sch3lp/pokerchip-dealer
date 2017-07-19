@@ -18,7 +18,7 @@ type alias Buyin =
 
 
 type alias PokerSet =
-    List ChipsInColor
+    List (ChipsInColor {})
 
 
 pokersetToString : PokerSet -> List String
@@ -26,7 +26,7 @@ pokersetToString pokerset =
     List.map chipsInColorToString pokerset
 
 
-chipsInColorToString : ChipsInColor -> String
+chipsInColorToString : ChipsInColor a -> String
 chipsInColorToString { color, amount } =
     (toString amount) ++ " " ++ color ++ " chips"
 
@@ -44,12 +44,12 @@ stackWorth stack =
     List.sum <| List.map chipValue stack
 
 
-type alias ChipsInColor =
-    { color : String, amount : Amount }
+type alias ChipsInColor a =
+    { a | color : String, amount : Amount }
 
 
 type alias ChipsInColorWithDenom =
-    { color : String, amount : Amount, denom : Denomination }
+    ChipsInColor { denom : Denomination }
 
 
 chipValue : ChipsInColorWithDenom -> Float
@@ -122,14 +122,14 @@ denomBase =
     100
 
 
-toChipsWithValue : ChipsInColor -> Value -> ChipsInColorWithValue
+toChipsWithValue : ChipsInColor a -> Value -> ChipsInColorWithValue
 toChipsWithValue { color, amount } value =
     ChipsInColorWithValue color amount value
 
 
-toChipsWithDenomination : ChipsInColor -> Denomination -> ChipsInColorWithDenom
+toChipsWithDenomination : ChipsInColor a -> Denomination -> ChipsInColorWithDenom
 toChipsWithDenomination { color, amount } denom =
-    ChipsInColorWithDenom color amount denom
+    { color = color, amount = amount, denom = denom }
 
 
 chipsWithDenomToValue : ChipsInColorWithDenom -> ChipsInColorWithValue

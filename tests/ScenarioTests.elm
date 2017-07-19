@@ -17,14 +17,14 @@ all =
 
 pokerbrosPokerset : PokerSet
 pokerbrosPokerset =
-    [ ChipsInColor "purple" 75
-    , ChipsInColor "orange" 75
-    , ChipsInColor "white-red" 100
-    , ChipsInColor "red-blue" 100
-    , ChipsInColor "blue-white" 50
-    , ChipsInColor "green-pink" 50
-    , ChipsInColor "black-salmon" 25
-    , ChipsInColor "purple-pink" 25
+    [ { color = "purple", amount = 75 }
+    , { color = "orange", amount = 75 }
+    , { color = "white-red", amount = 100 }
+    , { color = "red-blue", amount = 100 }
+    , { color = "blue-white", amount = 50 }
+    , { color = "green-pink", amount = 50 }
+    , { color = "black-salmon", amount = 25 }
+    , { color = "purple-pink", amount = 25 }
     ]
 
 
@@ -47,26 +47,26 @@ with1Player =
         \() ->
             let
                 simplePokerset =
-                    [ ChipsInColor "purple" 1
-                    , ChipsInColor "orange" 1
-                    , ChipsInColor "white-red" 1
-                    , ChipsInColor "red-blue" 1
-                    , ChipsInColor "blue-white" 1
-                    , ChipsInColor "green-pink" 1
-                    , ChipsInColor "black-salmon" 1
-                    , ChipsInColor "purple-pink" 1
+                    [ { color = "purple", amount = 1 }
+                    , { color = "orange", amount = 1 }
+                    , { color = "white-red", amount = 1 }
+                    , { color = "red-blue", amount = 1 }
+                    , { color = "blue-white", amount = 1 }
+                    , { color = "green-pink", amount = 1 }
+                    , { color = "black-salmon", amount = 1 }
+                    , { color = "purple-pink", amount = 1 }
                     ]
             in
                 Expect.equal
                     (greedySolve <| Model simplePokerset standardDenoms 19.4 1)
-                    [ ChipsInColorWithDenom "purple" 1 0.05
-                    , ChipsInColorWithDenom "orange" 1 0.1
-                    , ChipsInColorWithDenom "white-red" 1 0.25
-                    , ChipsInColorWithDenom "red-blue" 1 0.5
-                    , ChipsInColorWithDenom "blue-white" 1 1
-                    , ChipsInColorWithDenom "green-pink" 1 2.5
-                    , ChipsInColorWithDenom "black-salmon" 1 5
-                    , ChipsInColorWithDenom "purple-pink" 1 10
+                    [ { color = "purple", amount = 1, denom = 0.05 }
+                    , { color = "orange", amount = 1, denom = 0.1 }
+                    , { color = "white-red", amount = 1, denom = 0.25 }
+                    , { color = "red-blue", amount = 1, denom = 0.5 }
+                    , { color = "blue-white", amount = 1, denom = 1 }
+                    , { color = "green-pink", amount = 1, denom = 2.5 }
+                    , { color = "black-salmon", amount = 1, denom = 5 }
+                    , { color = "purple-pink", amount = 1, denom = 10 }
                     ]
 
 
@@ -76,26 +76,26 @@ with2Players =
         \() ->
             let
                 simplePokerset =
-                    [ ChipsInColor "purple" 2
-                    , ChipsInColor "orange" 2
-                    , ChipsInColor "white-red" 2
-                    , ChipsInColor "red-blue" 2
-                    , ChipsInColor "blue-white" 2
-                    , ChipsInColor "green-pink" 2
-                    , ChipsInColor "black-salmon" 2
-                    , ChipsInColor "purple-pink" 2
+                    [ { color = "purple", amount = 2 }
+                    , { color = "orange", amount = 2 }
+                    , { color = "white-red", amount = 2 }
+                    , { color = "red-blue", amount = 2 }
+                    , { color = "blue-white", amount = 2 }
+                    , { color = "green-pink", amount = 2 }
+                    , { color = "black-salmon", amount = 2 }
+                    , { color = "purple-pink", amount = 2 }
                     ]
             in
                 Expect.equal
                     (greedySolve <| Model simplePokerset standardDenoms 38.8 2)
-                    [ ChipsInColorWithDenom "purple" 1 0.05
-                    , ChipsInColorWithDenom "orange" 1 0.1
-                    , ChipsInColorWithDenom "white-red" 1 0.25
-                    , ChipsInColorWithDenom "red-blue" 1 0.5
-                    , ChipsInColorWithDenom "blue-white" 1 1
-                    , ChipsInColorWithDenom "green-pink" 1 2.5
-                    , ChipsInColorWithDenom "black-salmon" 1 5
-                    , ChipsInColorWithDenom "purple-pink" 1 10
+                    [ { color = "purple", amount = 1, denom = 0.05 }
+                    , { color = "orange", amount = 1, denom = 0.1 }
+                    , { color = "white-red", amount = 1, denom = 0.25 }
+                    , { color = "red-blue", amount = 1, denom = 0.5 }
+                    , { color = "blue-white", amount = 1, denom = 1 }
+                    , { color = "green-pink", amount = 1, denom = 2.5 }
+                    , { color = "black-salmon", amount = 1, denom = 5 }
+                    , { color = "purple-pink", amount = 1, denom = 10 }
                     ]
 
 
@@ -106,10 +106,10 @@ pokerbrosCase =
             \() ->
                 Expect.equal
                     (greedySolve <| Model pokerbrosPokerset standardDenoms 10 6)
-                    [ ChipsInColorWithDenom "orange" 10 0.05
-                    , ChipsInColorWithDenom "white-red" 15 0.1
-                    , ChipsInColorWithDenom "red-blue" 12 0.25
-                    , ChipsInColorWithDenom "blue-white" 6 0.5
-                    , ChipsInColorWithDenom "green-pink" 2 1
+                    [ { color = "orange", amount = 10, denom = 0.05 }
+                    , { color = "white-red", amount = 15, denom = 0.1 }
+                    , { color = "red-blue", amount = 12, denom = 0.25 }
+                    , { color = "blue-white", amount = 6, denom = 0.5 }
+                    , { color = "green-pink", amount = 2, denom = 1 }
                     ]
         ]
