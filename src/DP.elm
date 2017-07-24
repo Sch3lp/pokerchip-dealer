@@ -43,3 +43,22 @@ generateComboRecursively chips data =
             data
         else
             generateComboRecursively chips { data | innerData = newInnerData }
+
+
+type alias ChipsUsedAccumulator =
+    { amountOfChipsUsed : Amount, combos : List Amount }
+
+
+chipColorVariations : ChipsInColorWithValue -> ChipsUsedAccumulator -> ChipsUsedAccumulator
+chipColorVariations chips acc =
+    if acc.amountOfChipsUsed == chips.amount then
+        acc
+    else
+        let
+            newAmount =
+                acc.amountOfChipsUsed + 1
+
+            newCombos =
+                newAmount :: acc.combos
+        in
+            chipColorVariations chips { acc | combos = newCombos, amountOfChipsUsed = newAmount }
