@@ -62,3 +62,8 @@ chipColorVariations chips acc =
                 newAmount :: acc.combos
         in
             chipColorVariations chips { acc | combos = newCombos, amountOfChipsUsed = newAmount }
+
+
+multipleChipVariations : List ChipsInColorWithValue -> List (List Amount)
+multipleChipVariations chipses =
+    List.map (\chips -> List.range 1 chips.amount) chipses

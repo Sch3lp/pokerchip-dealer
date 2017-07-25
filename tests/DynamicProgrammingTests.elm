@@ -23,6 +23,7 @@ dpUnitTests : List Test
 dpUnitTests =
     [ describe "DP Unit Tests"
         [ chipColorVariationsTests
+        , multipleChipVariationsTests
         ]
     ]
 
@@ -40,6 +41,43 @@ chipColorVariationsTests =
                         (chipColorVariations simple { amountOfChipsUsed = 0, combos = [] })
                         { amountOfChipsUsed = 4, combos = [ 4, 3, 2, 1 ] }
         ]
+
+
+multipleChipVariationsTests : Test
+multipleChipVariationsTests =
+    describe "multipleChipVariations"
+        [ test "two denoms with 2 chips has 2 x 2 combinations" <|
+            \() ->
+                let
+                    simple =
+                        [ { color = "purple", amount = 2, value = 5 }
+                        , { color = "orange", amount = 3, value = 10 }
+                        ]
+                in
+                    Expect.equal
+                        (multipleChipVariations simple)
+                        [ [ 1, 2 ], [ 1, 2, 3 ] ]
+        ]
+
+
+combineVariationsTests : Test
+combineVariationsTests =
+    describe "combineVariations"
+        [ test "two denoms with 2 chips has 2 x 2 combinations" <|
+            \() ->
+                let
+                    simple =
+                        [ [ 1, 2 ], [ 1, 2, 3 ] ]
+                in
+                    Expect.equal
+                        (combineVariations [ 1, 2 ] [ 1, 2, 3 ])
+                        [ ( 1, 1 ), ( 1, 2 ), ( 1, 3 ), ( 2, 1 ), ( 2, 2 ), ( 2, 3 ) ]
+        ]
+
+
+combineVariations : List Amount -> List Amount -> List ( Amount, Amount )
+combineVariations amountVars1 amountVars2 =
+    List.map2 (,) amountVars1 amountVars2
 
 
 
