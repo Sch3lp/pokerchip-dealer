@@ -24,6 +24,7 @@ dpUnitTests =
     [ describe "DP Unit Tests"
         [ chipColorVariationsTests
         , multipleChipVariationsTests
+        , combineVariationsTests
         ]
     ]
 
@@ -62,22 +63,33 @@ multipleChipVariationsTests =
 
 combineVariationsTests : Test
 combineVariationsTests =
-    describe "combineVariations"
-        [ test "two denoms with 2 chips has 2 x 2 combinations" <|
+    describe "carthesian"
+        [ test "carthesian" <|
             \() ->
                 let
                     simple =
                         [ [ 1, 2 ], [ 1, 2, 3 ] ]
                 in
                     Expect.equal
-                        (combineVariations [ 1, 2 ] [ 1, 2, 3 ])
+                        (carthesian [ 1, 2 ] [ 1 ])
+                        [ ( 1, 1 ), ( 2, 1 ) ]
+        , test "carthesian2" <|
+            \() ->
+                let
+                    simple =
+                        [ [ 1, 2 ], [ 1, 2, 3 ] ]
+                in
+                    Expect.equal
+                        (carthesian [ 1, 2 ] [ 1, 2, 3 ])
                         [ ( 1, 1 ), ( 1, 2 ), ( 1, 3 ), ( 2, 1 ), ( 2, 2 ), ( 2, 3 ) ]
         ]
 
 
-combineVariations : List Amount -> List Amount -> List ( Amount, Amount )
-combineVariations amountVars1 amountVars2 =
-    List.map2 (,) amountVars1 amountVars2
+carthesian : List Amount -> List Amount -> List ( Amount, Amount )
+carthesian xs ys =
+    List.concatMap
+        (\x -> List.map (\y -> ( x, y )) ys)
+        xs
 
 
 
