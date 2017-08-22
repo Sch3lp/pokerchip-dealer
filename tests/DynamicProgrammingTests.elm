@@ -24,11 +24,19 @@ dpUnitTests =
     [ describe "DP Unit Tests"
         [ chipColorVariationsTests
         , multipleChipVariationsTests
-        , carthesianTupleTests
-        , carthesianListTests
-        , carthesianRecursiveTests
+        , carthesianTests
         ]
     ]
+
+
+carthesianTests : Test
+carthesianTests =
+    describe "carthesian tests"
+        [ carthesianTupleTests
+        , carthesianListTests
+        , carthesianRecursiveTests
+        , carthesianHelperTests
+        ]
 
 
 chipColorVariationsTests : Test
@@ -98,7 +106,17 @@ carthesianListTests =
 carthesianRecursiveTests : Test
 carthesianRecursiveTests =
     describe "carthesianRecursive"
-        [ test "carthesian with single element lists" <|
+        [ test "carthesian with two lists" <|
+            \() ->
+                Expect.equal
+                    (carthesianRecursive [ [ 1, 2 ], [ 3, 4 ] ])
+                    [ [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ] ]
+        , test "carthesian with two lists, different amount" <|
+            \() ->
+                Expect.equal
+                    (carthesianRecursive [ [ 1, 2 ], [ 3, 4, 5 ] ])
+                    [ [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ] ]
+        , test "carthesian with single element lists" <|
             \() ->
                 Expect.equal
                     (carthesianRecursive [ [ 1 ], [ 2 ], [ 3 ] ])
@@ -125,8 +143,7 @@ carthesian xs ys =
 
 carthesianToList : List a -> List a -> List (List a)
 carthesianToList xs ys =
-    List.concatMap (\x -> List.map (\y -> x :: [ y ]) ys)
-        xs
+    List.concatMap (\x -> List.map (\y -> x :: [ y ]) ys) xs
 
 
 carthesianRecursive : List (List a) -> List (List a)
@@ -139,7 +156,32 @@ carthesianRecursive listsToCarthesiaize =
             [ one ]
 
         one :: two :: t ->
-            List.append (carthesianToList one two) (carthesianRecursive (two :: t))
+            let
+                starter =
+                    carthesianToList one two
+            in
+                List.append starter (carthesianRecursive (two :: t))
+
+
+carthesianHelperTests : Test
+carthesianHelperTests =
+    describe "carthesianHelper"
+        [ test "two lists" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 1, 2 ] [ 3, 4 ])
+                    [ [ 1, 2, 3 ], [ 1, 2, 4 ] ]
+        ]
+
+
+carthesianHelper : List a -> List a -> List (List a)
+carthesianHelper xs ys =
+    case ys of
+        [] ->
+            []
+
+        h :: t ->
+            [ xs ++ [ h ] ] ++ (carthesianHelper xs t)
 
 
 
