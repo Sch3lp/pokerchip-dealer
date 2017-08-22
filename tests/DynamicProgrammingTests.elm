@@ -24,18 +24,18 @@ dpUnitTests =
     [ describe "DP Unit Tests"
         [ chipColorVariationsTests
         , multipleChipVariationsTests
-        , carthesianTests
+        , cartesianTests
         ]
     ]
 
 
-carthesianTests : Test
-carthesianTests =
-    describe "carthesian tests"
-        [ carthesianTupleTests
-        , carthesianListTests
-        , carthesianRecursiveTests
-        , carthesianHelperTests
+cartesianTests : Test
+cartesianTests =
+    describe "cartesian tests"
+        [ cartesianTupleTests
+        , cartesianListTests
+        , cartesianRecursiveTests
+        , cartesianHelperTests
         ]
 
 
@@ -71,83 +71,83 @@ multipleChipVariationsTests =
         ]
 
 
-carthesianTupleTests : Test
-carthesianTupleTests =
-    describe "carthesian"
-        [ test "carthesian with single elements" <|
+cartesianTupleTests : Test
+cartesianTupleTests =
+    describe "cartesian"
+        [ test "cartesian with single elements" <|
             \() ->
                 Expect.equal
-                    (carthesian [ 1, 2 ] [ 1 ])
+                    (cartesian [ 1, 2 ] [ 1 ])
                     [ ( 1, 1 ), ( 2, 1 ) ]
-        , test "carthesian with multiple elements" <|
+        , test "cartesian with multiple elements" <|
             \() ->
                 Expect.equal
-                    (carthesian [ 1, 2 ] [ 1, 2, 3 ])
+                    (cartesian [ 1, 2 ] [ 1, 2, 3 ])
                     [ ( 1, 1 ), ( 1, 2 ), ( 1, 3 ), ( 2, 1 ), ( 2, 2 ), ( 2, 3 ) ]
         ]
 
 
-carthesianListTests : Test
-carthesianListTests =
-    describe "carthesian"
-        [ test "carthesian with single elements" <|
+cartesianListTests : Test
+cartesianListTests =
+    describe "cartesian"
+        [ test "cartesian with single elements" <|
             \() ->
                 Expect.equal
-                    (carthesianToList [ 1, 2 ] [ 1 ])
+                    (cartesianToList [ 1, 2 ] [ 1 ])
                     [ [ 1, 1 ], [ 2, 1 ] ]
-        , test "carthesian with multiple elements" <|
+        , test "cartesian with multiple elements" <|
             \() ->
                 Expect.equal
-                    (carthesianToList [ 1, 2 ] [ 1, 2, 3 ])
+                    (cartesianToList [ 1, 2 ] [ 1, 2, 3 ])
                     [ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ] ]
         ]
 
 
-carthesianRecursiveTests : Test
-carthesianRecursiveTests =
-    describe "carthesianRecursive"
-        [ test "carthesian with two lists" <|
+cartesianRecursiveTests : Test
+cartesianRecursiveTests =
+    describe "cartesianRecursive"
+        [ test "cartesian with two lists" <|
             \() ->
                 Expect.equal
-                    (carthesianRecursive [ [ 1, 2 ], [ 3, 4 ] ])
+                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4 ] ])
                     [ [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ] ]
-        , test "carthesian with two lists, different amount" <|
+        , test "cartesian with two lists, different amount" <|
             \() ->
                 Expect.equal
-                    (carthesianRecursive [ [ 1, 2 ], [ 3, 4, 5 ] ])
+                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4, 5 ] ])
                     [ [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ] ]
-        , test "carthesian with single element lists" <|
+        , test "cartesian with single element lists" <|
             \() ->
                 Expect.equal
-                    (carthesianRecursive [ [ 1 ], [ 2 ], [ 3 ] ])
+                    (cartesianRecursive [ [ 1 ], [ 2 ], [ 3 ] ])
                     [ [ 1, 2, 3 ] ]
-        , test "carthesian with same amount of list elements" <|
+        , test "cartesian with same amount of list elements" <|
             \() ->
                 Expect.equal
-                    (carthesianRecursive [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ])
+                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ])
                     [ [ 1, 3, 5 ], [ 1, 3, 6 ], [ 1, 4, 5 ], [ 1, 4, 6 ], [ 2, 3, 5 ], [ 2, 3, 6 ], [ 2, 4, 5 ], [ 2, 4, 6 ] ]
-        , test "carthesian with different amount of list elements" <|
+        , test "cartesian with different amount of list elements" <|
             \() ->
                 Expect.equal
-                    (carthesianRecursive [ [ 1, 2 ], [ 1, 2, 3 ], [ 4, 5 ] ])
+                    (cartesianRecursive [ [ 1, 2 ], [ 1, 2, 3 ], [ 4, 5 ] ])
                     [ [ 1, 1, 4 ], [ 1, 1, 5 ], [ 1, 2, 4 ], [ 1, 2, 5 ], [ 2, 1, 4 ], [ 2, 1, 5 ], [ 2, 2, 4 ], [ 2, 2, 5 ], [ 2, 3, 4 ], [ 2, 3, 5 ] ]
         ]
 
 
-carthesian : List a -> List a -> List ( a, a )
-carthesian xs ys =
+cartesian : List a -> List a -> List ( a, a )
+cartesian xs ys =
     List.concatMap
         (\x -> List.map (\y -> ( x, y )) ys)
         xs
 
 
-carthesianToList : List a -> List a -> List (List a)
-carthesianToList xs ys =
+cartesianToList : List a -> List a -> List (List a)
+cartesianToList xs ys =
     List.concatMap (\x -> List.map (\y -> x :: [ y ]) ys) xs
 
 
-carthesianRecursive : List (List a) -> List (List a)
-carthesianRecursive listsToCarthesiaize =
+cartesianRecursive : List (List a) -> List (List a)
+cartesianRecursive listsToCarthesiaize =
     case listsToCarthesiaize of
         [] ->
             []
@@ -158,88 +158,88 @@ carthesianRecursive listsToCarthesiaize =
         one :: two :: t ->
             let
                 starter =
-                    carthesianToList one two
+                    cartesianToList one two
             in
-                List.append starter (carthesianRecursive (two :: t))
+                List.append starter (cartesianRecursive (two :: t))
 
 
-carthesianHelperTests : Test
-carthesianHelperTests =
-    describe "carthesianHelper - explaining carthesian [[1,2],[3,4],[5,6],[7,8]]"
-        {- loop the first list [1,2] ([[1],[2]]) and apply carthesian with the next list [3,4] -}
+cartesianHelperTests : Test
+cartesianHelperTests =
+    describe "cartesianHelper - explaining cartesian [[1,2],[3,4],[5,6],[7,8]]"
+        {- loop the first list [1,2] ([[1],[2]]) and apply cartesian with the next list [3,4] -}
         [ test "step 0.1 of helper" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1 ] [ 3, 4 ])
+                    (cartesianHelper [ 1 ] [ 3, 4 ])
                     [ [ 1, 3 ], [ 1, 4 ] ]
         , test "step 0.2 of helper" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 2 ] [ 3, 4 ])
+                    (cartesianHelper [ 2 ] [ 3, 4 ])
                     [ [ 2, 3 ], [ 2, 4 ] ]
 
-        {- combine the results into a list of lists and loop it [[1,3],[1,4],[2,3],[2,4]] and apply carthesian with the next list [5,6] -}
-        , test "step 1.1 of helper (carthesianToList was applied to first pair)" <|
+        {- combine the results into a list of lists and loop it [[1,3],[1,4],[2,3],[2,4]] and apply cartesian with the next list [5,6] -}
+        , test "step 1.1 of helper (cartesianToList was applied to first pair)" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1, 3 ] [ 5, 6 ])
+                    (cartesianHelper [ 1, 3 ] [ 5, 6 ])
                     [ [ 1, 3, 5 ], [ 1, 3, 6 ] ]
         , test "step 1.2" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1, 4 ] [ 5, 6 ])
+                    (cartesianHelper [ 1, 4 ] [ 5, 6 ])
                     [ [ 1, 4, 5 ], [ 1, 4, 6 ] ]
         , test "step 1.3" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 2, 3 ] [ 5, 6 ])
+                    (cartesianHelper [ 2, 3 ] [ 5, 6 ])
                     [ [ 2, 3, 5 ], [ 2, 3, 6 ] ]
         , test "step 1.4" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 2, 4 ] [ 5, 6 ])
+                    (cartesianHelper [ 2, 4 ] [ 5, 6 ])
                     [ [ 2, 4, 5 ], [ 2, 4, 6 ] ]
 
-        {- loop the result list [[1,3,5],[1,3,6],[1,4,5],[1,4,6],[2,3,5],[2,3,6],[2,4,5],[2,4,6]] and apply carthesian with the next list [7,8] -}
+        {- loop the result list [[1,3,5],[1,3,6],[1,4,5],[1,4,6],[2,3,5],[2,3,6],[2,4,5],[2,4,6]] and apply cartesian with the next list [7,8] -}
         , test "step 2.1 now we can append the previous results with the [7,8]" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1, 3, 5 ] [ 7, 8 ])
+                    (cartesianHelper [ 1, 3, 5 ] [ 7, 8 ])
                     [ [ 1, 3, 5, 7 ], [ 1, 3, 5, 8 ] ]
         , test "step 2.2" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1, 3, 6 ] [ 7, 8 ])
+                    (cartesianHelper [ 1, 3, 6 ] [ 7, 8 ])
                     [ [ 1, 3, 6, 7 ], [ 1, 3, 6, 8 ] ]
         , test "step 2.3" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1, 4, 5 ] [ 7, 8 ])
+                    (cartesianHelper [ 1, 4, 5 ] [ 7, 8 ])
                     [ [ 1, 4, 5, 7 ], [ 1, 4, 5, 8 ] ]
         , test "step 2.4" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1, 4, 6 ] [ 7, 8 ])
+                    (cartesianHelper [ 1, 4, 6 ] [ 7, 8 ])
                     [ [ 1, 4, 6, 7 ], [ 1, 4, 6, 8 ] ]
         , test "step 2.5" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 2, 3, 5 ] [ 7, 8 ])
+                    (cartesianHelper [ 2, 3, 5 ] [ 7, 8 ])
                     [ [ 2, 3, 5, 7 ], [ 2, 3, 5, 8 ] ]
         , test "step 2.6" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 2, 4, 6 ] [ 7, 8 ])
+                    (cartesianHelper [ 2, 4, 6 ] [ 7, 8 ])
                     [ [ 2, 4, 6, 7 ], [ 2, 4, 6, 8 ] ]
         , test "step 2.7" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 2, 4, 5 ] [ 7, 8 ])
+                    (cartesianHelper [ 2, 4, 5 ] [ 7, 8 ])
                     [ [ 2, 4, 5, 7 ], [ 2, 4, 5, 8 ] ]
         , test "step 2.8" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 2, 4, 6 ] [ 7, 8 ])
+                    (cartesianHelper [ 2, 4, 6 ] [ 7, 8 ])
                     [ [ 2, 4, 6, 7 ], [ 2, 4, 6, 8 ] ]
 
         {-
@@ -249,14 +249,14 @@ carthesianHelperTests =
         ]
 
 
-carthesianHelper : List a -> List a -> List (List a)
-carthesianHelper xs ys =
+cartesianHelper : List a -> List a -> List (List a)
+cartesianHelper xs ys =
     case ys of
         [] ->
             []
 
         h :: t ->
-            [ xs ++ [ h ] ] ++ (carthesianHelper xs t)
+            [ xs ++ [ h ] ] ++ (cartesianHelper xs t)
 
 
 
