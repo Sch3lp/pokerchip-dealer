@@ -24,7 +24,9 @@ dpUnitTests =
     [ describe "DP Unit Tests"
         [ chipColorVariationsTests
         , multipleChipVariationsTests
-        , combineVariationsTests
+        , carthesianTupleTests
+        , carthesianListTests
+        , carthesianRecursiveTests
         ]
     ]
 
@@ -61,35 +63,83 @@ multipleChipVariationsTests =
         ]
 
 
-combineVariationsTests : Test
-combineVariationsTests =
+carthesianTupleTests : Test
+carthesianTupleTests =
     describe "carthesian"
-        [ test "carthesian" <|
+        [ test "carthesian with single elements" <|
             \() ->
-                let
-                    simple =
-                        [ [ 1, 2 ], [ 1, 2, 3 ] ]
-                in
-                    Expect.equal
-                        (carthesian [ 1, 2 ] [ 1 ])
-                        [ ( 1, 1 ), ( 2, 1 ) ]
-        , test "carthesian2" <|
+                Expect.equal
+                    (carthesian [ 1, 2 ] [ 1 ])
+                    [ ( 1, 1 ), ( 2, 1 ) ]
+        , test "carthesian with multiple elements" <|
             \() ->
-                let
-                    simple =
-                        [ [ 1, 2 ], [ 1, 2, 3 ] ]
-                in
-                    Expect.equal
-                        (carthesian [ 1, 2 ] [ 1, 2, 3 ])
-                        [ ( 1, 1 ), ( 1, 2 ), ( 1, 3 ), ( 2, 1 ), ( 2, 2 ), ( 2, 3 ) ]
+                Expect.equal
+                    (carthesian [ 1, 2 ] [ 1, 2, 3 ])
+                    [ ( 1, 1 ), ( 1, 2 ), ( 1, 3 ), ( 2, 1 ), ( 2, 2 ), ( 2, 3 ) ]
         ]
 
 
-carthesian : List Amount -> List Amount -> List ( Amount, Amount )
+carthesianListTests : Test
+carthesianListTests =
+    describe "carthesian"
+        [ test "carthesian with single elements" <|
+            \() ->
+                Expect.equal
+                    (carthesianToList [ 1, 2 ] [ 1 ])
+                    [ [ 1, 1 ], [ 2, 1 ] ]
+        , test "carthesian with multiple elements" <|
+            \() ->
+                Expect.equal
+                    (carthesianToList [ 1, 2 ] [ 1, 2, 3 ])
+                    [ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ] ]
+        ]
+
+
+carthesianRecursiveTests : Test
+carthesianRecursiveTests =
+    describe "carthesianRecursive"
+        [ test "carthesian with single element lists" <|
+            \() ->
+                Expect.equal
+                    (carthesianRecursive [ [ 1 ], [ 2 ], [ 3 ] ])
+                    [ [ 1, 2, 3 ] ]
+        , test "carthesian with same amount of list elements" <|
+            \() ->
+                Expect.equal
+                    (carthesianRecursive [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ])
+                    [ [ 1, 3, 5 ], [ 1, 3, 6 ], [ 1, 4, 5 ], [ 1, 4, 6 ], [ 2, 3, 5 ], [ 2, 3, 6 ], [ 2, 4, 5 ], [ 2, 4, 6 ] ]
+        , test "carthesian with different amount of list elements" <|
+            \() ->
+                Expect.equal
+                    (carthesianRecursive [ [ 1, 2 ], [ 1, 2, 3 ], [ 4, 5 ] ])
+                    [ [ 1, 1, 4 ], [ 1, 1, 5 ], [ 1, 2, 4 ], [ 1, 2, 5 ], [ 2, 1, 4 ], [ 2, 1, 5 ], [ 2, 2, 4 ], [ 2, 2, 5 ], [ 2, 3, 4 ], [ 2, 3, 5 ] ]
+        ]
+
+
+carthesian : List a -> List a -> List ( a, a )
 carthesian xs ys =
     List.concatMap
         (\x -> List.map (\y -> ( x, y )) ys)
         xs
+
+
+carthesianToList : List a -> List a -> List (List a)
+carthesianToList xs ys =
+    List.concatMap (\x -> List.map (\y -> x :: [ y ]) ys)
+        xs
+
+
+carthesianRecursive : List (List a) -> List (List a)
+carthesianRecursive listsToCarthesiaize =
+    case listsToCarthesiaize of
+        [] ->
+            []
+
+        one :: [] ->
+            [ one ]
+
+        one :: two :: t ->
+            List.append (carthesianToList one two) (carthesianRecursive (two :: t))
 
 
 
