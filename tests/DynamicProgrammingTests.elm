@@ -165,12 +165,70 @@ carthesianRecursive listsToCarthesiaize =
 
 carthesianHelperTests : Test
 carthesianHelperTests =
-    describe "carthesianHelper"
-        [ test "two lists" <|
+    describe "carthesianHelper - explaining carthesian [[1,2],[3,4],[5,6],[7,8]]"
+        {- so we're starting off with [[1,3],[1,4],[2,3],[2,4]] all of these need to be helped with [5,6] and the result of that eventually with [7,8] -}
+        [ test "step 1.1 of helper (carthesianToList was applied to first pair)" <|
             \() ->
                 Expect.equal
-                    (carthesianHelper [ 1, 2 ] [ 3, 4 ])
-                    [ [ 1, 2, 3 ], [ 1, 2, 4 ] ]
+                    (carthesianHelper [ 1, 3 ] [ 5, 6 ])
+                    [ [ 1, 3, 5 ], [ 1, 3, 6 ] ]
+        , test "step 1.2" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 1, 4 ] [ 5, 6 ])
+                    [ [ 1, 4, 5 ], [ 1, 4, 6 ] ]
+        , test "step 1.3" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 2, 3 ] [ 5, 6 ])
+                    [ [ 2, 3, 5 ], [ 2, 3, 6 ] ]
+        , test "step 1.4" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 2, 4 ] [ 5, 6 ])
+                    [ [ 2, 4, 5 ], [ 2, 4, 6 ] ]
+        , test "step 2.1 now we can append the previous results with the [7,8]" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 1, 3, 5 ] [ 7, 8 ])
+                    [ [ 1, 3, 5, 7 ], [ 1, 3, 5, 8 ] ]
+        , test "step 2.2" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 1, 3, 6 ] [ 7, 8 ])
+                    [ [ 1, 3, 6, 7 ], [ 1, 3, 6, 8 ] ]
+        , test "step 2.3" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 1, 4, 5 ] [ 7, 8 ])
+                    [ [ 1, 4, 5, 7 ], [ 1, 4, 5, 8 ] ]
+        , test "step 2.4" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 1, 4, 6 ] [ 7, 8 ])
+                    [ [ 1, 4, 6, 7 ], [ 1, 4, 6, 8 ] ]
+        , test "step 2.5" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 2, 3, 5 ] [ 7, 8 ])
+                    [ [ 2, 3, 5, 7 ], [ 2, 3, 5, 8 ] ]
+        , test "step 2.6" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 2, 4, 6 ] [ 7, 8 ])
+                    [ [ 2, 4, 6, 7 ], [ 2, 4, 6, 8 ] ]
+        , test "step 2.7" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 2, 4, 5 ] [ 7, 8 ])
+                    [ [ 2, 4, 5, 7 ], [ 2, 4, 5, 8 ] ]
+        , test "step 2.8" <|
+            \() ->
+                Expect.equal
+                    (carthesianHelper [ 2, 4, 6 ] [ 7, 8 ])
+                    [ [ 2, 4, 6, 7 ], [ 2, 4, 6, 8 ] ]
+
+        {- after having processed the final List, all we need to do is combine all of the List of Lists into one List of Lists -} {- e.g. [ [ 2, 4, 5, 7 ], [ 2, 4, 5, 8 ] ] ++ [ [ 2, 4, 6, 7 ], [ 2, 4, 6, 8 ] ] -}
         ]
 
 
