@@ -125,11 +125,6 @@ limitByBuyinTests =
         ]
 
 
-limitByBuyin : Value -> List ValueStack -> List ValueStack
-limitByBuyin buyin permutations =
-    List.filter (\p -> valueStackWorth p == buyin) permutations
-
-
 
 -- generateCombinationsTests : Test
 -- generateCombinationsTests =

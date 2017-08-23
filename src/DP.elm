@@ -82,3 +82,8 @@ multipleChipVariationsInChips chipses =
 comboGenerationInChips : List ChipsInColorWithValue -> List (List ChipsInColorWithValue)
 comboGenerationInChips chipses =
     cartesianRecursive <| multipleChipVariationsInChips chipses
+
+
+limitByBuyin : Value -> List ValueStack -> List ValueStack
+limitByBuyin buyin permutations =
+    List.filter (\p -> valueStackWorth p == buyin) permutations
