@@ -88,7 +88,7 @@ type alias ValueStack =
 
 
 type alias ValueStackWorth =
-    Int
+    Value
 
 
 valueStackWorth : ValueStack -> ValueStackWorth

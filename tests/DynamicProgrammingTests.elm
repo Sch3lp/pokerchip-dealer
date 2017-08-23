@@ -4,6 +4,7 @@ import Test exposing (..)
 import Expect
 import Model exposing (..)
 import DP exposing (..)
+import Debug exposing (..)
 
 
 -- limited by players : limit total amounts of chips (of each color) by the amount of players
@@ -25,6 +26,7 @@ dpUnitTests =
         [ chipColorVariationsTests
         , multipleChipVariationsInChipsTests
         , comboGenerationInChipsTests
+        , limitByBuyinTests
         ]
     ]
 
@@ -85,6 +87,47 @@ comboGenerationInChipsTests =
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         ]
         ]
+
+
+limitByBuyinTests : Test
+limitByBuyinTests =
+    describe "limitByBuyin"
+        [ test "should only retain permutations of which the stackworth equals the buyin" <|
+            \() ->
+                let
+                    permWithValue100 =
+                        [ { color = "purple", amount = 4, value = 5 }
+                        , { color = "orange", amount = 3, value = 10 }
+                        , { color = "greene", amount = 2, value = 25 }
+                        ]
+
+                    lowerPerm =
+                        [ { color = "purple", amount = 3, value = 5 }
+                        , { color = "orange", amount = 3, value = 10 }
+                        , { color = "greene", amount = 2, value = 25 }
+                        ]
+
+                    higherPerm =
+                        [ { color = "purple", amount = 4, value = 5 }
+                        , { color = "orange", amount = 3, value = 10 }
+                        , { color = "greene", amount = 3, value = 25 }
+                        ]
+
+                    permutations =
+                        [ permWithValue100, lowerPerm, higherPerm ]
+
+                    expected =
+                        [ permWithValue100 ]
+                in
+                    Expect.equal
+                        (limitByBuyin 100 permutations)
+                        expected
+        ]
+
+
+limitByBuyin : Value -> List ValueStack -> List ValueStack
+limitByBuyin buyin permutations =
+    List.filter (\p -> valueStackWorth p == buyin) permutations
 
 
 
