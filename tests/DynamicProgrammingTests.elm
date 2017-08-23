@@ -24,6 +24,7 @@ dpUnitTests =
     [ describe "DP Unit Tests"
         [ chipColorVariationsTests
         , multipleChipVariationsTests
+        , comboGenerationTests
         ]
     ]
 
@@ -46,7 +47,7 @@ chipColorVariationsTests =
 multipleChipVariationsTests : Test
 multipleChipVariationsTests =
     describe "multipleChipVariations"
-        [ test "two denoms with 2 chips has 2 x 2 combinations" <|
+        [ test "two denoms with 2 and 3 chips has 2 x 3 combinations" <|
             \() ->
                 let
                     simple =
@@ -57,6 +58,24 @@ multipleChipVariationsTests =
                     Expect.equal
                         (multipleChipVariations simple)
                         [ [ 1, 2 ], [ 1, 2, 3 ] ]
+        ]
+
+
+comboGenerationTests : Test
+comboGenerationTests =
+    describe "comboGeneration"
+        [ test "cartesian product of all amount ranges of the different chips" <|
+            \() ->
+                let
+                    simple =
+                        [ { color = "purple", amount = 2, value = 5 }
+                        , { color = "orange", amount = 3, value = 10 }
+                        , { color = "greene", amount = 5, value = 25 }
+                        ]
+                in
+                    Expect.equal
+                        (comboGeneration simple)
+                        [ [ 1, 1, 1 ], [ 1, 1, 2 ], [ 1, 1, 3 ], [ 1, 1, 4 ], [ 1, 1, 5 ], [ 1, 2, 1 ], [ 1, 2, 2 ], [ 1, 2, 3 ], [ 1, 2, 4 ], [ 1, 2, 5 ], [ 1, 3, 1 ], [ 1, 3, 2 ], [ 1, 3, 3 ], [ 1, 3, 4 ], [ 1, 3, 5 ], [ 2, 1, 1 ], [ 2, 1, 2 ], [ 2, 1, 3 ], [ 2, 1, 4 ], [ 2, 1, 5 ], [ 2, 2, 1 ], [ 2, 2, 2 ], [ 2, 2, 3 ], [ 2, 2, 4 ], [ 2, 2, 5 ], [ 2, 3, 1 ], [ 2, 3, 2 ], [ 2, 3, 3 ], [ 2, 3, 4 ], [ 2, 3, 5 ] ]
         ]
 
 

@@ -3,6 +3,7 @@ module DP exposing (..)
 import Debug exposing (..)
 import Model exposing (..)
 import Util exposing (..)
+import Cartesian exposing (cartesianRecursive)
 
 
 dpSolve : Model -> Stack
@@ -67,3 +68,8 @@ chipColorVariations chips acc =
 multipleChipVariations : List ChipsInColorWithValue -> List (List Amount)
 multipleChipVariations chipses =
     List.map (\chips -> List.range 1 chips.amount) chipses
+
+
+comboGeneration : List ChipsInColorWithValue -> List (List Amount)
+comboGeneration chipses =
+    cartesianRecursive <| multipleChipVariations chipses
