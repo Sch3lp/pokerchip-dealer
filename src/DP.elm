@@ -73,3 +73,22 @@ multipleChipVariations chipses =
 comboGeneration : List ChipsInColorWithValue -> List (List Amount)
 comboGeneration chipses =
     cartesianRecursive <| multipleChipVariations chipses
+
+
+multipleChipVariationsInChips : List ChipsInColorWithValue -> List (List ChipsInColorWithValue)
+multipleChipVariationsInChips chipses =
+    let
+        minAmountOfChips =
+            1
+    in
+        List.map
+            (\chips ->
+                List.range minAmountOfChips chips.amount
+                    |> List.map (\a -> { chips | amount = a })
+            )
+            chipses
+
+
+comboGenerationInChips : List ChipsInColorWithValue -> List (List ChipsInColorWithValue)
+comboGenerationInChips chipses =
+    cartesianRecursive <| multipleChipVariationsInChips chipses
