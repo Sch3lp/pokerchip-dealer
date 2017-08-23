@@ -2,16 +2,18 @@ module DynamicProgrammingTests exposing (..)
 
 import Test exposing (..)
 import Expect
+import Util exposing (..)
 import Model exposing (..)
 import DP exposing (..)
 import Debug exposing (..)
 
 
 -- limited by players : limit total amounts of chips (of each color) by the amount of players
--- generate all possible combinations (not necessarily solutions) [DONE]
--- limited by buyin : only keep the real solutions (stackworth == buyin)
+-- generate all possible combinations (not necessarily solutions)                              [DONE]
+-- limited by buyin : only keep the real solutions (stackworth == buyin)                       [DONE]
 -- run an algorithm on those to retain the ideal solution:
--- 0.1 chips maxed, then .25, then .05, and that ideally have at least one from the first 5 denoms in the stack
+-- 0.1 chips maxed, then .25, then .05 (the rest we don't care about)
+-- and that ideally have at least one from the first 5 denoms in the stack
 
 
 all : Test
@@ -27,6 +29,7 @@ dpUnitTests =
         , multipleChipVariationsInChipsTests
         , comboGenerationInChipsTests
         , limitByBuyinTests
+        , bestSolutionTests
         ]
     ]
 
@@ -113,16 +116,61 @@ limitByBuyinTests =
                         , { color = "greene", amount = 3, value = 25 }
                         ]
 
-                    permutations =
+                    perms =
                         [ permWithValue100, lowerPerm, higherPerm ]
 
                     expected =
                         [ permWithValue100 ]
                 in
                     Expect.equal
-                        (limitByBuyin 100 permutations)
+                        (limitByBuyin 100 perms)
                         expected
         ]
+
+
+bestSolutionTests : Test
+bestSolutionTests =
+    describe "bestSolution"
+        [ describe "maxBigBlinds"
+            [ test "should prefer ValueStacks that have highest big blinds" <|
+                \() ->
+                    let
+                        permWithMostBigBlinds =
+                            [ { color = "purple", amount = 4, value = 5 }
+                            , { color = "orange", amount = 10, value = 10 }
+                            , { color = "greene", amount = 2, value = 25 }
+                            ]
+
+                        permWithSecondMostBigBlinds =
+                            [ { color = "purple", amount = 3, value = 5 }
+                            , { color = "orange", amount = 5, value = 10 }
+                            , { color = "greene", amount = 2, value = 25 }
+                            ]
+
+                        permWithLeastBigBlinds =
+                            [ { color = "purple", amount = 4, value = 5 }
+                            , { color = "orange", amount = 3, value = 10 }
+                            , { color = "greene", amount = 3, value = 25 }
+                            ]
+
+                        perms =
+                            [ permWithSecondMostBigBlinds, permWithLeastBigBlinds, permWithMostBigBlinds ]
+                    in
+                        Expect.equal
+                            (maxBigBlinds perms)
+                            [ permWithMostBigBlinds, permWithSecondMostBigBlinds, permWithLeastBigBlinds ]
+            ]
+        ]
+
+
+maxBigBlinds : List ValueStack -> List ValueStack
+maxBigBlinds permutations =
+    sortWithDesc (\vs -> .amount (bigBlind vs)) permutations
+
+
+bigBlind : ValueStack -> ChipsInColorWithValue
+bigBlind valueStack =
+    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| to2314 valueStack
 
 
 
