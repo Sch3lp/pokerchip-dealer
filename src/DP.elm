@@ -65,16 +65,6 @@ chipColorVariations chips acc =
             chipColorVariations chips { acc | combos = newCombos, amountOfChipsUsed = newAmount }
 
 
-multipleChipVariations : List ChipsInColorWithValue -> List (List Amount)
-multipleChipVariations chipses =
-    List.map (\chips -> List.range 1 chips.amount) chipses
-
-
-comboGeneration : List ChipsInColorWithValue -> List (List Amount)
-comboGeneration chipses =
-    cartesianRecursive <| multipleChipVariations chipses
-
-
 multipleChipVariationsInChips : List ChipsInColorWithValue -> List (List ChipsInColorWithValue)
 multipleChipVariationsInChips chipses =
     let

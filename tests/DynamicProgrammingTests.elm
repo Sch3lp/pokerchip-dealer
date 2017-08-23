@@ -8,7 +8,7 @@ import DP exposing (..)
 
 -- generate all possible combinations (not necessarily solutions) [DONE]
 -- limited by players : get rid of combinations that have an amount which is non divisable by amount of players
--- only keep the real solutions (stackworth == buyin)
+-- limited by buyin : only keep the real solutions (stackworth == buyin)
 -- run an algorithm on those to retain the ideal solution:
 -- 0.1 chips maxed, then .25, then .05, and that ideally have at least one from the first 5 denoms in the stack
 
