@@ -1,5 +1,7 @@
 module Model exposing (..)
 
+import Util exposing (..)
+
 
 type alias Model =
     { pokerset : PokerSet
@@ -26,6 +28,16 @@ pokersetToString pokerset =
     List.map chipsInColorToString pokerset
 
 
+sortedByAmountDesc : PokerSet -> PokerSet
+sortedByAmountDesc pokerset =
+    sortWithDesc .amount <| pokerset
+
+
+limitAmount : Players -> PokerSet -> PokerSet
+limitAmount players pokerset =
+    List.map (limitAmountOfChips players) pokerset
+
+
 chipsInColorToString : ChipsInColor a -> String
 chipsInColorToString { color, amount } =
     (toString amount) ++ " " ++ color ++ " chips"
@@ -33,6 +45,11 @@ chipsInColorToString { color, amount } =
 
 type alias Stack =
     List ChipsInColorWithDenom
+
+
+stackSortedByDenomination : Stack -> Stack
+stackSortedByDenomination stack =
+    List.sortBy .denom <| stack
 
 
 type alias StackWorth =
@@ -57,8 +74,26 @@ chipValue chips =
     toFloat chips.amount * chips.denom
 
 
+updateDenomAmount : Amount -> ChipsInColorWithDenom -> ChipsInColorWithDenom
+updateDenomAmount amount chips =
+    { chips | amount = amount }
+
+
 type alias ChipsInColorWithValue =
     { color : String, amount : Amount, value : Value }
+
+
+type alias ValueStack =
+    List ChipsInColorWithValue
+
+
+type alias ValueStackWorth =
+    Int
+
+
+valueStackWorth : ValueStack -> ValueStackWorth
+valueStackWorth stack =
+    List.sum <| List.map chipsValue stack
 
 
 chipsValue : ChipsInColorWithValue -> Int
@@ -135,3 +170,8 @@ toChipsWithDenomination { color, amount } denom =
 chipsWithDenomToValue : ChipsInColorWithDenom -> ChipsInColorWithValue
 chipsWithDenomToValue { color, amount, denom } =
     ChipsInColorWithValue color amount (convertToDenomBase denom)
+
+
+limitAmountOfChips : Players -> ChipsInColor a -> ChipsInColor {}
+limitAmountOfChips players { color, amount } =
+    { color = color, amount = (amount // players) }

@@ -25,7 +25,7 @@ greedySolve model =
             List.reverse <| to2314 stack
 
         greedyStack =
-            List.map2 combineDenoms data.usedValues stackIn2314Reversed
+            List.map2 updateDenomAmount data.usedValues stackIn2314Reversed
     in
         stackSortedByDenomination greedyStack
 
@@ -100,32 +100,3 @@ makeChangeForDenom chips data =
             , usedValues =
                 usedValues :: data.usedValues
         }
-
-
-
--- Util
-
-
-sortedByAmountDesc : PokerSet -> PokerSet
-sortedByAmountDesc pokerset =
-    sortWithDesc .amount <| pokerset
-
-
-stackSortedByDenomination : Stack -> Stack
-stackSortedByDenomination stack =
-    List.sortBy .denom <| stack
-
-
-limitAmount : Players -> PokerSet -> PokerSet
-limitAmount players pokerset =
-    List.map (limitAmountOfChips players) pokerset
-
-
-limitAmountOfChips : Players -> ChipsInColor a -> ChipsInColor {}
-limitAmountOfChips players { color, amount } =
-    { color = color, amount = (amount // players) }
-
-
-combineDenoms : Amount -> ChipsInColorWithDenom -> ChipsInColorWithDenom
-combineDenoms amount chips =
-    { chips | amount = amount }
