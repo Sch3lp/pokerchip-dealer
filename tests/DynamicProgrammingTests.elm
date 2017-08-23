@@ -129,8 +129,20 @@ cartesianRecursiveTests =
         , test "cartesian with different amount of list elements" <|
             \() ->
                 Expect.equal
-                    (cartesianRecursive [ [ 1, 2 ], [ 1, 2, 3 ], [ 4, 5 ] ])
-                    [ [ 1, 1, 4 ], [ 1, 1, 5 ], [ 1, 2, 4 ], [ 1, 2, 5 ], [ 2, 1, 4 ], [ 2, 1, 5 ], [ 2, 2, 4 ], [ 2, 2, 5 ], [ 2, 3, 4 ], [ 2, 3, 5 ] ]
+                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4, 5 ], [ 6, 7 ] ])
+                    [ [ 1, 3, 6 ]
+                    , [ 1, 3, 7 ]
+                    , [ 1, 4, 6 ]
+                    , [ 1, 4, 7 ]
+                    , [ 1, 5, 6 ]
+                    , [ 1, 5, 7 ]
+                    , [ 2, 3, 6 ]
+                    , [ 2, 3, 7 ]
+                    , [ 2, 4, 6 ]
+                    , [ 2, 4, 7 ]
+                    , [ 2, 5, 6 ]
+                    , [ 2, 5, 7 ]
+                    ]
         ]
 
 
@@ -147,20 +159,34 @@ cartesianToList xs ys =
 
 
 cartesianRecursive : List (List a) -> List (List a)
-cartesianRecursive listsToCarthesiaize =
-    case listsToCarthesiaize of
+cartesianRecursive lists =
+    case lists of
         [] ->
             []
 
         one :: [] ->
             [ one ]
 
-        one :: two :: t ->
+        h :: t ->
             let
-                starter =
-                    cartesianToList one two
+                acc =
+                    List.map (\x -> [ x ]) h
             in
-                List.append starter (cartesianRecursive (two :: t))
+                List.foldl reduceWithCartesian acc t
+
+
+reduceWithCartesian : List a -> List (List a) -> List (List a)
+reduceWithCartesian otherList acc =
+    let
+        loop temp =
+            case temp of
+                [] ->
+                    []
+
+                h :: t ->
+                    (cartesianHelper h otherList) ++ loop t
+    in
+        loop acc
 
 
 cartesianHelperTests : Test
