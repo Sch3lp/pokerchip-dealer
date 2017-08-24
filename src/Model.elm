@@ -96,6 +96,43 @@ valueStackWorth stack =
     List.sum <| List.map chipsValue stack
 
 
+{-| Using a chipExtractor that singles out 1 ChipsInColorWithValue, order a ValueStack according to the amount. For example:
+
+    maxAmount (\valueStack -> Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| valueStack) stack
+
+-}
+maxAmount : (ValueStack -> ChipsInColorWithValue) -> List ValueStack -> List ValueStack
+maxAmount chipExtractor permutations =
+    sortWithDesc (\vs -> .amount (chipExtractor vs)) permutations
+
+
+{-| Extracts the ChipsInColorWithValue that's supposedly the Small Blind.
+The assumption is that the ValueStack's denominations are in order from low to high, with the lowest being the small blind.
+Another assumption is that the ValueStack is not empty.
+-}
+smallBlind : ValueStack -> ChipsInColorWithValue
+smallBlind valueStack =
+    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| valueStack
+
+
+{-| Extracts the ChipsInColorWithValue that's supposedly the Big Blind.
+The assumption is that the ValueStack's denominations are in order from low to high, with the lowest being the small blind
+Another assumption is that the ValueStack is not empty.
+-}
+bigBlind : ValueStack -> ChipsInColorWithValue
+bigBlind valueStack =
+    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| to2314 valueStack
+
+
+{-| Extracts the ChipsInColorWithValue that's supposedly the third denomination (0.05 0.1 0.25 ..., so 0.25).
+The assumption is that the ValueStack's denominations are in order from low to high, with the lowest being the small blind
+Another assumption is that the ValueStack is not empty.
+-}
+thirdDenom : ValueStack -> ChipsInColorWithValue
+thirdDenom valueStack =
+    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| to3214 valueStack
+
+
 chipsValue : ChipsInColorWithValue -> Int
 chipsValue chips =
     chips.amount * chips.value
