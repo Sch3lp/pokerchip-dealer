@@ -26,10 +26,13 @@ solve buyin stack =
             convertToDenomBase buyin
 
         valueStack =
-            List.map chipsWithDenomToValue stack
+            Debug.log "limited stack" <| List.map chipsWithDenomToValue stack
 
         permutations =
-            comboGenerationInChips valueStack
+            findAllPermutations valueStack
+
+        idealAmountOfChipColors =
+            5
 
         bestPermutations =
             permutations
@@ -37,7 +40,7 @@ solve buyin stack =
                 |> maxAmount bigBlind
                 |> maxAmount thirdDenom
                 |> maxAmount smallBlind
-                |> colorVariation 5
+                |> colorVariation idealAmountOfChipColors
 
         bestPerm =
             Maybe.withDefault [ { amount = 0, color = "blank", value = 0 } ] <| List.head bestPermutations
@@ -59,8 +62,8 @@ multipleChipVariationsInChips chipses =
             chipses
 
 
-comboGenerationInChips : ValueStack -> List ValueStack
-comboGenerationInChips chipses =
+findAllPermutations : ValueStack -> List ValueStack
+findAllPermutations chipses =
     cartesianRecursive <| multipleChipVariationsInChips chipses
 
 

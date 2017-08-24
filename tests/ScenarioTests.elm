@@ -11,8 +11,8 @@ all : Test
 all =
     describe "Pokerchip dealer Scenario Tests"
         [ simpleCase
-        , pokerbrosCaseDP
 
+        -- , pokerbrosCaseDP
         -- , pokerbrosCase
         ]
 
