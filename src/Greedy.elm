@@ -31,32 +31,6 @@ greedySolve model =
 
 
 
--- prep
-
-
-assignPreferredDenominations : List Denomination -> PokerSet -> Stack
-assignPreferredDenominations denoms pokerset =
-    let
-        denomsSortedAsc =
-            List.sort denoms
-
-        chipsIn3124Order =
-            to3124WhenDifferentAmounts <| sortedByAmountDesc pokerset
-    in
-        List.map2 toChipsWithDenomination chipsIn3124Order denomsSortedAsc
-
-
-to3124WhenDifferentAmounts : PokerSet -> PokerSet
-to3124WhenDifferentAmounts pokerset =
-    if hasAllSame <| List.map .amount <| pokerset then
-        pokerset
-    else if hasAllSame <| List.take 3 <| List.map .amount pokerset then
-        List.append (List.take 3 pokerset) (sortedByAmountDesc <| List.drop 3 pokerset)
-    else
-        to3124 <| sortedByAmountDesc pokerset
-
-
-
 -- greedy solve
 
 
