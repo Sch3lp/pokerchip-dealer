@@ -131,8 +131,8 @@ limitByBuyinTests =
 bestSolutionTests : Test
 bestSolutionTests =
     describe "bestSolution"
-        [ describe "maxBigBlinds"
-            [ test "should prefer ValueStacks that have highest big blinds" <|
+        [ describe "max BigBlinds"
+            [ test "should prefer ValueStacks that have highest amount of big blinds" <|
                 \() ->
                     let
                         permWithMostBigBlinds =
@@ -157,8 +157,66 @@ bestSolutionTests =
                             [ permWithSecondMostBigBlinds, permWithLeastBigBlinds, permWithMostBigBlinds ]
                     in
                         Expect.equal
-                            (maxBigBlinds perms)
+                            (maxAmount bigBlind perms)
                             [ permWithMostBigBlinds, permWithSecondMostBigBlinds, permWithLeastBigBlinds ]
+            ]
+        , describe "max SmallBlinds"
+            [ test "should prefer ValueStacks that have highest amount of small blinds" <|
+                \() ->
+                    let
+                        permWithMostSmallBlinds =
+                            [ { color = "purple", amount = 10, value = 5 }
+                            , { color = "orange", amount = 4, value = 10 }
+                            , { color = "greene", amount = 2, value = 25 }
+                            ]
+
+                        permWithSecondMostSmallBlinds =
+                            [ { color = "purple", amount = 5, value = 5 }
+                            , { color = "orange", amount = 3, value = 10 }
+                            , { color = "greene", amount = 2, value = 25 }
+                            ]
+
+                        permWithLeastSmallBlinds =
+                            [ { color = "purple", amount = 3, value = 5 }
+                            , { color = "orange", amount = 4, value = 10 }
+                            , { color = "greene", amount = 3, value = 25 }
+                            ]
+
+                        perms =
+                            [ permWithSecondMostSmallBlinds, permWithLeastSmallBlinds, permWithMostSmallBlinds ]
+                    in
+                        Expect.equal
+                            (maxAmount smallBlind perms)
+                            [ permWithMostSmallBlinds, permWithSecondMostSmallBlinds, permWithLeastSmallBlinds ]
+            ]
+        , describe "max 3rd denoms"
+            [ test "should prefer ValueStacks that have highest amount of 3rd denominations" <|
+                \() ->
+                    let
+                        permWithMost3rdDenoms =
+                            [ { color = "purple", amount = 2, value = 5 }
+                            , { color = "orange", amount = 4, value = 10 }
+                            , { color = "greene", amount = 10, value = 25 }
+                            ]
+
+                        permWithSecondMost3rdDenoms =
+                            [ { color = "purple", amount = 2, value = 5 }
+                            , { color = "orange", amount = 3, value = 10 }
+                            , { color = "greene", amount = 5, value = 25 }
+                            ]
+
+                        permWithLeast3rdDenoms =
+                            [ { color = "purple", amount = 3, value = 5 }
+                            , { color = "orange", amount = 4, value = 10 }
+                            , { color = "greene", amount = 3, value = 25 }
+                            ]
+
+                        perms =
+                            [ permWithSecondMost3rdDenoms, permWithLeast3rdDenoms, permWithMost3rdDenoms ]
+                    in
+                        Expect.equal
+                            (maxAmount thirdDenom perms)
+                            [ permWithMost3rdDenoms, permWithSecondMost3rdDenoms, permWithLeast3rdDenoms ]
             ]
         , test "should prefer ValueStacks that first have highest big blinds, then highest 3rd denoms, then highest small blinds" <|
             \() ->
@@ -207,42 +265,49 @@ bestSolutionTests =
                 in
                     Expect.equal
                         (perms
-                            |> max thirdDenom
-                            |> max smallBlind
-                            |> max bigBlind
+                            |> maxAmount bigBlind
+                            |> maxAmount thirdDenom
+                            |> maxAmount smallBlind
                         )
                         [ perfectPerm, secondBestPerm, thirdBestPerm, fourthBestPerm, lastBestPerm ]
         ]
 
 
-maxBigBlinds : List ValueStack -> List ValueStack
-maxBigBlinds permutations =
-    max bigBlind permutations
+{-| Using a chipExtractor that singles out 1 ChipsInColorWithValue, order a ValueStack according to the amount. For example:
+
+    maxAmount (\valueStack -> Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| valueStack) stack
+
+-}
+maxAmount : (ValueStack -> ChipsInColorWithValue) -> List ValueStack -> List ValueStack
+maxAmount chipExtractor permutations =
+    sortWithDesc (\vs -> .amount (chipExtractor vs)) permutations
 
 
-maxSmallBlinds : List ValueStack -> List ValueStack
-maxSmallBlinds permutations =
-    max smallBlind permutations
+{-| Extracts the ChipsInColorWithValue that's supposedly the Small Blind.
+The assumption is that the ValueStack's denominations are in order from low to high, with the lowest being the small blind.
+Another assumption is that the ValueStack is not empty.
+-}
+smallBlind : ValueStack -> ChipsInColorWithValue
+smallBlind valueStack =
+    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| valueStack
 
 
-max : (ValueStack -> ChipsInColorWithValue) -> List ValueStack -> List ValueStack
-max extractor permutations =
-    sortWithDesc (\vs -> .amount (extractor vs)) permutations
-
-
+{-| Extracts the ChipsInColorWithValue that's supposedly the Big Blind.
+The assumption is that the ValueStack's denominations are in order from low to high, with the lowest being the small blind
+Another assumption is that the ValueStack is not empty.
+-}
 bigBlind : ValueStack -> ChipsInColorWithValue
 bigBlind valueStack =
     Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| to2314 valueStack
 
 
+{-| Extracts the ChipsInColorWithValue that's supposedly the third denomination (0.05 0.1 0.25 ..., so 0.25).
+The assumption is that the ValueStack's denominations are in order from low to high, with the lowest being the small blind
+Another assumption is that the ValueStack is not empty.
+-}
 thirdDenom : ValueStack -> ChipsInColorWithValue
 thirdDenom valueStack =
     Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| to3214 valueStack
-
-
-smallBlind : ValueStack -> ChipsInColorWithValue
-smallBlind valueStack =
-    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| valueStack
 
 
 
