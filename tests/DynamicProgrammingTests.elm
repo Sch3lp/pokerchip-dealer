@@ -306,21 +306,35 @@ bestSolutionTests =
                             , { color = "reeeed", amount = 1, value = 250 }
                             ]
 
+                        permWith7DifferentColors =
+                            [ { color = "purple", amount = 1, value = 5 }
+                            , { color = "orange", amount = 1, value = 10 }
+                            , { color = "greene", amount = 1, value = 25 }
+                            , { color = "blueue", amount = 1, value = 50 }
+                            , { color = "yellow", amount = 1, value = 100 }
+                            , { color = "reeeed", amount = 1, value = 250 }
+                            , { color = "blaack", amount = 1, value = 500 }
+                            ]
+
                         perms =
-                            [ permWith4DifferentColors, permWith3DifferentColors, permWithExactly5DifferentColors, permWith6DifferentColors ]
+                            [ permWith4DifferentColors, permWith3DifferentColors, permWith7DifferentColors, permWithExactly5DifferentColors, permWith6DifferentColors ]
                     in
                         Expect.equal
                             (perms
                                 |> colorVariation 5
                             )
-                            [ permWithExactly5DifferentColors, permWith6DifferentColors, permWith4DifferentColors, permWith3DifferentColors ]
+                            [ permWithExactly5DifferentColors, permWith7DifferentColors, permWith6DifferentColors, permWith4DifferentColors, permWith3DifferentColors ]
             ]
         ]
 
 
 colorVariation : Int -> List ValueStack -> List ValueStack
 colorVariation preferredVariations permutations =
-    permutations
+    (\( a, b ) -> List.append a b)
+        (permutations
+            |> sortWithDesc List.length
+            |> List.partition (\vs -> List.length vs == 5)
+        )
 
 
 
