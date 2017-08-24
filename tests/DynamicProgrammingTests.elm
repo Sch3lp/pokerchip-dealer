@@ -328,15 +328,6 @@ bestSolutionTests =
         ]
 
 
-colorVariation : Int -> List ValueStack -> List ValueStack
-colorVariation preferredVariations permutations =
-    (\( a, b ) -> List.append a b)
-        (permutations
-            |> sortWithDesc List.length
-            |> List.partition (\vs -> List.length vs == 5)
-        )
-
-
 
 -- generateCombinationsTests : Test
 -- generateCombinationsTests =

@@ -87,3 +87,12 @@ comboGenerationInChips chipses =
 limitByBuyin : Value -> List ValueStack -> List ValueStack
 limitByBuyin buyin permutations =
     List.filter (\p -> valueStackWorth p == buyin) permutations
+
+
+colorVariation : Int -> List ValueStack -> List ValueStack
+colorVariation preferredVariations permutations =
+    (\( a, b ) -> List.append a b)
+        (permutations
+            |> sortWithDesc List.length
+            |> List.partition (\vs -> List.length vs == 5)
+        )
