@@ -13,7 +13,7 @@ import Debug exposing (..)
 -- limited by buyin : only keep the real solutions (stackworth == buyin)                       [DONE]
 -- run an algorithm on those to retain the ideal solution:
 -- 0.1 chips maxed, then .25, then .05 (the rest we don't care about)                          [DONE]
--- and that ideally have at least one from the first 5 denoms in the stack
+-- and that ideally have at least one from the first 5 denoms in the stack                     [DONE]
 
 
 all : Test
@@ -62,8 +62,8 @@ multipleChipVariationsInChipsTests =
                 in
                     Expect.equal
                         (multipleChipVariationsInChips simple)
-                        [ [ { color = "purple", amount = 1, value = 5 }, { color = "purple", amount = 2, value = 5 } ]
-                        , [ { color = "orange", amount = 1, value = 10 }, { color = "orange", amount = 2, value = 10 }, { color = "orange", amount = 3, value = 10 } ]
+                        [ [ { color = "purple", amount = 0, value = 5 }, { color = "purple", amount = 1, value = 5 }, { color = "purple", amount = 2, value = 5 } ]
+                        , [ { color = "orange", amount = 0, value = 10 }, { color = "orange", amount = 1, value = 10 }, { color = "orange", amount = 2, value = 10 }, { color = "orange", amount = 3, value = 10 } ]
                         ]
         ]
 
@@ -82,9 +82,27 @@ comboGenerationInChipsTests =
                 in
                     Expect.equal
                         (comboGenerationInChips simple)
-                        [ [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        [ [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]

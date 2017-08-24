@@ -69,7 +69,7 @@ multipleChipVariationsInChips : List ChipsInColorWithValue -> List (List ChipsIn
 multipleChipVariationsInChips chipses =
     let
         minAmountOfChips =
-            1
+            0
     in
         List.map
             (\chips ->
