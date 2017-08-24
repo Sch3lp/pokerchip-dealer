@@ -160,17 +160,89 @@ bestSolutionTests =
                             (maxBigBlinds perms)
                             [ permWithMostBigBlinds, permWithSecondMostBigBlinds, permWithLeastBigBlinds ]
             ]
+        , test "should prefer ValueStacks that first have highest big blinds, then highest 3rd denoms, then highest small blinds" <|
+            \() ->
+                let
+                    {- same bb and 3rd denom amount, but higher small blind -}
+                    perfectPerm =
+                        [ { color = "purple", amount = 10, value = 5 }
+                        , { color = "orange", amount = 10, value = 10 }
+                        , { color = "greene", amount = 10, value = 25 }
+                        , { color = "blueue", amount = 2, value = 50 }
+                        ]
+
+                    {- same 3rd denom amount, but higher small blind -}
+                    secondBestPerm =
+                        [ { color = "purple", amount = 10, value = 5 }
+                        , { color = "orange", amount = 10, value = 10 }
+                        , { color = "greene", amount = 9, value = 25 }
+                        , { color = "blueue", amount = 2, value = 50 }
+                        ]
+
+                    {- same sb amount, but higher 3rd denom -}
+                    thirdBestPerm =
+                        [ { color = "purple", amount = 9, value = 5 }
+                        , { color = "orange", amount = 10, value = 10 }
+                        , { color = "greene", amount = 9, value = 25 }
+                        , { color = "blueue", amount = 2, value = 50 }
+                        ]
+
+                    {- same sb and 3rd denom amount, but higher bb -}
+                    fourthBestPerm =
+                        [ { color = "purple", amount = 9, value = 5 }
+                        , { color = "orange", amount = 10, value = 10 }
+                        , { color = "greene", amount = 8, value = 25 }
+                        , { color = "blueue", amount = 2, value = 50 }
+                        ]
+
+                    lastBestPerm =
+                        [ { color = "purple", amount = 9, value = 5 }
+                        , { color = "orange", amount = 9, value = 10 }
+                        , { color = "greene", amount = 8, value = 25 }
+                        , { color = "blueue", amount = 2, value = 50 }
+                        ]
+
+                    perms =
+                        [ secondBestPerm, lastBestPerm, thirdBestPerm, perfectPerm, fourthBestPerm ]
+                in
+                    Expect.equal
+                        (perms
+                            |> max thirdDenom
+                            |> max smallBlind
+                            |> max bigBlind
+                        )
+                        [ perfectPerm, secondBestPerm, thirdBestPerm, fourthBestPerm, lastBestPerm ]
         ]
 
 
 maxBigBlinds : List ValueStack -> List ValueStack
 maxBigBlinds permutations =
-    sortWithDesc (\vs -> .amount (bigBlind vs)) permutations
+    max bigBlind permutations
+
+
+maxSmallBlinds : List ValueStack -> List ValueStack
+maxSmallBlinds permutations =
+    max smallBlind permutations
+
+
+max : (ValueStack -> ChipsInColorWithValue) -> List ValueStack -> List ValueStack
+max extractor permutations =
+    sortWithDesc (\vs -> .amount (extractor vs)) permutations
 
 
 bigBlind : ValueStack -> ChipsInColorWithValue
 bigBlind valueStack =
     Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| to2314 valueStack
+
+
+thirdDenom : ValueStack -> ChipsInColorWithValue
+thirdDenom valueStack =
+    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| to3214 valueStack
+
+
+smallBlind : ValueStack -> ChipsInColorWithValue
+smallBlind valueStack =
+    Maybe.withDefault { amount = 0, color = "blank", value = 0 } <| List.head <| valueStack
 
 
 
