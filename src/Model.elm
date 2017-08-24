@@ -206,7 +206,12 @@ toChipsWithDenomination { color, amount } denom =
 
 chipsWithDenomToValue : ChipsInColorWithDenom -> ChipsInColorWithValue
 chipsWithDenomToValue { color, amount, denom } =
-    ChipsInColorWithValue color amount (convertToDenomBase denom)
+    ChipsInColorWithValue color amount (toValue denom)
+
+
+chipsWithValueToDenom : ChipsInColorWithValue -> ChipsInColorWithDenom
+chipsWithValueToDenom { color, amount, value } =
+    { color = color, amount = amount, denom = (toDenom value) }
 
 
 limitAmountOfChips : Players -> ChipsInColor a -> ChipsInColor {}

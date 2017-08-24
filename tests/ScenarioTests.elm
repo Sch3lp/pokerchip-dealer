@@ -4,12 +4,14 @@ import Test exposing (..)
 import Expect
 import Model exposing (..)
 import Greedy exposing (..)
+import DP exposing (dpSolve)
 
 
 all : Test
 all =
     describe "Pokerchip dealer Scenario Tests"
         [ simpleCase
+        , pokerbrosCaseDP
 
         -- , pokerbrosCase
         ]
@@ -106,6 +108,22 @@ pokerbrosCase =
             \() ->
                 Expect.equal
                     (greedySolve <| Model pokerbrosPokerset standardDenoms 10 6)
+                    [ { color = "orange", amount = 10, denom = 0.05 }
+                    , { color = "white-red", amount = 15, denom = 0.1 }
+                    , { color = "red-blue", amount = 12, denom = 0.25 }
+                    , { color = "blue-white", amount = 6, denom = 0.5 }
+                    , { color = "green-pink", amount = 2, denom = 1 }
+                    ]
+        ]
+
+
+pokerbrosCaseDP : Test
+pokerbrosCaseDP =
+    describe "Pokerbros case with Dynamic Programming solve"
+        [ test "10 euro for 6 players" <|
+            \() ->
+                Expect.equal
+                    (dpSolve <| Model pokerbrosPokerset standardDenoms 10 6)
                     [ { color = "orange", amount = 10, denom = 0.05 }
                     , { color = "white-red", amount = 15, denom = 0.1 }
                     , { color = "red-blue", amount = 12, denom = 0.25 }

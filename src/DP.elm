@@ -8,64 +8,44 @@ import Cartesian exposing (cartesianRecursive)
 
 dpSolve : Model -> Stack
 dpSolve model =
-    []
-
-
-type alias Data =
-    { toDistribute : Int, usedValues : List Amount, innerData : InnerData }
-
-
-type alias InnerData =
-    { amountOfChipsUsed : Amount }
-
-
-generateCombinations : Buyin -> Stack -> Data
-generateCombinations buyin stack =
     let
-        toDistribute =
+        limitedByPlayers =
+            limitAmount model.players model.pokerset
+
+        stack =
+            assignPreferredDenominations standardDenoms <| limitedByPlayers
+    in
+        solve model.buyin stack
+
+
+solve : Buyin -> Stack -> Stack
+solve buyin stack =
+    let
+        buyinValue : ValueStackWorth
+        buyinValue =
             convertToDenomBase buyin
 
-        convertedStack =
+        valueStack =
             List.map chipsWithDenomToValue stack
 
-        initialData =
-            Data toDistribute [] <| InnerData 0
+        permutations =
+            comboGenerationInChips valueStack
+
+        bestPermutations =
+            permutations
+                |> limitByBuyin buyinValue
+                |> maxAmount bigBlind
+                |> maxAmount thirdDenom
+                |> maxAmount smallBlind
+                |> colorVariation 5
+
+        bestPerm =
+            Maybe.withDefault [ { amount = 0, color = "blank", value = 0 } ] <| List.head bestPermutations
     in
-        List.foldl generateComboRecursively initialData convertedStack
+        List.map chipsWithValueToDenom bestPerm
 
 
-generateComboRecursively : ChipsInColorWithValue -> Data -> Data
-generateComboRecursively chips data =
-    let
-        newInnerData =
-            { amountOfChipsUsed = data.innerData.amountOfChipsUsed + 1 }
-    in
-        if (data.innerData.amountOfChipsUsed == chips.amount) then
-            data
-        else
-            generateComboRecursively chips { data | innerData = newInnerData }
-
-
-type alias ChipsUsedAccumulator =
-    { amountOfChipsUsed : Amount, combos : List Amount }
-
-
-chipColorVariations : ChipsInColorWithValue -> ChipsUsedAccumulator -> ChipsUsedAccumulator
-chipColorVariations chips acc =
-    if acc.amountOfChipsUsed == chips.amount then
-        acc
-    else
-        let
-            newAmount =
-                acc.amountOfChipsUsed + 1
-
-            newCombos =
-                newAmount :: acc.combos
-        in
-            chipColorVariations chips { acc | combos = newCombos, amountOfChipsUsed = newAmount }
-
-
-multipleChipVariationsInChips : List ChipsInColorWithValue -> List (List ChipsInColorWithValue)
+multipleChipVariationsInChips : ValueStack -> List ValueStack
 multipleChipVariationsInChips chipses =
     let
         minAmountOfChips =
@@ -79,7 +59,7 @@ multipleChipVariationsInChips chipses =
             chipses
 
 
-comboGenerationInChips : List ChipsInColorWithValue -> List (List ChipsInColorWithValue)
+comboGenerationInChips : ValueStack -> List ValueStack
 comboGenerationInChips chipses =
     cartesianRecursive <| multipleChipVariationsInChips chipses
 
