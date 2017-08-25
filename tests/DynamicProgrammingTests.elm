@@ -8,7 +8,7 @@ import DP exposing (..)
 import Debug exposing (..)
 
 
--- limited by players : limit total amounts of chips (of each color) by the amount of players
+-- limited by players : limit total amounts of chips (of each color) by the amount of players  [DONE]
 -- generate all possible combinations (not necessarily solutions)                              [DONE]
 -- limited by buyin : only keep the real solutions (stackworth == buyin)                       [DONE]
 -- run an algorithm on those to retain the ideal solution:
@@ -66,30 +66,30 @@ findAllPermutationsTests =
                 in
                     Expect.equal
                         (findAllPermutations simple)
-                        [ [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        [ [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
                         ]
         , test "with pokerbros pokerset" <|
             \() ->

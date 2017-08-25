@@ -1,5 +1,7 @@
 module Cartesian exposing (..)
 
+import Trampoline exposing (done, jump, evaluate, Trampoline)
+
 
 cartesianRecursive : List (List a) -> List (List a)
 cartesianRecursive lists =
@@ -34,12 +36,21 @@ reduceWithCartesian otherList acc =
 
 cartesianHelper : List a -> List a -> List (List a)
 cartesianHelper xs ys =
+    evaluate <| cartesianHelper_ [] xs ys
+
+
+cartesianHelper_ : List (List a) -> List a -> List a -> Trampoline (List (List a))
+cartesianHelper_ acc xs ys =
     case ys of
         [] ->
-            []
+            done acc
 
         h :: t ->
-            [ xs ++ [ h ] ] ++ (cartesianHelper xs t)
+            let
+                tmp =
+                    [ xs ++ [ h ] ] ++ acc
+            in
+                jump (\_ -> cartesianHelper_ tmp xs t)
 
 
 
