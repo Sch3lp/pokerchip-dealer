@@ -23,15 +23,19 @@ cartesianRecursive lists =
 reduceWithCartesian : List a -> List (List a) -> List (List a)
 reduceWithCartesian otherList acc =
     let
-        loop temp =
-            case temp of
+        loop tmpAcc rest =
+            case rest of
                 [] ->
-                    []
+                    done tmpAcc
 
                 h :: t ->
-                    (cartesianHelper h otherList) ++ loop t
+                    let
+                        tmp =
+                            (cartesianHelper h otherList) ++ tmpAcc
+                    in
+                        jump (\_ -> loop tmp t)
     in
-        loop acc
+        evaluate <| loop [] acc
 
 
 cartesianHelper : List a -> List a -> List (List a)

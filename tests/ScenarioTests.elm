@@ -19,14 +19,15 @@ all =
 
 pokerbrosPokerset : PokerSet
 pokerbrosPokerset =
-    [ { color = "purple", amount = 75 }
-    , { color = "orange", amount = 75 }
+    -- [ { color = "purple", amount = 75 }
+    [ { color = "orange", amount = 75 }
     , { color = "white-red", amount = 100 }
     , { color = "red-blue", amount = 100 }
     , { color = "blue-white", amount = 50 }
     , { color = "green-pink", amount = 50 }
-    , { color = "black-salmon", amount = 25 }
-    , { color = "purple-pink", amount = 25 }
+
+    -- , { color = "black-salmon", amount = 25 }
+    -- , { color = "purple-pink", amount = 25 }
     ]
 
 
