@@ -20,20 +20,7 @@ cartesianRecursive lists =
 
 reduceWithCartesian : List a -> List (List a) -> List (List a)
 reduceWithCartesian otherList acc =
-    let
-        loop tmpAcc rest =
-            case rest of
-                [] ->
-                    tmpAcc
-
-                h :: t ->
-                    let
-                        tmp =
-                            (cartesianHelper h otherList) ++ tmpAcc
-                    in
-                        loop tmp t
-    in
-        loop [] acc
+    List.foldl (\other tmpAcc -> (cartesianHelper other otherList) ++ tmpAcc) [] acc
 
 
 cartesianHelper : List a -> List a -> List (List a)
