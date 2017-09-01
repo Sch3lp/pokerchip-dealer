@@ -57,8 +57,8 @@ cartesianRecursiveTests =
                         , List.range 0 16
                         , List.range 0 12
                         , List.range 0 8
-                        , List.range 0 8 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
 
+                        -- , List.range 0 6 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
                         -- , List.range 0 4
                         -- , List.range 0 4
                         ]
