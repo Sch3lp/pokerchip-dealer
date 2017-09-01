@@ -38,21 +38,7 @@ reduceWithCartesian otherList acc =
 
 cartesianHelper : List a -> List a -> List (List a)
 cartesianHelper xs ys =
-    cartesianHelper_ [] xs ys
-
-
-cartesianHelper_ : List (List a) -> List a -> List a -> List (List a)
-cartesianHelper_ acc xs ys =
-    case ys of
-        [] ->
-            acc
-
-        h :: t ->
-            let
-                tmp =
-                    [ xs ++ [ h ] ] ++ acc
-            in
-                cartesianHelper_ tmp xs t
+    List.foldl (\y acc -> (xs ++ [ y ]) :: acc) [] ys
 
 
 
