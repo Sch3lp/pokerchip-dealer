@@ -18,6 +18,22 @@ cartesianRecursive lists =
                 List.foldl reduceWithCartesian acc t
 
 
+
+-- Alternative using concatMap, thanks to @gilbert in elmlang.slack.com
+-- cartesianRecursive : List (List a) -> List (List a)
+-- cartesianRecursive xss =
+--     case List.reverse xss of
+--         [] ->
+--             []
+--         head :: tail ->
+--             List.foldl
+--                 (\xs acc ->
+--                     List.concatMap (\x -> List.map ((::) x) acc) xs
+--                 )
+--                 (List.map (\x -> x :: []) head)
+--                 tail
+
+
 reduceWithCartesian : List a -> List (List a) -> List (List a)
 reduceWithCartesian otherList acc =
     List.foldl (\other tmpAcc -> (cartesianHelper other otherList) ++ tmpAcc) [] acc
