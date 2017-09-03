@@ -3,7 +3,8 @@ module DP exposing (..)
 import Debug exposing (..)
 import Model exposing (..)
 import Util exposing (..)
-import Cartesian exposing (cartesianRecursive)
+import Cartesian exposing (lazyCartesian)
+import Lazy.List exposing (LazyList)
 
 
 dpSolve : Model -> Stack
@@ -64,7 +65,7 @@ multipleChipVariationsInChips chipses =
 
 findAllPermutations : ValueStack -> List ValueStack
 findAllPermutations chipses =
-    cartesianRecursive <| multipleChipVariationsInChips chipses
+    Lazy.List.toList <| lazyCartesian <| multipleChipVariationsInChips chipses
 
 
 limitByBuyin : Value -> List ValueStack -> List ValueStack

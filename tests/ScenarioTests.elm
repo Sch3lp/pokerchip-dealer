@@ -15,9 +15,8 @@ pokerbrosPokerset =
     , { color = "red-blue", amount = 100 }
     , { color = "blue-white", amount = 50 }
     , { color = "green-pink", amount = 50 }
-
-    -- , { color = "black-salmon", amount = 25 }
-    -- , { color = "purple-pink", amount = 25 }
+    , { color = "black-salmon", amount = 25 }
+    , { color = "purple-pink", amount = 25 }
     ]
 
 
@@ -112,15 +111,14 @@ pokerbrosCase =
 pokerbrosCaseDP : Test
 pokerbrosCaseDP =
     describe "Pokerbros case with Dynamic Programming solve"
-        [ Test.skip <|
-            test "10 euro for 6 players" <|
-                \() ->
-                    Expect.equal
-                        (dpSolve <| Model pokerbrosPokerset standardDenoms 10 6)
-                        [ { color = "orange", amount = 10, denom = 0.05 }
-                        , { color = "white-red", amount = 15, denom = 0.1 }
-                        , { color = "red-blue", amount = 12, denom = 0.25 }
-                        , { color = "blue-white", amount = 6, denom = 0.5 }
-                        , { color = "green-pink", amount = 2, denom = 1 }
-                        ]
+        [ test "10 euro for 6 players" <|
+            \() ->
+                Expect.equal
+                    (dpSolve <| Model pokerbrosPokerset standardDenoms 10 6)
+                    [ { color = "orange", amount = 10, denom = 0.05 }
+                    , { color = "white-red", amount = 15, denom = 0.1 }
+                    , { color = "red-blue", amount = 12, denom = 0.25 }
+                    , { color = "blue-white", amount = 6, denom = 0.5 }
+                    , { color = "green-pink", amount = 2, denom = 1 }
+                    ]
         ]
