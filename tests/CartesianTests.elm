@@ -6,57 +6,34 @@ import Test exposing (..)
 import Expect
 
 
-lazyCartesianRecursiveTests : Test
-lazyCartesianRecursiveTests =
-    describe "lazyCartesianRecursive"
-        [ test "cartesian with pokerbros amounts" <|
-            \() ->
-                let
-                    pokerbrosAmounts =
-                        [ List.range 0 12
-                        , List.range 0 16
-                        , List.range 0 16
-                        , List.range 0 12
-                        , List.range 0 8
-                        , List.range 0 8 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
-                        , List.range 0 4
-                        , List.range 0 4
-                        ]
-                in
-                    Expect.equal
-                        (Lazy.List.isEmpty (lazyCartesian pokerbrosAmounts))
-                        False
-        ]
-
-
 cartesianRecursiveTests : Test
 cartesianRecursiveTests =
     describe "cartesianRecursive"
         [ test "cartesian with two lists" <|
             \() ->
                 Expect.equal
-                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4 ] ])
-                    [ [ 2, 4 ], [ 2, 3 ], [ 1, 4 ], [ 1, 3 ] ]
+                    (Lazy.List.toList <| lazyCartesian [ [ 1, 2 ], [ 3, 4 ] ])
+                    [ [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ] ]
         , test "cartesian with two lists, different amount" <|
             \() ->
                 Expect.equal
-                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4, 5 ] ])
-                    [ [ 2, 5 ], [ 2, 4 ], [ 2, 3 ], [ 1, 5 ], [ 1, 4 ], [ 1, 3 ] ]
+                    (Lazy.List.toList <| lazyCartesian [ [ 1, 2 ], [ 3, 4, 5 ] ])
+                    [ [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ] ]
         , test "cartesian with single element lists" <|
             \() ->
                 Expect.equal
-                    (cartesianRecursive [ [ 1 ], [ 2 ], [ 3 ] ])
+                    (Lazy.List.toList <| lazyCartesian [ [ 1 ], [ 2 ], [ 3 ] ])
                     [ [ 1, 2, 3 ] ]
         , test "cartesian with same amount of list elements" <|
             \() ->
                 Expect.equal
-                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ])
-                    [ [ 1, 3, 6 ], [ 1, 3, 5 ], [ 1, 4, 6 ], [ 1, 4, 5 ], [ 2, 3, 6 ], [ 2, 3, 5 ], [ 2, 4, 6 ], [ 2, 4, 5 ] ]
+                    (Lazy.List.toList <| lazyCartesian [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ])
+                    [ [ 1, 3, 5 ], [ 1, 3, 6 ], [ 1, 4, 5 ], [ 1, 4, 6 ], [ 2, 3, 5 ], [ 2, 3, 6 ], [ 2, 4, 5 ], [ 2, 4, 6 ] ]
         , test "cartesian with different amount of list elements" <|
             \() ->
                 Expect.equal
-                    (cartesianRecursive [ [ 1, 2 ], [ 3, 4, 5 ], [ 6, 7 ] ])
-                    [ [ 1, 3, 7 ], [ 1, 3, 6 ], [ 1, 4, 7 ], [ 1, 4, 6 ], [ 1, 5, 7 ], [ 1, 5, 6 ], [ 2, 3, 7 ], [ 2, 3, 6 ], [ 2, 4, 7 ], [ 2, 4, 6 ], [ 2, 5, 7 ], [ 2, 5, 6 ] ]
+                    (Lazy.List.toList <| lazyCartesian [ [ 1, 2 ], [ 3, 4, 5 ], [ 6, 7 ] ])
+                    [ [ 1, 3, 6 ], [ 1, 3, 7 ], [ 1, 4, 6 ], [ 1, 4, 7 ], [ 1, 5, 6 ], [ 1, 5, 7 ], [ 2, 3, 6 ], [ 2, 3, 7 ], [ 2, 4, 6 ], [ 2, 4, 7 ], [ 2, 5, 6 ], [ 2, 5, 7 ] ]
         , test "cartesian with pokerbros amounts" <|
             \() ->
                 let
@@ -66,14 +43,13 @@ cartesianRecursiveTests =
                         , List.range 0 16
                         , List.range 0 12
                         , List.range 0 8
-
-                        -- , List.range 0 8 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
-                        -- , List.range 0 4
-                        -- , List.range 0 4
+                        , List.range 0 8
+                        , List.range 0 4
+                        , List.range 0 4
                         ]
                 in
                     Expect.equal
-                        (List.isEmpty (cartesianRecursive pokerbrosAmounts))
+                        (Lazy.List.isEmpty (lazyCartesian pokerbrosAmounts))
                         False
         ]
 
