@@ -1,5 +1,38 @@
 module Cartesian exposing (..)
 
+import Lazy exposing (lazy, force)
+import Lazy.List exposing (LazyList, LazyListView(Nil, Cons), (+++))
+
+
+lazyCartesian : List (List a) -> LazyList (List a)
+lazyCartesian xss =
+    case List.reverse xss of
+        [] ->
+            Lazy.List.empty
+
+        head :: tail ->
+            List.foldl (lazyCartesianHelper << Lazy.List.fromList)
+                (List.map (\x -> x :: []) head |> Lazy.List.fromList)
+                tail
+
+
+lazyCartesianHelper : LazyList a -> LazyList (List a) -> LazyList (List a)
+lazyCartesianHelper xs xss =
+    lazy <|
+        (\() ->
+            case force xs of
+                Nil ->
+                    Nil
+
+                Cons first1 rest1 ->
+                    case force xss of
+                        Nil ->
+                            Nil
+
+                        Cons _ _ ->
+                            force <| Lazy.List.map ((::) first1) xss +++ lazyCartesianHelper rest1 xss
+        )
+
 
 cartesianRecursive : List (List a) -> List (List a)
 cartesianRecursive lists =

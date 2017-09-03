@@ -1,22 +1,44 @@
 module CartesianTests exposing (..)
 
 import Cartesian exposing (..)
+import Lazy.List exposing (LazyList)
 import Test exposing (..)
 import Expect
-
-
-all : Test
-all =
-    cartesianTests
 
 
 cartesianTests : Test
 cartesianTests =
     describe "cartesian tests"
         [ cartesianTupleTests
-        , cartesianListTests
-        , cartesianRecursiveTests
-        , cartesianHelperTests
+
+        -- , cartesianListTests
+        -- , cartesianRecursiveTests
+        -- , cartesianHelperTests
+        , lazyCartesianRecursiveTests
+        ]
+
+
+lazyCartesianRecursiveTests : Test
+lazyCartesianRecursiveTests =
+    describe "lazyCartesianRecursive"
+        [ test "cartesian with pokerbros amounts" <|
+            \() ->
+                let
+                    pokerbrosAmounts =
+                        [ List.range 0 12
+                        , List.range 0 16
+                        , List.range 0 16
+                        , List.range 0 12
+                        , List.range 0 8
+                        , List.range 0 8 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
+
+                        -- , List.range 0 4
+                        -- , List.range 0 4
+                        ]
+                in
+                    Expect.equal
+                        (Lazy.List.isEmpty (lazyCartesian pokerbrosAmounts))
+                        False
         ]
 
 
@@ -156,7 +178,7 @@ cartesianHelperTests =
 
 cartesianTupleTests : Test
 cartesianTupleTests =
-    describe "cartesian"
+    describe "cartesianTuple"
         [ test "cartesian with single elements" <|
             \() ->
                 Expect.equal
@@ -172,7 +194,7 @@ cartesianTupleTests =
 
 cartesianListTests : Test
 cartesianListTests =
-    describe "cartesian"
+    describe "cartesianList"
         [ test "cartesian with single elements" <|
             \() ->
                 Expect.equal
