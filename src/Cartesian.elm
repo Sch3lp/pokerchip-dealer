@@ -75,19 +75,3 @@ reduceWithCartesian otherList acc =
 cartesianHelper : List a -> List a -> List (List a)
 cartesianHelper xs ys =
     List.foldl (\y acc -> (xs ++ [ y ]) :: acc) [] ys
-
-
-
-{- currently unused -}
-
-
-cartesian : List a -> List a -> List ( a, a )
-cartesian xs ys =
-    List.concatMap
-        (\x -> List.map (\y -> ( x, y )) ys)
-        xs
-
-
-cartesianToList : List a -> List a -> List (List a)
-cartesianToList xs ys =
-    List.concatMap (\x -> List.map (\y -> x :: [ y ]) ys) xs

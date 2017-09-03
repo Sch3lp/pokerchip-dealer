@@ -16,23 +16,6 @@ import Debug exposing (..)
 -- and that ideally have at least one from the first 5 denoms in the stack                     [DONE]
 
 
-all : Test
-all =
-    describe "DP Unit Tests"
-        dpUnitTests
-
-
-dpUnitTests : List Test
-dpUnitTests =
-    [ describe "DP Unit Tests"
-        [ multipleChipVariationsInChipsTests
-        , findAllPermutationsTests
-        , limitByBuyinTests
-        , bestSolutionTests
-        ]
-    ]
-
-
 multipleChipVariationsInChipsTests : Test
 multipleChipVariationsInChipsTests =
     describe "multipleChipVariationsInChips"
@@ -91,23 +74,24 @@ findAllPermutationsTests =
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
                         ]
-        -- , test "with pokerbros pokerset" <|
-        --     \() ->
-        --         let
-        --             pokerbrospokerset =
-        --                 [ { color = "purple", amount = 12, value = 5 }
-        --                 , { color = "white-red", amount = 16, value = 10 }
-        --                 , { color = "red-blue", amount = 16, value = 25 }
-        --                 , { color = "orange", amount = 12, value = 50 }
-        --                 , { color = "blue-white", amount = 8, value = 100 }
-        --                 , { color = "green-pink", amount = 8, value = 250 }
-        --                 , { color = "black-salmon", amount = 4, value = 500 }
-        --                 , { color = "purple-pink", amount = 4, value = 1000 }
-        --                 ]
-        --         in
-        --             Expect.equal
-        --                 (List.isEmpty <| findAllPermutations pokerbrospokerset)
-        --                 False
+        , Test.skip <|
+            test "with pokerbros pokerset" <|
+                \() ->
+                    let
+                        pokerbrospokerset =
+                            [ { color = "purple", amount = 12, value = 5 }
+                            , { color = "white-red", amount = 16, value = 10 }
+                            , { color = "red-blue", amount = 16, value = 25 }
+                            , { color = "orange", amount = 12, value = 50 }
+                            , { color = "blue-white", amount = 8, value = 100 }
+                            , { color = "green-pink", amount = 8, value = 250 }
+                            , { color = "black-salmon", amount = 4, value = 500 }
+                            , { color = "purple-pink", amount = 4, value = 1000 }
+                            ]
+                    in
+                        Expect.equal
+                            (List.isEmpty <| findAllPermutations pokerbrospokerset)
+                            False
         ]
 
 

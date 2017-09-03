@@ -6,18 +6,6 @@ import Test exposing (..)
 import Expect
 
 
-cartesianTests : Test
-cartesianTests =
-    describe "cartesian tests"
-        [ cartesianTupleTests
-
-        -- , cartesianListTests
-        -- , cartesianRecursiveTests
-        -- , cartesianHelperTests
-        , lazyCartesianRecursiveTests
-        ]
-
-
 lazyCartesianRecursiveTests : Test
 lazyCartesianRecursiveTests =
     describe "lazyCartesianRecursive"
@@ -31,9 +19,8 @@ lazyCartesianRecursiveTests =
                         , List.range 0 12
                         , List.range 0 8
                         , List.range 0 8 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
-
-                        -- , List.range 0 4
-                        -- , List.range 0 4
+                        , List.range 0 4
+                        , List.range 0 4
                         ]
                 in
                     Expect.equal
@@ -79,8 +66,8 @@ cartesianRecursiveTests =
                         , List.range 0 16
                         , List.range 0 12
                         , List.range 0 8
-                        , List.range 0 8 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
 
+                        -- , List.range 0 8 --ded (6 takes 9145ms, 7 23425ms, 8 106806ms)
                         -- , List.range 0 4
                         -- , List.range 0 4
                         ]
@@ -169,40 +156,4 @@ cartesianHelperTests =
                 Expect.equal
                     (cartesianHelper [ 2, 4, 6 ] [ 7, 8 ])
                     [ [ 2, 4, 6, 8 ], [ 2, 4, 6, 7 ] ]
-        ]
-
-
-
-{- currently unused -}
-
-
-cartesianTupleTests : Test
-cartesianTupleTests =
-    describe "cartesianTuple"
-        [ test "cartesian with single elements" <|
-            \() ->
-                Expect.equal
-                    (cartesian [ 1, 2 ] [ 1 ])
-                    [ ( 1, 1 ), ( 2, 1 ) ]
-        , test "cartesian with multiple elements" <|
-            \() ->
-                Expect.equal
-                    (cartesian [ 1, 2 ] [ 1, 2, 3 ])
-                    [ ( 1, 1 ), ( 1, 2 ), ( 1, 3 ), ( 2, 1 ), ( 2, 2 ), ( 2, 3 ) ]
-        ]
-
-
-cartesianListTests : Test
-cartesianListTests =
-    describe "cartesianList"
-        [ test "cartesian with single elements" <|
-            \() ->
-                Expect.equal
-                    (cartesianToList [ 1, 2 ] [ 1 ])
-                    [ [ 1, 1 ], [ 2, 1 ] ]
-        , test "cartesian with multiple elements" <|
-            \() ->
-                Expect.equal
-                    (cartesianToList [ 1, 2 ] [ 1, 2, 3 ])
-                    [ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ] ]
         ]

@@ -7,12 +7,6 @@ import Greedy exposing (..)
 import Util exposing (..)
 
 
-all : Test
-all =
-    describe "Greedy Unit Tests"
-        greedyUnitTests
-
-
 pokerbrosPokerset : PokerSet
 pokerbrosPokerset =
     [ { color = "purple", amount = 75 }

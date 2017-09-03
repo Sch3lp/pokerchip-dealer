@@ -5,17 +5,6 @@ import Expect
 import Model exposing (..)
 
 
-all : Test
-all =
-    describe "Model Unit Tests"
-        modelUnitTests
-
-
-modelUnitTests : List Test
-modelUnitTests =
-    [ convertToDenomBaseTests ]
-
-
 pokerbrosPokerset : PokerSet
 pokerbrosPokerset =
     [ { color = "purple", amount = 75 }

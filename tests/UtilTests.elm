@@ -5,16 +5,6 @@ import Expect
 import Util exposing (..)
 
 
-all : Test
-all =
-    describe "Util"
-        [ to3124Tests
-        , to3214Tests
-        , to2314Tests
-        , hasAllSameTests
-        ]
-
-
 hasAllSameTests : Test
 hasAllSameTests =
     describe "hasAllSame"
