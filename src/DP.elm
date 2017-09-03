@@ -35,13 +35,17 @@ solve buyin stack =
         idealAmountOfChipColors =
             5
 
-        bestPermutations =
+        filteredPermutations =
             permutations
-                |> limitByBuyin buyinValue
+                |> lazyLimitByBuyin buyinValue
+                |> lazyColorVariation idealAmountOfChipColors
+                |> Lazy.List.toList
+
+        bestPermutations =
+            filteredPermutations
                 |> maxAmount bigBlind
                 |> maxAmount thirdDenom
                 |> maxAmount smallBlind
-                |> colorVariation idealAmountOfChipColors
 
         bestPerm =
             Maybe.withDefault [ { amount = 0, color = "blank", value = 0 } ] <| List.head bestPermutations
@@ -63,9 +67,9 @@ multipleChipVariationsInChips chipses =
             chipses
 
 
-findAllPermutations : ValueStack -> List ValueStack
+findAllPermutations : ValueStack -> LazyList ValueStack
 findAllPermutations chipses =
-    Lazy.List.toList <| lazyCartesian <| multipleChipVariationsInChips chipses
+    lazyCartesian <| multipleChipVariationsInChips chipses
 
 
 limitByBuyin : Value -> List ValueStack -> List ValueStack
@@ -73,10 +77,21 @@ limitByBuyin buyin permutations =
     List.filter (\p -> valueStackWorth p == buyin) permutations
 
 
+lazyLimitByBuyin : Value -> LazyList ValueStack -> LazyList ValueStack
+lazyLimitByBuyin buyin permutations =
+    Lazy.List.keepIf (\p -> valueStackWorth p == buyin) permutations
+
+
+lazyColorVariation : Int -> LazyList ValueStack -> LazyList ValueStack
+lazyColorVariation preferredNbrVariations permutations =
+    permutations
+        |> Lazy.List.keepIf (\vs -> List.length vs == preferredNbrVariations)
+
+
 colorVariation : Int -> List ValueStack -> List ValueStack
-colorVariation preferredVariations permutations =
+colorVariation preferredNbrVariations permutations =
     (\( a, b ) -> List.append a b)
         (permutations
             |> sortWithDesc List.length
-            |> List.partition (\vs -> List.length vs == 5)
+            |> List.partition (\vs -> List.length vs == preferredNbrVariations)
         )
