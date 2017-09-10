@@ -1,8 +1,8 @@
 module DynamicProgrammingTests exposing (..)
 
 import Test exposing (..)
+import Lazy.List exposing (LazyList)
 import Expect
-import Util exposing (..)
 import Model exposing (..)
 import DP exposing (..)
 import Debug exposing (..)
@@ -48,31 +48,31 @@ findAllPermutationsTests =
                         ]
                 in
                     Expect.equal
-                        (findAllPermutations simple)
-                        [ [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        (Lazy.List.toList <| findAllPermutations simple)
+                        [ [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
                         , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 0, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 0, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
-                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 1, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 0, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 1, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 2, value = 25 } ]
+                        , [ { color = "purple", amount = 1, value = 5 }, { color = "orange", amount = 2, value = 10 }, { color = "greene", amount = 3, value = 25 } ]
                         ]
         , Test.skip <|
             test "with pokerbros pokerset" <|
@@ -90,7 +90,7 @@ findAllPermutationsTests =
                             ]
                     in
                         Expect.equal
-                            (List.isEmpty <| findAllPermutations pokerbrospokerset)
+                            (Lazy.List.isEmpty <| findAllPermutations pokerbrospokerset)
                             False
         ]
 
